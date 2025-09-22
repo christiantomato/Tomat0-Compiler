@@ -53,11 +53,11 @@ int main (int argc, char *argv[]) {
     //got to work out how we are going to free everything... (currently in shambles)
     
     //make an executable
-    //system("gcc output/generated_asm.s -o tomat0executable");
+    system("gcc output/generated_asm.s -o tomat0executable");
     //move compiled tomat0 file to output directory
-    //system("mv tomat0executable output");
+    system("mv tomat0executable output");
     //execute
-    //system("./output/tomat0executable");
+    system("./output/tomat0executable");
     
     //success
     return 0;

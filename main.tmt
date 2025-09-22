@@ -1,2 +1,4 @@
 int x = 1
-x = 2
+int y = 4
+x = 2 + x + y
+sout(x)
