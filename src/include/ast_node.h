@@ -22,6 +22,7 @@ ASTSpecialization: a union containing structs for specialized ast nodes
 typedef enum ast_node_type {
     AST_PROGRAM,
     AST_VARIABLE_DECLARATION,
+    AST_VARIABLE_ASSIGNMENT,
     AST_PRINT_STATEMENT,
     AST_BINARY_OPERATION,
     AST_NEGATION,
@@ -42,6 +43,11 @@ typedef struct ast_variable_declaration {
     char* variable_name;
     struct ast_node_struct* assignment;
 } VariableDeclaration;
+
+typedef struct ast_variable_assignment {
+    char* variable_name;
+    struct ast_node_struct* assignment;
+} VariableAssignment;
 
 typedef struct ast_print_statement {
     struct ast_node_struct* statement;
@@ -73,6 +79,7 @@ typedef struct ast_string {
 //unionize all the different node types
 typedef union ast_node_specializations {
     VariableDeclaration variable_declaration;
+    VariableAssignment variable_assignment;
     PrintStatement print_statement;
     BinaryOperation binary_operation;
     Negation negation;

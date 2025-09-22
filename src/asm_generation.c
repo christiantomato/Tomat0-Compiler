@@ -39,6 +39,20 @@ int node_to_asm(FILE* file, ASTNode* node, SymbolTable* table, RegisterManager* 
             free_register(manager, result_reg);
             break;
         }
+        case AST_VARIABLE_ASSIGNMENT: {
+            //look up the symbol
+            Symbol* variable = look_up_symbol(table, node->specialization.variable_assignment.variable_name);
+            //determine the value of the reassignment
+            int result_reg = node_to_asm(file, node->specialization.variable_assignment.assignment, table, manager);
+
+            //store to the location in stack 
+            //store variable to stack now
+            fprintf(file, "\t//store value to stack\n");
+            fprintf(file, "\tstr x%d, [x29, #%d]\n", result_reg, variable->memory_offset);
+            //free the register as we are done with the storage
+            free_register(manager, result_reg);
+            break;
+        }
         case AST_PRINT_STATEMENT: {
             //evaluate the statement inside the print statement
             int result_reg = node_to_asm(file, node->specialization.print_statement.statement, table, manager);
@@ -86,7 +100,7 @@ int node_to_asm(FILE* file, ASTNode* node, SymbolTable* table, RegisterManager* 
                     fprintf(file, "\tsub x%d, x%d, x%d\n", result_reg, left_reg, right_reg);
                     break;
                 case '*':
-                    fprintf(file, "\tmul x%d, x%d, x%d\n", result_reg, left_reg, right_reg);
+                    fprintf(file, "\tmul x%d, x%d, x%d\n", result_reg, left_reg, right_reg); 
                     break;
                 case '/':
                     fprintf(file, "\tsdiv x%d, x%d, x%d\n", result_reg, left_reg, right_reg);
