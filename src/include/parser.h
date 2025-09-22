@@ -43,6 +43,7 @@ parsing functions (top down parsing)
 
 ASTNode* parse_line(Parser* parser);
 ASTNode* parse_variable_declaration(Parser* parser);
+ASTNode* parse_variable_assignment(Parser* parser);
 ASTNode* parse_print_statement(Parser* parser);
 ASTNode* parse_expression(Parser* parser);
 ASTNode* parse_term(Parser* parser);

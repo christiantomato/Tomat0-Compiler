@@ -24,6 +24,10 @@ ASTNode* init_node(NodeType type) {
             node->specialization.variable_declaration.variable_name = NULL;
             node->specialization.variable_declaration.assignment = NULL;
             break;
+        case AST_VARIABLE_ASSIGNMENT:
+            node->specialization.variable_assignment.variable_name = NULL;
+            node->specialization.variable_assignment.assignment = NULL;
+            break;
         case AST_PRINT_STATEMENT:
             node->specialization.print_statement.statement = NULL;
             break;
@@ -66,6 +70,7 @@ char* node_type_str(ASTNode* node) {
     switch(node->type) {
         case AST_PROGRAM: return "AST_PROGRAM"; break;
         case AST_VARIABLE_DECLARATION: return "AST_VARIABLE_DECLARATION"; break;
+        case AST_VARIABLE_ASSIGNMENT: return "AST_VARIABLE_ASSIGNMENT"; break;
         case AST_PRINT_STATEMENT: return "AST_PRINT_STATEMENT"; break;
         case AST_BINARY_OPERATION: return "AST_BINARY_OPERATION"; break;
         case AST_NEGATION: return "AST_NEGATION"; break;
@@ -110,6 +115,13 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
             print_indent(file, indent);
             fprintf(file, "assignment = \n");
             print_ast(file, root->specialization.variable_declaration.assignment, indent + 1);
+            break;
+        case AST_VARIABLE_ASSIGNMENT:
+            print_indent(file, indent);
+            fprintf(file, "name = %s\n", root->specialization.variable_assignment.variable_name);
+            print_indent(file, indent);
+            fprintf(file, "assignment = \n");
+            print_ast(file, root->specialization.variable_assignment.assignment, indent + 1);
             break;
         case AST_PRINT_STATEMENT:
             print_indent(file, indent);
@@ -189,6 +201,10 @@ int free_node(ASTNode* node) {
             //(dont free, it is a const char* which is read only): free(node->specialization.variable_declaration.data_type);
             free(node->specialization.variable_declaration.variable_name);
             free_node(node->specialization.variable_declaration.assignment);
+            break;
+        case AST_VARIABLE_ASSIGNMENT:
+            free(node->specialization.variable_assignment.variable_name);
+            free_node(node->specialization.variable_assignment.assignment);
             break;
         case AST_PRINT_STATEMENT:
             free_node(node->specialization.print_statement.statement);

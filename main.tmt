@@ -1,5 +1,2 @@
 int x = 1
-int y = 2
-int z = 3
-
-sout(x * y - (2*z) + x - (x*x*x))
+x = 2

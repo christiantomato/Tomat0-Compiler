@@ -39,6 +39,10 @@ int node_to_asm(FILE* file, ASTNode* node, SymbolTable* table, RegisterManager* 
             free_register(manager, result_reg);
             break;
         }
+        case AST_VARIABLE_ASSIGNMENT: {
+
+            break;
+        }
         case AST_PRINT_STATEMENT: {
             //evaluate the statement inside the print statement
             int result_reg = node_to_asm(file, node->specialization.print_statement.statement, table, manager);

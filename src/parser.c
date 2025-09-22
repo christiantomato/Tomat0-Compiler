@@ -131,6 +131,9 @@ ASTNode* parse_line(Parser* parser) {
     if(parser->current_token->type == TOKEN_KEYWORD_INT || parser->current_token->type == TOKEN_KEYWORD_STRING) {
        return parse_variable_declaration(parser);
     }
+    else if(parser->current_token->type == TOKEN_ID) {
+        return parse_variable_assignment(parser);
+    }
     else if(parser->current_token->type == TOKEN_KEYWORD_SOUT) {
         return parse_print_statement(parser);
     }
@@ -200,6 +203,40 @@ ASTNode* parse_variable_declaration(Parser* parser) {
     
     //return the node once finished
     return var_dec_node;
+}
+
+/*
+Parse Variable Assignment Function
+
+parses a variable assignment
+variables can have values reassigned to them, so here we take in to account that possibility
+
+Parser* parser: the parser that is parsing the reassignment
+
+return: a pointer to the variable assignment node
+*/
+
+ASTNode* parse_variable_assignment(Parser* parser) {
+    //create the node we will return
+    ASTNode* var_assignment_node = init_node(AST_VARIABLE_ASSIGNMENT);
+
+    //get the variable name to reassign to 
+    var_assignment_node->specialization.variable_assignment.variable_name = strdup(parser->current_token->value);
+
+    //advance and expect equals
+    parser_advance(parser);
+    //expect an equals for assignment
+    if(parser->current_token->type == TOKEN_EQUALS) {
+        parser_advance(parser);
+    }
+    else {
+        //problem
+        return NULL;
+    }
+    //parse the expression of the reassignment
+    var_assignment_node->specialization.variable_assignment.assignment = parse_expression(parser);
+
+    return var_assignment_node;
 }
 
 /*

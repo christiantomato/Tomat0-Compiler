@@ -1,52 +1,12 @@
 NODE: AST_PROGRAM
 	NODE: AST_VARIABLE_DECLARATION
 	data_type = int
-	variable_name = unitsSold
+	variable_name = x
 	assignment = 
 		NODE: AST_INTEGER
-		value = 100
-	NODE: AST_VARIABLE_DECLARATION
-	data_type = int
-	variable_name = unitSalePrice
+		value = 1
+	NODE: AST_VARIABLE_ASSIGNMENT
+	name = x
 	assignment = 
 		NODE: AST_INTEGER
-		value = 60
-	NODE: AST_VARIABLE_DECLARATION
-	data_type = int
-	variable_name = unitProductionCost
-	assignment = 
-		NODE: AST_INTEGER
-		value = 40
-	NODE: AST_VARIABLE_DECLARATION
-	data_type = int
-	variable_name = profit
-	assignment = 
-		NODE: AST_BINARY_OPERATION
-		left = 
-			NODE: AST_BINARY_OPERATION
-			left = 
-				NODE: AST_VARIABLE
-				variable_name = unitsSold
-				value = (determined at runtime)
-			right = 
-				NODE: AST_VARIABLE
-				variable_name = unitSalePrice
-				value = (determined at runtime)
-			operand = *
-		right = 
-			NODE: AST_BINARY_OPERATION
-			left = 
-				NODE: AST_VARIABLE
-				variable_name = unitsSold
-				value = (determined at runtime)
-			right = 
-				NODE: AST_VARIABLE
-				variable_name = unitProductionCost
-				value = (determined at runtime)
-			operand = *
-		operand = -
-	NODE: AST_PRINT_STATEMENT
-	output = 
-		NODE: AST_VARIABLE
-		variable_name = profit
-		value = (determined at runtime)
+		value = 2
