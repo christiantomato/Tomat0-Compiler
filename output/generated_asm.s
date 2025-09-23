@@ -6,31 +6,21 @@
 //entry point and stack setup
 _main:
 	sub sp, sp, #32
-	stp x29, x30, [sp, #16]
-	add x29, sp, #16
+	stp x29, x30, [sp, #8]
+	add x29, sp, #8
 
 	//Code Gen Starts Here: 
 
 	//move value to register
-	mov x0, #1
-	//store value to stack
-	str x0, [x29, #-8]
+	mov x0, #5
 	//move value to register
-	mov x0, #4
-	//store value to stack
-	str x0, [x29, #-16]
-	//move value to register
-	mov x0, #2
-	//load value from stack
-	ldr x1, [x29, #-8]
+	mov x1, #10
 	//binary operation
 	add x2, x0, x1
-	//load value from stack
-	ldr x0, [x29, #-16]
-	//binary operation
-	add x1, x2, x0
+	//negate value
+	neg x0, x2
 	//store value to stack
-	str x1, [x29, #-8]
+	str x0, [x29, #-8]
 	//load value from stack
 	ldr x0, [x29, #-8]
 	//print
@@ -42,7 +32,7 @@ _main:
 
 	//exit and clean up
 	mov x0, #0
-	ldp x29, x30, [sp, #16]
+	ldp x29, x30, [sp, #8]
 	add sp, sp, #32
 	ret
 

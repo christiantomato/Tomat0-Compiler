@@ -3,33 +3,16 @@ NODE: AST_PROGRAM
 	data_type = int
 	variable_name = x
 	assignment = 
-		NODE: AST_INTEGER
-		value = 1
-	NODE: AST_VARIABLE_DECLARATION
-	data_type = int
-	variable_name = y
-	assignment = 
-		NODE: AST_INTEGER
-		value = 4
-	NODE: AST_VARIABLE_ASSIGNMENT
-	name = x
-	assignment = 
-		NODE: AST_BINARY_OPERATION
-		left = 
+		NODE: AST_NEGATION
+		negate (-) = 
 			NODE: AST_BINARY_OPERATION
 			left = 
 				NODE: AST_INTEGER
-				value = 2
+				value = 5
 			right = 
-				NODE: AST_VARIABLE
-				variable_name = x
-				value = (determined at runtime)
+				NODE: AST_INTEGER
+				value = 10
 			operand = +
-		right = 
-			NODE: AST_VARIABLE
-			variable_name = y
-			value = (determined at runtime)
-		operand = +
 	NODE: AST_PRINT_STATEMENT
 	output = 
 		NODE: AST_VARIABLE

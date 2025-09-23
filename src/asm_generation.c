@@ -113,7 +113,18 @@ int node_to_asm(FILE* file, ASTNode* node, SymbolTable* table, RegisterManager* 
             return result_reg;
             break;
         }
-        case AST_NEGATION:
+        case AST_NEGATION: {
+            //determine what the result of the negation is first
+            int factor_reg = node_to_asm(file, node->specialization.negation.factor, table, manager);
+            int negate_reg = allocate_register(manager);
+
+            //negate the expression and store to negate register
+            fprintf(file, "\t//negate value\n");
+            fprintf(file, "\tneg x%d, x%d\n", negate_reg, factor_reg);
+            //return the negation
+            return negate_reg;
+            break;
+        }
           
             break;
 

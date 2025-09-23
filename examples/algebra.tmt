@@ -1,0 +1,8 @@
+> example program of the current features
+
+int variable = 5 * 6 / 3 - 1
+int whatsNinePlusTen = 0
+
+whatsNinePlusTen = variable + 9
+
+sout(whatsNinePlusTen + 3)
