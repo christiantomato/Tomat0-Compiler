@@ -185,6 +185,12 @@ Token* tokenize_ID(Lexer* lexer) {
     else if(strcmp(id_value, "sout") == 0) {
         return init_token(TOKEN_KEYWORD_SOUT, id_value);
     }
+    else if(strcmp(id_value, "if") == 0) {
+        return init_token(TOKEN_KEYWORD_IF, id_value);
+    }
+    else if(strcmp(id_value, "while") == 0) {
+        return init_token(TOKEN_KEYWORD_WHILE, id_value);
+    }
     else {
         //return as a regular identifier (for function or variable names)
         return init_token(TOKEN_ID, id_value);
