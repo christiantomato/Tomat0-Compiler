@@ -17,15 +17,16 @@ Syntactic Analysis
   - [ ] parse functions
 
 ARM64 Assembly Generation
-  - [x] compute values of binary operations
   - [x] print integer values to terminal
+  - [x] compute binary and unary operations
+  - [x] store, load, and use integer variables
   - [ ] print string literals to terminal
-  - [x] store, load, and use variables
-  - [ ] loops
+  - [ ] store, load, and use string variables
+  - [ ] implement while loop
+  - [ ] implement if statement
   - [ ] functions
-  - [ ] if statements
 
 ### TODO
-- overlooked reassignment of variables
-- debugging free functions and need to add new parsing functions
+- debugging free functions
+- work with strings
 
