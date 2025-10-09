@@ -160,6 +160,7 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
         case AST_STRING:
             print_indent(file, indent);
             fprintf(file, "value = '%s'\n", root->specialization.string_literal.value);
+            print_indent(file, indent);
             fprintf(file, "string_id = %d\n", root->specialization.string_literal.string_id);
             break;
     }
