@@ -48,6 +48,7 @@ ASTNode* init_node(NodeType type) {
             break;
         case AST_STRING:
             node->specialization.string_literal.value = "\0";
+            node->specialization.string_literal.string_id = 0;
             break;
         default:
             //specialization not needed (ex. AST_PROGRAM)
@@ -159,6 +160,7 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
         case AST_STRING:
             print_indent(file, indent);
             fprintf(file, "value = '%s'\n", root->specialization.string_literal.value);
+            fprintf(file, "string_id = %d\n", root->specialization.string_literal.string_id);
             break;
     }
 }
