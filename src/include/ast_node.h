@@ -74,6 +74,7 @@ typedef struct ast_integer {
 
 typedef struct ast_string {
     char* value;
+    unsigned int string_id;
 } StringLiteral;
 
 //unionize all the different node types
