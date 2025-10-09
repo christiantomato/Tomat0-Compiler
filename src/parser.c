@@ -450,6 +450,8 @@ ASTNode* parse_factor(Parser* parser) {
         ASTNode* string_node = init_node(AST_STRING);
         //assign the string (make sure to duplicate)
         string_node->specialization.string_literal.value = strdup(parser->current_token->value);
+        //assign the string id
+        string_node->specialization.string_literal.string_id = next_string_id();
         //advance past
         parser_advance(parser);
         //return
@@ -458,6 +460,21 @@ ASTNode* parse_factor(Parser* parser) {
 
     //nothing expected, problem
     return NULL;
+}
+
+/*
+Next String ID Function
+
+a helper function to count each string that is created during parsing
+
+return: the next string id 
+*/
+
+//start at 0
+int current_string_id = 0;
+
+int next_string_id() {
+    return current_string_id++;
 }
 
 /*

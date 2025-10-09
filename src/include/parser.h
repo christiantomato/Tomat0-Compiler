@@ -49,6 +49,8 @@ ASTNode* parse_expression(Parser* parser);
 ASTNode* parse_term(Parser* parser);
 ASTNode* parse_factor(Parser* parser);
 
+//helper function to count strings that are parsed
+int next_string_id();
 //free allocated parser memory
 int free_parser(Parser* parser);
 
