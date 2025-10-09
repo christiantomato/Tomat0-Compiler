@@ -12,7 +12,7 @@ flags = -fsanitize=address
 $(exec): $(objects)
 	gcc $(objects) $(flags) -o $(exec)
 
-#how to create the object files
+#how to create the object filesc
 #recreates the object files when change detected
 %.o: %.c include/%.h 
 	gcc -c $(flags) $< -o $@

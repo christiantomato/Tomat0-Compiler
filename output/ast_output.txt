@@ -1,20 +1,30 @@
 NODE: AST_PROGRAM
 	NODE: AST_VARIABLE_DECLARATION
 	data_type = int
-	variable_name = x
+	variable_name = nohHeight
 	assignment = 
-		NODE: AST_NEGATION
-		negate (-) = 
-			NODE: AST_BINARY_OPERATION
-			left = 
-				NODE: AST_INTEGER
-				value = 5
-			right = 
-				NODE: AST_INTEGER
-				value = 10
-			operand = +
+		NODE: AST_INTEGER
+		value = 0
+	NODE: AST_VARIABLE_DECLARATION
+	data_type = int
+	variable_name = chrisHeight
+	assignment = 
+		NODE: AST_INTEGER
+		value = 181
+	NODE: AST_VARIABLE_ASSIGNMENT
+	name = nohHeight
+	assignment = 
+		NODE: AST_BINARY_OPERATION
+		left = 
+			NODE: AST_VARIABLE
+			variable_name = chrisHeight
+			value = (determined at runtime)
+		right = 
+			NODE: AST_INTEGER
+			value = 10
+		operand = -
 	NODE: AST_PRINT_STATEMENT
 	output = 
 		NODE: AST_VARIABLE
-		variable_name = x
+		variable_name = nohHeight
 		value = (determined at runtime)

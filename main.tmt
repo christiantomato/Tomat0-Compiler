@@ -1,3 +1,11 @@
-int x = -(5 + 10)
+> lets make a simple program to compute nohs height
 
-sout(x)
+> declare variables
+int nohHeight = 0
+int chrisHeight = 181
+
+> manipulate his height
+nohHeight = chrisHeight - 10
+
+> output his resulting height
+sout(nohHeight)
