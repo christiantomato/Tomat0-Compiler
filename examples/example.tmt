@@ -1,0 +1,10 @@
+>test code for the AST
+
+>create an integer variable - notice no delimeters needed in tomat0
+int x = 0
+
+>how about a string
+string y = "hello world"
+
+>a print statement of a complicated expression
+sout(3 * (4-2) + (-1))
