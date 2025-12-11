@@ -16,6 +16,7 @@ char c: the current character the lexer is on in the file contents
 */
 
 #include "token.h"
+#include "array_list.h"
 
 #ifndef LEXER_H
 #define LEXER_H
@@ -32,6 +33,8 @@ Lexer* init_lexer(char* contents);
 void lexer_advance(Lexer* lexer);
 //skips unnecessary whitespace
 void lexer_skip_whitespace(Lexer* lexer);
+//tokenize everything and put it into a list
+List* tokenize_all(Lexer* lexer);
 //to get the next token
 Token* tokenize_next(Lexer* lexer);
 //tokenizes a string

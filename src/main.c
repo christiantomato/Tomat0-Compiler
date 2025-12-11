@@ -7,21 +7,12 @@ int main (int argc, char *argv[]) {
     //read tomat0 code from file
     char* file_contents = read_file("main.tmt");
 
-    //initalize the lexer with contents and create a list to store the tokens when tokenizing
+    //initalize the lexer with contents, tokenize and store all to a list
     Lexer* my_lexer = init_lexer(file_contents);
-    List* tokens_list = init_list(30);
-
-    //tokenize the contents
-    Token* token;
-    while((token = tokenize_next(my_lexer)) != NULL) {
-        printf("Token type: %s, Token value: %s \n", token_type_as_str(token), token->value);
-        //add to the list of tokens
-        list_add(tokens_list, token);
-    }
+    List* tokens_list = tokenize_all(my_lexer);
 
     //free the lexer, it has done its job
     free_lexer(my_lexer);
-    printf("\n");
 
     //add the end of file token to the list
     Token* end_of_file_token = init_token(TOKEN_EOF, NULL);
