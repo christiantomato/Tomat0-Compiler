@@ -82,6 +82,22 @@ char* node_type_str(ASTNode* node) {
 }
 
 /*
+Print Indentation Function
+
+helper method for the print ast function
+prints a tab space based on the indentation level (more tabs as we recurse deeper)
+
+FILE* file: the file we are writing the tab spaces to
+int indent: the amount of indents
+*/
+
+static void print_indent(FILE* file, int indent) {
+    for(int i = 0; i < indent; i++) {
+        fprintf(file, "\t");
+    }
+}
+
+/*
 Print Abstract Syntax Tree Function
 
 recursively writes the tree representation from the given root to a file in a preorder fashion
@@ -163,22 +179,6 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
             print_indent(file, indent);
             fprintf(file, "string_id = %d\n", root->specialization.string_literal.string_id);
             break;
-    }
-}
-
-/*
-Print Indentation Function
-
-helper method for the print ast function
-prints a tab space based on the indentation level (more tabs as we recurse deeper)
-
-FILE* file: the file we are writing the tabs to
-int indent: the amount of indents
-*/
-
-void print_indent(FILE* file, int indent) {
-    for(int i = 0; i < indent; i++) {
-        fprintf(file, "\t");
     }
 }
 

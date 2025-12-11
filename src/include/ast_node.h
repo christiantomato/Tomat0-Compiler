@@ -102,8 +102,6 @@ ASTNode* init_node(NodeType type);
 char* node_type_str(ASTNode* node);
 //write to file the tree representation from any node
 void print_ast(FILE* file, ASTNode* root, int indent);
-//helper method for indentation
-void print_indent(FILE* file, int indent);
 //free memory of a node
 int free_node(ASTNode* node);
 //wrapper for free node
