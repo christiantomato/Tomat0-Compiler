@@ -10,7 +10,7 @@ initializes the symbol table data structure
 return: pointer to the table
 */
 
-SymbolTable* init_table() {
+SymbolTable* init_symbol_table() {
     //allocate memory for the symbol table 
     SymbolTable* table = malloc(sizeof(SymbolTable));
     //set up symbols array with some reasonable initial capacity

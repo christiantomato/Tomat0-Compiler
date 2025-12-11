@@ -1,11 +1,2 @@
-> lets make a simple program to compute nohs height
-
-> declare variables
-int nohHeight = 0
-int chrisHeight = 181
-
-> manipulate his height
-nohHeight = chrisHeight - 10
-
-> output his resulting height
-sout(nohHeight)
+>comment
+sout(6+7) 
