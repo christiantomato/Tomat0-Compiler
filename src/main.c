@@ -4,18 +4,15 @@
 
 int main (int argc, char *argv[]) {
 
-    //get file contents with file reader
+    //read tomat0 code from file
     char* file_contents = read_file("main.tmt");
-    
-    //display what is in main.tmt
-    printf("%s\n\n", file_contents);
 
-    //create the lexer and ready the tokens list
+    //initalize the lexer with contents and create a list to store the tokens when tokenizing
     Lexer* my_lexer = init_lexer(file_contents);
     List* tokens_list = init_list(30);
 
     //tokenize the contents
-    Token* token = (void*)0;
+    Token* token;
     while((token = tokenize_next(my_lexer)) != NULL) {
         printf("Token type: %s, Token value: %s \n", token_type_as_str(token), token->value);
         //add to the list of tokens

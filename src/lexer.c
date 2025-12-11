@@ -109,6 +109,7 @@ Token* tokenize_next(Lexer* lexer) {
             default: return NULL;
         }
     }
+    //return null if nothing is left to tokenize
     return NULL;
 }
 
