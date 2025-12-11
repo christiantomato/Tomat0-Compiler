@@ -2,7 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main (int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
+
+    /*
+    LEXICAL ANALYSIS
+    */
 
     //read tomat0 code from file
     char* file_contents = read_file("main.tmt");
@@ -11,8 +15,17 @@ int main (int argc, char *argv[]) {
     Lexer* my_lexer = init_lexer(file_contents);
     List* tokens_list = tokenize_all(my_lexer);
 
+    //write all the tokens to a file
+    FILE* tokens_file = fopen("output/tokens_output.csv", "w");
+    print_list(tokens_file, tokens_list, token_to_str);
+    fclose(tokens_file);
+
     //free the lexer, it has done its job
     free_lexer(my_lexer);
+
+    /*
+    SYNTACTIC ANALYSIS
+    */
 
     //intialize the parser and symbol table
     Parser* my_parser = init_parser(tokens_list);
@@ -34,7 +47,7 @@ int main (int argc, char *argv[]) {
     //close the file
     fclose(assembly_file);
 
-    //got to work out how we are going to free everything... (currently in shambles)
+    //TODO: free all used memory like tokens, nodes, parser? 
     
     //make an executable
     system("gcc output/generated_asm.s -o tomat0executable");
@@ -43,6 +56,5 @@ int main (int argc, char *argv[]) {
     //execute
     system("./output/tomat0executable");
     
-    //success
     return 0;
 }

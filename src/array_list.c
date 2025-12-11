@@ -1,6 +1,5 @@
 #include "include/array_list.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 /*
 Initialize List Function
@@ -159,6 +158,8 @@ frees the memory of the list container, with the option to completely free the d
 
 List* list: the list being freed
 void (*free_func)(void*): the function to free the complex data type
+
+return: 0 for success, 1 otherwise
 */
 
 int free_complex_list(List* list, void (*free_func)(void*)) {
@@ -179,4 +180,21 @@ int free_complex_list(List* list, void (*free_func)(void*)) {
     //free the list structure itself
     free(list);
     return 0;
+}
+
+/*
+Print List Function
+
+uses a function pointer to print out the list of any generic type to a file
+
+FILE* file: the file we are printing to 
+List* list: the list which we are printing
+char* (*to_string_func)(void*): the function pointer which performs the to string on the data type
+
+*/
+
+void print_list(FILE* file, List* list, char* (*to_string_func)(void*)) {
+    for(int i = 0; i < list->num_items; i++) {
+        fprintf(file, "%s\n", to_string_func(list->array[i]));
+    }
 }
