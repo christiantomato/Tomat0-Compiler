@@ -10,9 +10,10 @@ void** array: the pointer to the array, which is an array that holds pointers to
 */
 
 #include <stdbool.h>
+#include <stdio.h>
 
-#ifndef ARR_LIST_H
-#define ARR_LIST_H
+#ifndef ARRAY_LIST_H
+#define ARRAY_LIST_H
 
 typedef struct generic_array_list_struct {
     unsigned int num_items;
@@ -36,5 +37,7 @@ bool is_max_capacity(List* list);
 int free_primitive_list(List* list, bool free_deep);
 //free all memory in list storing complex data types
 int free_complex_list(List* list, void (*free_func)(void*));
+//print a list of any type, to a file
+void print_list(FILE* file, List* list, char* (*to_string_func)(void*));
 
 #endif
