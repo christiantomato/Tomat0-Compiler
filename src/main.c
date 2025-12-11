@@ -1,4 +1,4 @@
-#include "include/all.h"
+#include "include/main.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -32,7 +32,7 @@ int main (int argc, char *argv[]) {
 
     //bring out the parser and symbol table
     Parser* my_parser = init_parser(tokens_list);
-    SymbolTable* my_table = init_table();
+    SymbolTable* my_table = init_symbol_table();
 
     //parse everything
     parser_parse(my_parser, my_table);
