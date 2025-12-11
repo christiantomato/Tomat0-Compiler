@@ -14,11 +14,7 @@ int main (int argc, char *argv[]) {
     //free the lexer, it has done its job
     free_lexer(my_lexer);
 
-    //add the end of file token to the list
-    Token* end_of_file_token = init_token(TOKEN_EOF, NULL);
-    list_add(tokens_list, end_of_file_token);
-
-    //bring out the parser and symbol table
+    //intialize the parser and symbol table
     Parser* my_parser = init_parser(tokens_list);
     SymbolTable* my_table = init_symbol_table();
 
