@@ -190,7 +190,6 @@ uses a function pointer to print out the list of any generic type to a file
 FILE* file: the file we are printing to 
 List* list: the list which we are printing
 char* (*to_string_func)(void*): the function pointer which performs the to string on the data type
-
 */
 
 void print_list(FILE* file, List* list, char* (*to_string_func)(void*)) {

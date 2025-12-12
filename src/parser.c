@@ -92,9 +92,11 @@ the main parsing function which will build the abstract syntax tree to the root 
 
 Parser* parser: the parser which is building the tree
 SymbolTable* table: the symbol table where we are adding symbols
+
+return: pointer to the head of the the tree
 */
 
-void parser_parse(Parser* parser, SymbolTable* table) {
+ASTNode* parser_parse(Parser* parser, SymbolTable* table) {
     //parse until we reach the end of file token
     while(parser->current_token->type != TOKEN_EOF) {
         //first skip everything that does not need to be parsed
@@ -113,6 +115,8 @@ void parser_parse(Parser* parser, SymbolTable* table) {
         //then add each parsed statement to the children of the program node 
         list_add(parser->root->children, line_node);
     }
+    //return the root node 
+    return parser->root;
 }
 
 /*

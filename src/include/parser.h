@@ -35,7 +35,7 @@ Token* parser_peek(Parser* parser, int ahead);
 //skips unecessary grammar
 void parser_skip(Parser* parser);
 //main parsing function which also builds the symbol table
-void parser_parse(Parser* parser, SymbolTable* table);
+ASTNode* parser_parse(Parser* parser, SymbolTable* table);
 
 /*
 parsing functions (top down parsing)

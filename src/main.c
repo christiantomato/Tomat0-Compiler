@@ -29,21 +29,19 @@ int main(int argc, char *argv[]) {
 
     //intialize the parser and symbol table
     Parser* my_parser = init_parser(tokens_list);
-    SymbolTable* my_table = init_symbol_table();
+    SymbolTable* my_symbol_table = init_symbol_table();
 
-    //parse everything
-    parser_parse(my_parser, my_table);
-     //get a reference to the root node
-    ASTNode* ast_tree_root = my_parser->root;
+    //parse everything and get root
+    ASTNode* ast_root = parser_parse(my_parser, my_symbol_table);
 
     //write ast representation from root now
     FILE* ast_file = fopen("output/ast_output.txt", "w");
-    print_ast(ast_file, ast_tree_root, 0);
+    print_ast(ast_file, ast_root, 0);
     fclose(ast_file);
 
     //generate the assembly code
     FILE* assembly_file = fopen("output/generated_asm.s", "w");
-    generate_assembly(assembly_file, ast_tree_root, my_table);
+    generate_assembly(assembly_file, ast_root, my_symbol_table);
     //close the file
     fclose(assembly_file);
 
