@@ -38,7 +38,7 @@ void parser_skip(Parser* parser);
 ASTNode* parser_parse(Parser* parser, SymbolTable* table);
 
 /*
-parsing functions (top down parsing)
+parsing functions (LL top down parsing)
 */
 
 ASTNode* parse_line(Parser* parser);

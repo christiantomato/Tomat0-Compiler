@@ -77,7 +77,7 @@ typedef struct ast_string {
     unsigned int string_id;
 } StringLiteral;
 
-//unionize all the different node types
+//create a union so we can specialize nodes
 typedef union ast_node_specializations {
     VariableDeclaration variable_declaration;
     VariableAssignment variable_assignment;
