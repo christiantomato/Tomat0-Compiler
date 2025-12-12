@@ -79,7 +79,7 @@ List* tokenize_all(Lexer* lexer) {
     }
 
     //add the end of file token to the list once done tokenzing
-    list_add(tokens_list, init_token(TOKEN_EOF, "eof"));
+    list_add(tokens_list, init_token(TOKEN_EOF, strdup("eof")));
 
     return tokens_list;
 }

@@ -185,7 +185,8 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
 /*
 Free Node Function
 
-frees dynamically allocated memory for specialized fields, children nodes, and the node itself recursively
+frees dynamically allocated memory for node and children nodes recursively
+any token values are freed by the parser, by freeing the entire tokens list
 frees entire tree if program node is inputted
 
 ASTNode* node: the root node
@@ -201,12 +202,9 @@ int free_node(ASTNode* node) {
     //free any dynamically allocated memory needed for specialized nodes
     switch(node->type) {
         case AST_VARIABLE_DECLARATION:
-            //(dont free, it is a const char* which is read only): free(node->specialization.variable_declaration.data_type);
-            free(node->specialization.variable_declaration.variable_name);
             free_node(node->specialization.variable_declaration.assignment);
             break;
         case AST_VARIABLE_ASSIGNMENT:
-            free(node->specialization.variable_assignment.variable_name);
             free_node(node->specialization.variable_assignment.assignment);
             break;
         case AST_PRINT_STATEMENT:
@@ -215,24 +213,20 @@ int free_node(ASTNode* node) {
         case AST_BINARY_OPERATION:
             free_node(node->specialization.binary_operation.left);
             free_node(node->specialization.binary_operation.right);
-            free(node->specialization.binary_operation.operand);
             break;
         case AST_NEGATION:
             free_node(node->specialization.negation.factor);
             break;
         case AST_VARIABLE:
-            free(node->specialization.variable.variable_name);
             free_node(node->specialization.variable.value);
             break;
         case AST_INTEGER: 
-            //not needed as not dynamically allocated memory lol
-            //free(node->specialization.integer_literal.value);
+            //nothing to free
             break;
         case AST_STRING:
-            free(node->specialization.string_literal.value);
+            //nothing to free 
             break;
         default:
-            //no additional specialized data to be freed
             break;
     }
     //free all children nodes recursively

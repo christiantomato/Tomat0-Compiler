@@ -45,8 +45,9 @@ int main(int argc, char *argv[]) {
     //close the file
     fclose(assembly_file);
 
-    //TODO: free all used memory like tokens, nodes, parser? 
-    
+    //free rest of memory which is being used by parser
+    free_parser(my_parser);
+
     //make an executable
     system("gcc output/generated_asm.s -o tomat0executable");
     //move compiled tomat0 file to output directory
