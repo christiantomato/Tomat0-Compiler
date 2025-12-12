@@ -51,6 +51,8 @@ typedef struct token_struct {
 Token* init_token(TokenType type, char* value);
 //returning the enum name for the type of token as a string
 char* token_type_as_str(Token* token);
+//performs a to string of token type and value
+char* token_to_str(void* token);
 //for freeing the memory of a token
 int free_token(Token* token);
 //wrapper function so we can free tokens stored in a built-in array list

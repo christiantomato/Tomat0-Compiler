@@ -1,20 +1,53 @@
 NODE: AST_PROGRAM
-	NODE: AST_VARIABLE_DECLARATION
-	data_type = int
-	variable_name = x
-	assignment = 
-		NODE: AST_NEGATION
-		negate (-) = 
-			NODE: AST_BINARY_OPERATION
-			left = 
-				NODE: AST_INTEGER
-				value = 5
-			right = 
-				NODE: AST_INTEGER
-				value = 10
-			operand = +
 	NODE: AST_PRINT_STATEMENT
 	output = 
-		NODE: AST_VARIABLE
-		variable_name = x
-		value = (determined at runtime)
+		NODE: AST_BINARY_OPERATION
+		left = 
+			NODE: AST_BINARY_OPERATION
+			left = 
+				NODE: AST_BINARY_OPERATION
+				left = 
+					NODE: AST_BINARY_OPERATION
+					left = 
+						NODE: AST_INTEGER
+						value = 9
+					right = 
+						NODE: AST_INTEGER
+						value = 9
+					operand = *
+				right = 
+					NODE: AST_BINARY_OPERATION
+					left = 
+						NODE: AST_INTEGER
+						value = 24
+					right = 
+						NODE: AST_INTEGER
+						value = 8
+					operand = /
+				operand = -
+			right = 
+				NODE: AST_BINARY_OPERATION
+				left = 
+					NODE: AST_INTEGER
+					value = 1
+				right = 
+					NODE: AST_BINARY_OPERATION
+					left = 
+						NODE: AST_INTEGER
+						value = 5
+					right = 
+						NODE: AST_BINARY_OPERATION
+						left = 
+							NODE: AST_INTEGER
+							value = 3
+						right = 
+							NODE: AST_INTEGER
+							value = 3
+						operand = *
+					operand = -
+				operand = *
+			operand = +
+		right = 
+			NODE: AST_INTEGER
+			value = 1
+		operand = +

@@ -1,57 +1,53 @@
-#include "include/all.h"
+#include "include/main.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-int main (int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
 
-    //get file contents with file reader
-    char* file_contents = read_file("main.tmt");
-    
-    //display what is in main.tmt
-    printf("%s\n\n", file_contents);
+    /*
+    LEXICAL ANALYSIS
+    */
 
-    //create the lexer and ready the tokens list
+    //read tomat0 code from file
+    char* file_contents = read_file("examples/algebra.tmt");
+
+    //initalize the lexer with contents, tokenize and store all to a list
     Lexer* my_lexer = init_lexer(file_contents);
-    List* tokens_list = init_list(30);
+    List* tokens_list = tokenize_all(my_lexer);
 
-    //tokenize the contents
-    Token* token = (void*)0;
-    while((token = tokenize_next(my_lexer)) != NULL) {
-        printf("Token type: %s, Token value: %s \n", token_type_as_str(token), token->value);
-        //add to the list of tokens
-        list_add(tokens_list, token);
-    }
+    //write all the tokens to a file
+    FILE* tokens_file = fopen("output/tokens_output.csv", "w");
+    print_list(tokens_file, tokens_list, token_to_str);
+    fclose(tokens_file);
 
     //free the lexer, it has done its job
     free_lexer(my_lexer);
-    printf("\n");
 
-    //add the end of file token to the list
-    Token* end_of_file_token = init_token(TOKEN_EOF, NULL);
-    list_add(tokens_list, end_of_file_token);
+    /*
+    SYNTACTIC ANALYSIS
+    */
 
-    //bring out the parser and symbol table
+    //intialize the parser and symbol table
     Parser* my_parser = init_parser(tokens_list);
-    SymbolTable* my_table = init_table();
+    SymbolTable* my_symbol_table = init_symbol_table();
 
-    //parse everything
-    parser_parse(my_parser, my_table);
-     //get a reference to the root node
-    ASTNode* ast_tree_root = my_parser->root;
+    //parse everything and get root
+    ASTNode* ast_root = parser_parse(my_parser, my_symbol_table);
 
     //write ast representation from root now
     FILE* ast_file = fopen("output/ast_output.txt", "w");
-    print_ast(ast_file, ast_tree_root, 0);
+    print_ast(ast_file, ast_root, 0);
     fclose(ast_file);
 
     //generate the assembly code
     FILE* assembly_file = fopen("output/generated_asm.s", "w");
-    generate_assembly(assembly_file, ast_tree_root, my_table);
+    generate_assembly(assembly_file, ast_root, my_symbol_table);
     //close the file
     fclose(assembly_file);
 
-    //got to work out how we are going to free everything... (currently in shambles)
-    
+    //free rest of memory which is being used by parser
+    free_parser(my_parser);
+
     //make an executable
     system("gcc output/generated_asm.s -o tomat0executable");
     //move compiled tomat0 file to output directory
@@ -59,6 +55,5 @@ int main (int argc, char *argv[]) {
     //execute
     system("./output/tomat0executable");
     
-    //success
     return 0;
 }

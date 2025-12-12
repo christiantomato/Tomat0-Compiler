@@ -1,3 +1,2 @@
-int x = -(5 + 10)
-
-sout(x)
+> this is a comment 
+sout(1+1-1-2+1)

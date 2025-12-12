@@ -1,18 +1,18 @@
-> computing formulas using tomat0 coding language
+>computing formulas using tomat0 coding language
 
-> program to compute the profit of a company (made 09/19/2025)
+>program to compute the profit of a company (made 09/19/2025)
 
-> input data 
+>input data 
 int unitsSold = 100
 int unitSalePrice = 60
 int unitProductionCost = 40
 
-> Profit = Revenue - Production Cost
-> Revenue = Units * Sale Price 
-> Production Cost = Units * Unit Production Cost
+>Profit = Revenue - Production Cost
+>Revenue = Units * Sale Price 
+>Production Cost = Units * Unit Production Cost
 
-> compute profit made
+>compute profit made
 int profit = (unitsSold * unitSalePrice) - (unitsSold * unitProductionCost)
 
-> output to terminal
+>output to terminal
 sout(profit)

@@ -35,10 +35,10 @@ Token* parser_peek(Parser* parser, int ahead);
 //skips unecessary grammar
 void parser_skip(Parser* parser);
 //main parsing function which also builds the symbol table
-void parser_parse(Parser* parser, SymbolTable* table);
+ASTNode* parser_parse(Parser* parser, SymbolTable* table);
 
 /*
-parsing functions (top down parsing)
+parsing functions (LL top down parsing)
 */
 
 ASTNode* parse_line(Parser* parser);
@@ -49,6 +49,8 @@ ASTNode* parse_expression(Parser* parser);
 ASTNode* parse_term(Parser* parser);
 ASTNode* parse_factor(Parser* parser);
 
+//helper function to count strings that are parsed
+int next_string_id();
 //free allocated parser memory
 int free_parser(Parser* parser);
 

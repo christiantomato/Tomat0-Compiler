@@ -2,8 +2,8 @@
 Header Master File
 */
 
-#ifndef ALL_H
-#define ALL_H
+#ifndef MAIN_H
+#define MAIN_H
 
 #include "token.h"
 #include "lexer.h"

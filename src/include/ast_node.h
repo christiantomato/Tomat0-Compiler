@@ -74,9 +74,10 @@ typedef struct ast_integer {
 
 typedef struct ast_string {
     char* value;
+    unsigned int string_id;
 } StringLiteral;
 
-//unionize all the different node types
+//create a union so we can specialize nodes
 typedef union ast_node_specializations {
     VariableDeclaration variable_declaration;
     VariableAssignment variable_assignment;
@@ -101,8 +102,6 @@ ASTNode* init_node(NodeType type);
 char* node_type_str(ASTNode* node);
 //write to file the tree representation from any node
 void print_ast(FILE* file, ASTNode* root, int indent);
-//helper method for indentation
-void print_indent(FILE* file, int indent);
 //free memory of a node
 int free_node(ASTNode* node);
 //wrapper for free node

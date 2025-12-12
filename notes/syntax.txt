@@ -24,8 +24,8 @@ sout(myVariable)
 
 Example:
 
-> this is a comment
-> print out the value 
+>this is a comment
+>print out the value 
 sout(value)
 
 

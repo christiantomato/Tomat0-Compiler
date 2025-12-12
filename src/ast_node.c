@@ -48,6 +48,7 @@ ASTNode* init_node(NodeType type) {
             break;
         case AST_STRING:
             node->specialization.string_literal.value = "\0";
+            node->specialization.string_literal.string_id = 0;
             break;
         default:
             //specialization not needed (ex. AST_PROGRAM)
@@ -77,6 +78,22 @@ char* node_type_str(ASTNode* node) {
         case AST_VARIABLE: return "AST_VARIABLE"; break;
         case AST_INTEGER: return "AST_INTEGER"; break;
         case AST_STRING: return "AST_STRING"; break;
+    }
+}
+
+/*
+Print Indentation Function
+
+helper method for the print ast function
+prints a tab space based on the indentation level (more tabs as we recurse deeper)
+
+FILE* file: the file we are writing the tab spaces to
+int indent: the amount of indents
+*/
+
+static void print_indent(FILE* file, int indent) {
+    for(int i = 0; i < indent; i++) {
+        fprintf(file, "\t");
     }
 }
 
@@ -159,30 +176,17 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
         case AST_STRING:
             print_indent(file, indent);
             fprintf(file, "value = '%s'\n", root->specialization.string_literal.value);
+            print_indent(file, indent);
+            fprintf(file, "string_id = %d\n", root->specialization.string_literal.string_id);
             break;
-    }
-}
-
-/*
-Print Indentation Function
-
-helper method for the print ast function
-prints a tab space based on the indentation level (more tabs as we recurse deeper)
-
-FILE* file: the file we are writing the tabs to
-int indent: the amount of indents
-*/
-
-void print_indent(FILE* file, int indent) {
-    for(int i = 0; i < indent; i++) {
-        fprintf(file, "\t");
     }
 }
 
 /*
 Free Node Function
 
-frees dynamically allocated memory for specialized fields, children nodes, and the node itself recursively
+frees dynamically allocated memory for node and children nodes recursively
+any token values are freed by the parser, by freeing the entire tokens list
 frees entire tree if program node is inputted
 
 ASTNode* node: the root node
@@ -198,12 +202,9 @@ int free_node(ASTNode* node) {
     //free any dynamically allocated memory needed for specialized nodes
     switch(node->type) {
         case AST_VARIABLE_DECLARATION:
-            //(dont free, it is a const char* which is read only): free(node->specialization.variable_declaration.data_type);
-            free(node->specialization.variable_declaration.variable_name);
             free_node(node->specialization.variable_declaration.assignment);
             break;
         case AST_VARIABLE_ASSIGNMENT:
-            free(node->specialization.variable_assignment.variable_name);
             free_node(node->specialization.variable_assignment.assignment);
             break;
         case AST_PRINT_STATEMENT:
@@ -212,24 +213,20 @@ int free_node(ASTNode* node) {
         case AST_BINARY_OPERATION:
             free_node(node->specialization.binary_operation.left);
             free_node(node->specialization.binary_operation.right);
-            free(node->specialization.binary_operation.operand);
             break;
         case AST_NEGATION:
             free_node(node->specialization.negation.factor);
             break;
         case AST_VARIABLE:
-            free(node->specialization.variable.variable_name);
             free_node(node->specialization.variable.value);
             break;
         case AST_INTEGER: 
-            //not needed as not dynamically allocated memory lol
-            //free(node->specialization.integer_literal.value);
+            //nothing to free
             break;
         case AST_STRING:
-            free(node->specialization.string_literal.value);
+            //nothing to free 
             break;
         default:
-            //no additional specialized data to be freed
             break;
     }
     //free all children nodes recursively

@@ -58,6 +58,33 @@ void lexer_skip_whitespace(Lexer* lexer) {
 }
 
 /*
+Tokenize All Function
+
+loops through with the tokenize next function to create a list of tokens
+
+Lexer* lexer: the lexer that is tokenizing
+
+return: pointer to a list containing all the tokens
+*/
+
+List* tokenize_all(Lexer* lexer) {
+    //create the list we are going to return, roughly estimate size needed
+    List* tokens_list = init_list(50);
+
+    //tokenize the contents
+    Token* token;
+    while((token = tokenize_next(lexer)) != NULL) {
+        //add to the list of tokens
+        list_add(tokens_list, token);
+    }
+
+    //add the end of file token to the list once done tokenzing
+    list_add(tokens_list, init_token(TOKEN_EOF, strdup("eof")));
+
+    return tokens_list;
+}
+
+/*
 Tokenize Next Function
 
 the main function that is responsible for deciding which type of token
@@ -109,6 +136,7 @@ Token* tokenize_next(Lexer* lexer) {
             default: return NULL;
         }
     }
+    //return null if nothing is left to tokenize
     return NULL;
 }
 

@@ -92,9 +92,11 @@ the main parsing function which will build the abstract syntax tree to the root 
 
 Parser* parser: the parser which is building the tree
 SymbolTable* table: the symbol table where we are adding symbols
+
+return: pointer to the head of the the tree
 */
 
-void parser_parse(Parser* parser, SymbolTable* table) {
+ASTNode* parser_parse(Parser* parser, SymbolTable* table) {
     //parse until we reach the end of file token
     while(parser->current_token->type != TOKEN_EOF) {
         //first skip everything that does not need to be parsed
@@ -113,6 +115,8 @@ void parser_parse(Parser* parser, SymbolTable* table) {
         //then add each parsed statement to the children of the program node 
         list_add(parser->root->children, line_node);
     }
+    //return the root node 
+    return parser->root;
 }
 
 /*
@@ -450,6 +454,8 @@ ASTNode* parse_factor(Parser* parser) {
         ASTNode* string_node = init_node(AST_STRING);
         //assign the string (make sure to duplicate)
         string_node->specialization.string_literal.value = strdup(parser->current_token->value);
+        //assign the string id
+        string_node->specialization.string_literal.string_id = next_string_id();
         //advance past
         parser_advance(parser);
         //return
@@ -458,6 +464,21 @@ ASTNode* parse_factor(Parser* parser) {
 
     //nothing expected, problem
     return NULL;
+}
+
+/*
+Next String ID Function
+
+a helper function to count each string that is created during parsing
+
+return: the next string id 
+*/
+
+//start at 0
+int current_string_id = 0;
+
+int next_string_id() {
+    return current_string_id++;
 }
 
 /*
@@ -477,9 +498,13 @@ int free_parser(Parser* parser) {
     if(parser == NULL) {
         return 1;
     }
-    //free the desired memory that we don't need anymore
-    //free all tokens
+    
+    //free everything the parser uses
+
+    //free tokens list
     free_complex_list(parser->tokens, free_token_wrapper);
+    //free the nodes
+    free_node(parser->root);
     //free parser itself
     free(parser);
     return 0;

@@ -60,6 +60,8 @@ int node_to_asm(FILE* file, ASTNode* node, SymbolTable* table, RegisterManager* 
             // **just work with integers right now, print strings later**
             fprintf(file, "\t//print\n");
 
+            //check the data type which we are printing
+
             //make sure the result reg isn't 0 or 1 because we need to use them for arguments
             if(result_reg == 0 || result_reg == 1) {
                 //create a safe register and update the old register to be free
@@ -150,8 +152,15 @@ int node_to_asm(FILE* file, ASTNode* node, SymbolTable* table, RegisterManager* 
             return reg;
             break;
         } 
-        case AST_STRING:
-            break;
+        case AST_STRING: {
+            //allocate a register for the string address
+            int reg = allocate_register(manager);
+            fprintf(file, "\t//load string address\n");
+            //use the unique string_id to create the label
+            fprintf(file, "\tadr x%d, string_%d\n", reg, node->specialization.string_literal.string_id);
+            //return the reg with address of string
+            return reg;
+        }
     }
 
 

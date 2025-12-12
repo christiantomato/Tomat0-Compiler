@@ -1,5 +1,6 @@
 #include "include/token.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 /*
 Initialize Token Function
@@ -59,6 +60,31 @@ char* token_type_as_str(Token* token) {
         case TOKEN_EOF: return "TOKEN_EOF"; break;
         default: return "TOKEN_UNKNOWN"; break;
     }
+}
+
+/*
+Token toString Function
+
+takes a token and formats it with type and value
+uses a void pointer so we can pass the function to print_list
+
+Token* token: the token to string
+
+return: string representation of the token
+*/
+
+char* token_to_str(void* token) {
+    Token* the_token = (Token*) token;
+    //the string to return 
+    char* token_str;
+
+    //figure out length needed and allocate space for it
+    int length = snprintf(NULL, 0, "TOKEN TYPE: %s, TOKEN VALUE: %s", token_type_as_str(the_token), the_token->value);
+    token_str = malloc(length + 1);
+
+    //actually write it this time
+    snprintf(token_str, length + 1, "TOKEN TYPE: %s, TOKEN VALUE: %s", token_type_as_str(the_token), the_token->value);
+    return token_str;
 }
 
 /*

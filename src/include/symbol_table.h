@@ -27,7 +27,7 @@ typedef struct symbol_table_struct {
 } SymbolTable;
 
 //create the symbol table
-SymbolTable* init_table();
+SymbolTable* init_symbol_table();
 //add a symbol to table
 void add_to_table(SymbolTable* table, char* name, const char* type);
 //find a symbol already in table
