@@ -28,6 +28,8 @@ typedef enum token_type {
     TOKEN_EQUALS,
     TOKEN_SEMI,
     TOKEN_COMMA,
+    TOKEN_PERIOD,
+    TOKEN_APOSTROPHE,
     TOKEN_UNDERSCORE,
     TOKEN_LPAREN,
     TOKEN_RPAREN, 

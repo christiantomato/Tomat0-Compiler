@@ -122,6 +122,8 @@ Token* tokenize_next(Lexer* lexer) {
             case '=': return continue_with_token(lexer, init_token(TOKEN_EQUALS, lexer_char_as_str(lexer))); break;
             case ';': return continue_with_token(lexer, init_token(TOKEN_SEMI, lexer_char_as_str(lexer))); break;
             case ',': return continue_with_token(lexer, init_token(TOKEN_COMMA, lexer_char_as_str(lexer))); break;
+            case '.': return continue_with_token(lexer, init_token(TOKEN_PERIOD, lexer_char_as_str(lexer))); break;
+            case '\'': return continue_with_token(lexer, init_token(TOKEN_APOSTROPHE, lexer_char_as_str(lexer))); break;
             case '_': return continue_with_token(lexer, init_token(TOKEN_UNDERSCORE, lexer_char_as_str(lexer))); break;
             case '(': return continue_with_token(lexer, init_token(TOKEN_LPAREN, lexer_char_as_str(lexer))); break;
             case ')': return continue_with_token(lexer, init_token(TOKEN_RPAREN, lexer_char_as_str(lexer))); break;

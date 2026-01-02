@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
     */
 
     //read tomat0 code from file
-    char* file_contents = read_file("examples/algebra.tmt");
+    char* file_contents = read_file("main.tmt");
 
     //initalize the lexer with contents, tokenize and store all to a list
     Lexer* my_lexer = init_lexer(file_contents);

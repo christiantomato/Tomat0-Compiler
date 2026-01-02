@@ -46,6 +46,8 @@ char* token_type_as_str(Token* token) {
         case TOKEN_EQUALS: return "TOKEN_EQUALS"; break;
         case TOKEN_SEMI: return "TOKEN_SEMI"; break;
         case TOKEN_COMMA: return "TOKEN_COMMA"; break;
+        case TOKEN_PERIOD: return "TOKEN_PERIOD"; break;
+        case TOKEN_APOSTROPHE: return "TOKEN_APOSTROPHE"; break;
         case TOKEN_UNDERSCORE: return "TOKEN_UNDERSCORE"; break;
         case TOKEN_LPAREN: return "TOKEN_LPAREN"; break;
         case TOKEN_RPAREN: return "TOKEN_RPAREN"; break;
