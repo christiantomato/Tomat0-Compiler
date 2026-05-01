@@ -94,46 +94,25 @@ bool is_max_capacity(List* list) {
 }
 
 /*
- * If free_deep is true, each element pointed to by the array is freed before
- * the array and list structure are freed.
- */
-
-int free_primitive_list(List* list, bool free_deep) {
-    //ensure the list isn't garbage
-    if(list == NULL) {
-        return 1;
-    }
-    if(free_deep) {
-        //free the memory each pointer in the array is pointing to
-        for(int i = 0; i < list->num_items; i++) {
-            free(list->array[i]);
-        }
-    }
-    //free the array 
-    free(list->array);
-    //free the list structure itself
-    free(list);
-    return 0;
-}
-
-/*
  * If a free function is provided, it is called on each element before
  * the array and list structure are freed.
  */
 
-int free_complex_list(List* list, void (*free_func)(void*)) {
+int free_list(List* list, void (*free_func)(void*)) {
     //ensure the list isn't garbage
     if(list == NULL) {
         return 1;
     }
-    //if provided
+
+    //if provided free the data stored
     if(free_func) {
         //free deep
         for(int i = 0; i < list->num_items; i++) {
             //free pointer to data in the array
             free_func(list->array[i]);
         }
-    } 
+    }
+
     //free the array
     free(list->array);
     //free the list structure itself
@@ -142,7 +121,7 @@ int free_complex_list(List* list, void (*free_func)(void*)) {
 }
 
 /*
- * Iterates over all elements, calling @p to_string_func on each one and writing
+ * Iterates over all elements, calling to_string_func on each one and writing
  * the result to the specified file stream, each on its own line.
  */
 

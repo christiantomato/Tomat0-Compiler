@@ -79,24 +79,14 @@ bool is_empty(List* list);
 bool is_max_capacity(List* list);
 
 /**
- * @brief Frees a list containing primitive data types.
- *
- * @param list Pointer to the list.
- * @param free_deep Whether to free the elements themselves.
- * @return int Status code.
- */
-
-int free_primitive_list(List* list, bool free_deep);
-
-/**
- * @brief Frees a list containing complex data types.
+ * @brief Frees a list and optionally its elements. 
  *
  * @param list Pointer to the list.
  * @param free_func Function used to free each element.
- * @return int Status code.
+ * @return 0 for success, 1 otherwise.
  */
 
-int free_complex_list(List* list, void (*free_func)(void*));
+int free_list(List* list, void (*free_func)(void*));
 
 /**
  * @brief Prints the list to a file.
