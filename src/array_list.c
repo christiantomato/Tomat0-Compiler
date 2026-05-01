@@ -1,16 +1,17 @@
+/**
+ * @file array_list.c
+ * @brief Generic dynamic array list implementation.
+ *
+ * Implements the defined functions for my array list. 
+ */
+
 #include "include/array_list.h"
 #include <stdlib.h>
 
 /*
-Initialize List Function
-
-creates a list for any data type
-the array holds void pointers, allowing us to use it for any data type
-
-unsigned int init_capacity: sets the initial capacity of the list
-
-return: pointer to the list
-*/
+ * Allocates memory for the list structure and its underlying array of void pointers,
+ * allowing it to store any data type.
+ */
 
 List* init_list(unsigned int init_capacity) {
     //allocate memory for the list
@@ -23,13 +24,8 @@ List* init_list(unsigned int init_capacity) {
 }
 
 /*
-List Add Function
-
-appends an item at the end of the list
-
-List* list: the list the item is being added to
-void* data: the piece of data being added
-*/
+ * If the list is at maximum capacity, it is expanded before the element is appended.
+ */
 
 void list_add(List* list, void* data) {
     if(is_max_capacity(list)) {
@@ -42,15 +38,9 @@ void list_add(List* list, void* data) {
 }
 
 /*
-List Remove Function
-
-removes a data item from the list, at any index
-option to provide a free function for complex data types (such as tokens or ast nodes)
-
-List* list: the list we are removing from
-unsigned int index: the location in the list we are freeing
-void (*free_func) (void*): a pointer to a function that takes in a void pointer, and returns void (for freeing a complex data type)
-*/
+ * Shifts all elements after index left to fill the gap. If a free function is provided,
+ * it is called on the element before removal.
+ */
 
 void list_remove(List* list, unsigned int index, void (*free_func)(void*)) {
     //make sure the index is valid
@@ -72,13 +62,9 @@ void list_remove(List* list, unsigned int index, void (*free_func)(void*)) {
 }
 
 /*
-Expand List Capacity Function
-
-helper method to increase the size of the array in the array list
-expands by double the current size
-
-List* list: the list which is being expanded
-*/
+ * Allocates a new array at double the current capacity, copies all existing pointers
+ * into it, frees the old array, and updates the list's capacity.
+ */
 
 void expand_capacity(List* list) {
     //double the size
@@ -95,43 +81,18 @@ void expand_capacity(List* list) {
     list->array = new_array;
 }
 
-/*
-Is List Empty Function
-
-checks if the list is empty or not
-
-List* list: the list we are checking
-
-return: true if empty, false otherwise
-*/
-
 bool is_empty(List* list) {
     return list->num_items == 0;
 }
 
-/*
-Is List At Max Capacity Function
-
-checks if the list is full or not
-
-List* list: the list we are checking
-
-return: true if full, false otherwise
-*/
 bool is_max_capacity(List* list) {
     return list->num_items == list->current_capacity;
 }
 
 /*
-Free Primitive List
-
-frees the memory of the list container, with the option to free data items completely (for a primitive type)
-
-List* list: the list being freed
-bool free_deep: true to free data items completely, false to just free the container
-
-return: 0 for success, 1 otherwise
-*/
+ * If free_deep is true, each element pointed to by the array is freed before
+ * the array and list structure are freed.
+ */
 
 int free_primitive_list(List* list, bool free_deep) {
     //ensure the list isn't garbage
@@ -152,15 +113,9 @@ int free_primitive_list(List* list, bool free_deep) {
 }
 
 /*
-Free Complex List
-
-frees the memory of the list container, with the option to completely free the data items (for a complex type)
-
-List* list: the list being freed
-void (*free_func)(void*): the function to free the complex data type
-
-return: 0 for success, 1 otherwise
-*/
+ * If a free function is provided, it is called on each element before
+ * the array and list structure are freed.
+ */
 
 int free_complex_list(List* list, void (*free_func)(void*)) {
     //ensure the list isn't garbage
@@ -183,14 +138,9 @@ int free_complex_list(List* list, void (*free_func)(void*)) {
 }
 
 /*
-Print List Function
-
-uses a function pointer to print out the list of any generic type to a file
-
-FILE* file: the file we are printing to 
-List* list: the list which we are printing
-char* (*to_string_func)(void*): the function pointer which performs the to string on the data type
-*/
+ * Iterates over all elements, calling @p to_string_func on each one and writing
+ * the result to the specified file stream, each on its own line.
+ */
 
 void print_list(FILE* file, List* list, char* (*to_string_func)(void*)) {
     for(int i = 0; i < list->num_items; i++) {
