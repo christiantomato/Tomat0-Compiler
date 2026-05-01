@@ -1,5 +1,5 @@
-# tomat0 Compiler
-Compiler for my own language, tomat0. tomat0 focuses on increasing readibility and removing unecessary syntax. At its current state, it can compile print statements for integers and arithmetic expressions (see example in main.tmt). 
+# Tomat0 Compiler
+Compiler for my own language, Tomat0. Tomat0 focuses on increasing readibility and removing unecessary syntax. At its current state, it can compile print statements for integers and arithmetic expressions (see example in main.tmt). 
 
 ### Road Map
 Lexical Analysis
