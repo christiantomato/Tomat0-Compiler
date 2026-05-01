@@ -1,5 +1,6 @@
 #ignore output files
 output/
+*.out
 
 #ignore my notes
 notes/
