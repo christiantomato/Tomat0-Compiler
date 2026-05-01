@@ -4,7 +4,7 @@ headers = $(wildcard src/*.h) #all the .h files in src
 
 flags = -fsanitize=address #asan for memory debugging
 
-#make executable dependent on all sources, skip object file creation and link in one step
+#make executable dependent on all sources and headers, skip object file creation and link in one step
 $(exec): $(sources) $(headers)
 	gcc $(sources) $(flags) -o $(exec)
   
