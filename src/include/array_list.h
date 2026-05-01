@@ -61,16 +61,6 @@ void list_add(List* list, void* data);
 void list_remove(List* list, unsigned int index, void (*free_func)(void*));
 
 /**
- * @brief Expands the capacity of the list.
- *
- * Helper function, which doubles the current capacity.
- *
- * @param list Pointer to the list.
- */
-
-void expand_capacity(List* list);
-
-/**
  * @brief Checks if the list is empty.
  *
  * @param list Pointer to the list.

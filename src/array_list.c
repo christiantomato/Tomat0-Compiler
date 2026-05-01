@@ -61,12 +61,16 @@ void list_remove(List* list, unsigned int index, void (*free_func)(void*)) {
     list->num_items--;
 }
 
-/*
- * Allocates a new array at double the current capacity, copies all existing pointers
- * into it, frees the old array, and updates the list's capacity.
+ /**
+ * @brief Expands the capacity of the list.
+ *
+ * Helper which allocates a new array at double the current capacity, 
+ * copies all existing pointers into it, frees the old array, and updates the list's capacity.
+ *
+ * @param list Pointer to the list.
  */
 
-void expand_capacity(List* list) {
+static void expand_capacity(List* list) {
     //double the size
     void** new_array = malloc(list->current_capacity * 2 * sizeof(void*));
     //update the current capacity
