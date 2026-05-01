@@ -1,2 +1,9 @@
 #ignore output files
 output/
+
+#ignore my notes
+notes/
+
+#ignore documentations for now
+docs/
+Doxyfile
