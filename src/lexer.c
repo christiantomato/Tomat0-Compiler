@@ -133,7 +133,7 @@ Token* tokenize_next(Lexer* lexer) {
             case '\\': return continue_with_token(lexer, init_token(TOKEN_BSLASH, lexer_char_as_str(lexer))); break;
             case '+': return continue_with_token(lexer, init_token(TOKEN_PLUS, lexer_char_as_str(lexer))); break;
             case '-': return continue_with_token(lexer, init_token(TOKEN_HYPHEN, lexer_char_as_str(lexer))); break;
-            case '*': return continue_with_token(lexer, init_token(TOKEN_ASTERIK, lexer_char_as_str(lexer))); break;
+            case '*': return continue_with_token(lexer, init_token(TOKEN_ASTERISK, lexer_char_as_str(lexer))); break;
             case '?': return continue_with_token(lexer, init_token(TOKEN_QUESTION, lexer_char_as_str(lexer))); break;
             default: return NULL;
         }
