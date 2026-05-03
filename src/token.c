@@ -1,17 +1,15 @@
+/**
+ * @file token.c
+ * @brief Implements defined functions for my token definition.
+ */
+
 #include "include/token.h"
 #include <stdlib.h>
 #include <stdio.h>
 
 /*
-Initialize Token Function
-
-creates a token with the given type and value
-
-TokenType type: the type of token it will be classified as
-char* value: the value the token will hold
-
-return: returns the created token pointer
-*/
+ * Creates a token with the given type and value.
+ */
 
 Token* init_token(TokenType type, char* value) {
     //allocate space for the token
@@ -23,14 +21,8 @@ Token* init_token(TokenType type, char* value) {
 }
 
 /*
-Token Type As String Function
-
-converts the token type enum into a string
-
-Token* token: the target token for which we are finding the type
-
-return: returns the token type, as a string pointer
-*/
+ * Converts the token type enum into a string.
+ */
 
 char* token_type_as_str(Token* token) {
     switch(token->type) {
@@ -57,7 +49,7 @@ char* token_type_as_str(Token* token) {
         case TOKEN_BSLASH: return "TOKEN_BSLASH"; break;
         case TOKEN_PLUS: return "TOKEN_PLUS"; break;
         case TOKEN_HYPHEN: return "TOKEN_HYPHEN"; break;
-        case TOKEN_ASTERIK: return "TOKEN_ASTERIK"; break;
+        case TOKEN_ASTERISK: return "TOKEN_ASTERISK"; break;
         case TOKEN_QUESTION: return "TOKEN_QUESTION"; break;
         case TOKEN_EOF: return "TOKEN_EOF"; break;
         default: return "TOKEN_UNKNOWN"; break;
@@ -65,15 +57,9 @@ char* token_type_as_str(Token* token) {
 }
 
 /*
-Token toString Function
-
-takes a token and formats it with type and value
-uses a void pointer so we can pass the function to print_list
-
-Token* token: the token to string
-
-return: string representation of the token
-*/
+ * Takes a token and formats it with type and value.
+ * Uses a void pointer so we can pass the function to print_list.
+ */
 
 char* token_to_str(void* token) {
     Token* the_token = (Token*) token;
@@ -90,14 +76,8 @@ char* token_to_str(void* token) {
 }
 
 /*
-Free Token Function
-
-frees all allocated memory of a token struct
-
-Token* token: the token pointer to be freed
-
-return: returns 0 for success, 1 if failure
-*/
+ * Frees all allocated memory of a token struct.
+ */
 
 int free_token(Token* token) {
     //ensure the token isn't garbage
@@ -112,13 +92,9 @@ int free_token(Token* token) {
 }
 
 /*
-Free Token Wrapper Function
-
-a wrapper function for the free token function, utilized with my built-in array list 
-to ensure i can free a list of tokens properly
-
-void* token: the token to be freed
-*/
+ * A wrapper function for the free token function, utilized with my built-in array list 
+ * to ensure i can free a list of tokens properly.
+ */
 
 void free_token_wrapper(void* token) {
     free_token((Token*) token);
