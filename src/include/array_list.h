@@ -15,21 +15,12 @@
 /**
  * @struct List
  * @brief Generic array list structure.
- *
- * @var List::num_items
- * Number of elements currently stored in the list.
- *
- * @var List::current_capacity
- * Maximum number of elements the list can hold before resizing.
- *
- * @var List::array
- * Pointer to the underlying array which stores pointers to the data type of the list.
  */
 
-typedef struct generic_array_list_struct {
-    unsigned int num_items;
-    unsigned int current_capacity;
-    void** array;
+typedef struct {
+    unsigned int num_items; /**< Number of elements currently stored in the list. */
+    unsigned int current_capacity; /**< Maximum number of elements the list can hold before resizing. */
+    void** array; /**< Pointer to the underlying array which stores pointers to the data type of the list. */
 } List;
 
 /**
