@@ -1,17 +1,14 @@
-/*
-AST Node Structure
-
-defines the different types of nodes that the abstract syntax tree will use
-these include:
-- variable declarations
-- print statements
-- binary operations
-- function calls
-
-NodeType type: the type of ast node it is
-List* children: children nodes (used for the program node statements, function node statements, and blocks of code)
-ASTSpecialization: a union containing structs for specialized ast nodes
-*/
+/**
+ * @file ast_node.h
+ * @brief Defines the different types of nodes that the abstract syntax tree will use. 
+ * 
+ * These include: 
+ * - variable declarations
+ * - print statements
+ * - binary operations
+ * - binary operations
+ * - function calls
+ */
 
 #include "array_list.h"
 #include <stdio.h>
@@ -19,7 +16,12 @@ ASTSpecialization: a union containing structs for specialized ast nodes
 #ifndef AST_NODE_H
 #define AST_NODE_H
 
-typedef enum ast_node_type {
+/**
+ * @enum NodeType
+ * @brief Represents all possible node types that can be parsed. 
+ */
+
+typedef enum {
     AST_PROGRAM,
     AST_VARIABLE_DECLARATION,
     AST_VARIABLE_ASSIGNMENT,
@@ -31,54 +33,106 @@ typedef enum ast_node_type {
     AST_STRING
 } NodeType;
 
-//forward declare our ast node structure
+//Forward declare the general ast node structure, so we can use them when defining specific ast node structs.  
 struct ast_node_struct;
 
-/*
-define structs for all specialized ast nodes
-*/
+//NON TERMINAL NODES: 
 
-typedef struct ast_variable_declaration {
-    const char* data_type;
-    char* variable_name;
-    struct ast_node_struct* assignment;
+/**
+ * @struct VariableDeclaration
+ * @brief Represents a variable declaration instruction. 
+ * 
+ * Based on this definition, variables must be assigned an inital value when declared. 
+ */
+
+typedef struct {
+    const char* data_type; /**< String representation of the data type. */
+    char* variable_name; /**< The name of the variable */
+    struct ast_node_struct* assignment; /**< The assignment which may be a terminal or non-terminal node. */
 } VariableDeclaration;
 
-typedef struct ast_variable_assignment {
-    char* variable_name;
-    struct ast_node_struct* assignment;
+/**
+ * @struct VariableAssignment
+ * @brief Represents a variable assignment instruction. 
+ */
+
+typedef struct {
+    char* variable_name; /**< The variable being assigned a value. */
+    struct ast_node_struct* assignment; /**< The assignement node. */
 } VariableAssignment;
 
-typedef struct ast_print_statement {
-    struct ast_node_struct* statement;
+/**
+ * @struct PrintStatement
+ * @brief Represents a print statement instruction. 
+ */
+
+typedef struct {
+    struct ast_node_struct* statement; /**< The statement to print. */
 } PrintStatement;
 
-typedef struct ast_binary_operation {
-    struct ast_node_struct* left;
-    struct ast_node_struct* right;
-    char* operand;
+/**
+ * @struct BinaryOperation
+ * @brief Represents a binary operation instruction between 2 nodes. 
+ * 
+ * Current supported operators include: 
+ * - Addition: +
+ * - Subtraction: -
+ * - Multiplication: *
+ * - Division: / 
+ */
+
+typedef struct {
+    struct ast_node_struct* left; /**< The left operand. */
+    struct ast_node_struct* right; /**< The right operand.  */
+    char* operator; /**< The operator. */
 } BinaryOperation;
 
-typedef struct ast_negation {
-    struct ast_node_struct* factor;
+/**
+ * @struct Negation
+ * @brief Represents a negation instruction. 
+ */
+
+typedef struct {
+    struct ast_node_struct* factor; /**< The factor being negated. */
 } Negation;
 
-typedef struct ast_variable {
-    char* variable_name;
-    struct ast_node_struct* value;
+/**
+ * @struct Variable
+ * @brief Encodes a variable with its associated value. 
+ */
+
+typedef struct {
+    char* variable_name; /**< Variable name. */
+    struct ast_node_struct* value; /**< Variable Value. */
 } Variable;
 
-typedef struct ast_integer {
-    int value;
+//TERMINAL NODES: 
+
+/**
+ * @struct IntegerLiteral
+ * @brief Represents an integer.  
+ */
+
+typedef struct {
+    int value; /**< The integer value. */
 } IntegerLiteral;
 
-typedef struct ast_string {
-    char* value;
-    unsigned int string_id;
+/**
+ * @struct StringLiteral
+ * @brief Represents a string literal. 
+ */
+
+typedef struct {
+    char* value; /**< The string. */
+    unsigned int string_id; /**< The id for the string. */
 } StringLiteral;
 
-//create a union so we can specialize nodes
-typedef union ast_node_specializations {
+/**
+ * @union ASTSpecialization
+ * @brief A union so a node can choose its specific type. 
+ */
+
+typedef union {
     VariableDeclaration variable_declaration;
     VariableAssignment variable_assignment;
     PrintStatement print_statement;
@@ -89,22 +143,62 @@ typedef union ast_node_specializations {
     StringLiteral string_literal;
 } ASTSpecialization;
 
-//main ast node structure
+/**
+ * @struct ASTNode
+ * @brief A general node definition. 
+ * 
+ * Utilizes the union to be memory efficient. Node only utilizes memory needed for its specialization.
+ */
+
 typedef struct ast_node_struct {
     NodeType type;
     List* children;
     ASTSpecialization specialization;
 } ASTNode;
 
-//initialize a node
+/**
+ * @brief Creates and initalizes a new node. 
+ * 
+ * @param type The node type. 
+ * @return Pointer to the newly created node. 
+ */
+
 ASTNode* init_node(NodeType type);
-//get the node type enum name
-char* node_type_str(ASTNode* node);
-//write to file the tree representation from any node
+
+/**
+ * @brief Returns the enum name for the node as a string. 
+ * 
+ * @param node Pointer to the node. 
+ * @return String corresponding to the enum name. 
+ */
+
+char* node_type_as_str(ASTNode* node);
+
+/**
+ * @brief Writes the tree representation for the inputted node. 
+ * 
+ * @param file Pointer to the file. 
+ * @param root Node we are starting at. 
+ * @param indent Incremented when print_ast is recursively called. 
+ */
+
 void print_ast(FILE* file, ASTNode* root, int indent);
-//free memory of a node
+
+/**
+ * @brief Frees the allocated memory for a node. 
+ * 
+ * @param node Pointer to the node. 
+ * @return 0 for success, 1 otherwise. 
+ */
+
 int free_node(ASTNode* node);
-//wrapper for free node
+
+/**
+ * @brief Wrapper for the free node function. 
+ * 
+ * @param node Pointer to the node. 
+ */
+
 void free_node_wrapper(void* node);
 
 #endif
