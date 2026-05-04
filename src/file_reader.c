@@ -1,16 +1,15 @@
+/**
+ * @file file_reader.c
+ * @brief Implements the algorithm to read a file and build the string. 
+ */
+
 #include "include/file_reader.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 /*
-Read File Function
-
-reads all the contents from a file (in our case the .tmt file),
-and builds a string pointer
-
-const char* filename: the name of the file to be read
-
-return: the string pointer containing the contents
+ * Builds a proper null terminated string by determing length of file contents 
+ * and then reading the file. 
 */
 
 char* read_file(const char* filename) {
