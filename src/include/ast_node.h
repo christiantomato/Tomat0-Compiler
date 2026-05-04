@@ -151,9 +151,9 @@ typedef union {
  */
 
 typedef struct ast_node_struct {
-    NodeType type;
-    List* children;
-    ASTSpecialization specialization;
+    NodeType type; /**< The type of node. */
+    List* children; /**< Pointer to the nodes children (if any). */
+    ASTSpecialization specialization; /**< Its specialization from the union. */
 } ASTNode;
 
 /**
