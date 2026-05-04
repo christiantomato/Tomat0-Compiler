@@ -1,17 +1,16 @@
+/**
+ * @file lexer.c
+ * @brief Implementation of the tokenization algorithm.
+ */
+
 #include "include/lexer.h"
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
 /*
-Initialize Lexer Function
-
-creates a lexer and passes in the contents for it to analyze
-
-char* contents: the string of text to analyze (read from the .tmt file)
-
-return: pointer to the created lexer
-*/
+ * Creates a lexer and passes in the contents for it to analyze.
+ */
 
 Lexer* init_lexer(char* contents) {
     //allocate memory for the lexer
@@ -23,15 +22,13 @@ Lexer* init_lexer(char* contents) {
     return lexer;
 }
 
-/*
-Lexer Advance Function
+/**
+ * @brief Advances to the next character in the contents. 
+ * 
+ * @param lexer Pointer to the lexer. 
+ */
 
-advances to the next character in the contents
-
-Lexer* lexer: the lexer that is advanced
-*/
-
-void lexer_advance(Lexer* lexer) {
+static void lexer_advance(Lexer* lexer) {
     //if we are still in string and not at null character
     if(lexer->curr != '\0' && lexer->index < strlen(lexer->contents)) {
         //increment the index
@@ -50,7 +47,16 @@ but takes into account new lines as tomat0 uses them as delimeters
 Lexer* lexer: the lexer to skip whitespace
 */
 
-void lexer_skip_whitespace(Lexer* lexer) {
+/**
+ * @brief Skips any blank space between characters. 
+ * 
+ * All blank spaces are irrelevant for lexical analysis except new lines, since 
+ * the language uses them as delimeters. 
+ * 
+ * @param lexer Pointer to the lexer. 
+ */
+
+static void lexer_skip_whitespace(Lexer* lexer) {
     //skip blank space - but not newlines!
     while(isspace(lexer->curr) && lexer->curr != '\n') {
         lexer_advance(lexer);
@@ -58,14 +64,8 @@ void lexer_skip_whitespace(Lexer* lexer) {
 }
 
 /*
-Tokenize All Function
-
-loops through with the tokenize next function to create a list of tokens
-
-Lexer* lexer: the lexer that is tokenizing
-
-return: pointer to a list containing all the tokens
-*/
+ * Loops through with the tokenize next function to create a list of tokens. 
+ */
 
 List* tokenize_all(Lexer* lexer) {
     //create the list we are going to return, roughly estimate size needed
@@ -84,25 +84,22 @@ List* tokenize_all(Lexer* lexer) {
     return tokens_list;
 }
 
-/*
-Tokenize Next Function
+/**
+ * @brief The main function that is responsible for deciding the type of token encountered.
+ * 
+ * Examples: 
+ * "hello world" (beginning with the quotation immediately indicates a string).
+ * 123 (begininning with a numeric character immediately indicates an integer).
+ * myVariable (beginning with an alphabetical character immediately indicates an identifier (keyword or name)).
+ * + (single characters are easy to tokenize).
+ * 
+ * Notice the restrictions this makes, like variable names not being able to start with numbers. 
+ * 
+ * @param lexer Pointer to the lexer. 
+ * @return Token* Pointer to the created token. 
+ */
 
-the main function that is responsible for deciding which type of token
-we are going to get, based on the first character
-
-ex.
-"hello world" (beginning with the quotation immediately indicates a string)
-69000 (begininning with a numeric character immediately indicates an integer)
-myVariable (beginning with an alphabetical character immediately indicates an identifier (keyword or name))
-+ (single characters are easy to tokenize)
-*notice the restrictions this makes, like variable names not being able to start with numbers*
-
-Lexer* lexer: the lexer that is tokenizing
-
-return: the created token pointer
-*/
-
-Token* tokenize_next(Lexer* lexer) {
+static Token* tokenize_next(Lexer* lexer) {
     //while we are not on the null terminating character and are still within the contents
     while(lexer->curr != '\0' && lexer->index < strlen(lexer->contents)) {
         lexer_skip_whitespace(lexer);
@@ -142,19 +139,18 @@ Token* tokenize_next(Lexer* lexer) {
     return NULL;
 }
 
-/*
-Tokenize String Function
+/**
+ * @brief Tokenizes a string. 
+ * 
+ * Responsible for obtaining the value of the string once it has been recognized
+ * that a string is needed to be tokenized, continuting through the characters until the
+ * closing quotation has been reached. 
+ * 
+ * @param lexer Pointer to the lexer. 
+ * @return Token* Pointer to the string token. 
+ */
 
-responsible for obtaining the value of the string once it has been 
-recognized that a string is needed to be tokenized, continuing 
-through the characters until the closing quotation has been reached
-
-Lexer* lexer: the lexer that is tokenizing the string
-
-return: the token pointer of type TOKEN_STRING
-*/
-
-Token* tokenize_string(Lexer* lexer) {
+static Token* tokenize_string(Lexer* lexer) {
     //skip the initial quotation
     lexer_advance(lexer);
     //allocate memory for the string we will be returning
@@ -179,21 +175,21 @@ Token* tokenize_string(Lexer* lexer) {
     return init_token(TOKEN_STRING, str_value);
 }
 
-/*
-Tokenize Identifier Function
+/**
+ * @brief Tokenizes an identifier. 
+ * 
+ * Responsible for obtaining the value of the identifier. These could be: 
+ * keywords, function names, variables names, etc. 
+ * Continues to build the value as long as the identifier is alphabetical. 
+ * 
+ * Therefore, the language does not allow:
+ * snake_case or numbers in naming (the convention is camel case). 
+ * 
+ * @param lexer Pointer to the lexer. 
+ * @return Token* Pointer to the identifier token. 
+ */
 
-responsible for obtaining the value of the identifier,
-which could be a keyword, variable name, or function name
-continues to build the value as long as the identifier is alphabetical,
-therefore tomat0 does not allow snake_case or numbers in naming
-uses the same string building process as tokenize_string()
-
-Lexer* lexer: the lexer that is tokenizing the identifier
-
-return: the token pointer of type TOKEN_ID or TOKEN_KEYWORD
-*/
-
-Token* tokenize_ID(Lexer* lexer) {
+static Token* tokenize_ID(Lexer* lexer) {
     char* id_value = malloc(sizeof(char));
     id_value[0] = '\0';
     //build the string as long as our identifier is alphabetical 
@@ -227,17 +223,16 @@ Token* tokenize_ID(Lexer* lexer) {
     }
 }
 
-/*
-Tokenize Number Function
+/**
+ * @brief Tokenizes a number. 
+ * 
+ * Creates a number token for any numeric characters, stores as a string (converts later).
+ * 
+ * @param lexer Pointer to the lexer. 
+ * @return Token* Pointer to the number token. 
+ */
 
-creates a number token for any numeric characters, storing the number as a string
-
-Lexer* lexer: the lexer tokenizing the numbers
-
-return: the token pointer of type TOKEN_NUM
-*/
-
-Token* tokenize_number(Lexer* lexer) {
+static Token* tokenize_number(Lexer* lexer) {
     char* strValue = malloc(sizeof(char));
     strValue[0] = '\0';
     //build the string as long as we are still on a number
@@ -251,35 +246,34 @@ Token* tokenize_number(Lexer* lexer) {
     return init_token(TOKEN_NUM, strValue);
 }
 
-/*
-Continue With Token Function
+/**
+ * @brief Continues tokenization and returns inputted token.
+ * 
+ * Helper function, useful for single characters in the big switch case.
+ * Returns the current token processed so it can be propagated out, and advances lexer to get ready for next. 
+ * 
+ * @param lexer Pointer to the lexer. 
+ * @param token Pointer to the token to return. 
+ * 
+ * @return Token* Pointer to the current token being tokenized. 
+ */
 
-helper function to cleanly return back the token inputted, 
-and advance the lexer to be ready for the next tokenization
-
-Lexer* lexer: the lexer that will advance
-Token* token: the token that will be returned
-
-return: the inputted token pointer
-*/
-
-Token* continue_with_token(Lexer* lexer, Token* token) {
+static Token* continue_with_token(Lexer* lexer, Token* token) {
     //advance with the token
     lexer_advance(lexer);
     return token;
 }
 
-/*
-Lexer Character As String Function
+/**
+ * @brief Returns the current lexer character as a string. 
+ * 
+ * Used for saving the value of single characters. 
+ *
+ * @param lexer Pointer to the lexer. 
+ * @return char* Null terminated, single char string so lexer can process. 
+ */
 
-helper function to get the current lexer characater as a string pointer
-
-Lexer* lexer: the lexer whose character we are requesting
-
-return: the current character as a string pointer
-*/
-
-char* lexer_char_as_str(Lexer* lexer) {
+static char* lexer_char_as_str(Lexer* lexer) {
     //special case for a newline character
     if(lexer->curr == '\n') {
         //return it in the form "\n"
@@ -294,14 +288,8 @@ char* lexer_char_as_str(Lexer* lexer) {
 }
 
 /*
-Free Lexer Function
-
-frees all memory allocated my the lexer struct
-
-Lexer* lexer: the lexer to be freed
-
-return: 0 for success, 1 for failure
-*/
+ * Frees all memory allocated by the lexer struct.
+ */
 
 int free_lexer(Lexer* lexer) {
     //ensure the lexer isn't garbage
