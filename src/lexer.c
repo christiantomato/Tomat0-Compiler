@@ -38,15 +38,6 @@ static void lexer_advance(Lexer* lexer) {
     }
 }
 
-/*
-Lexer Skip Whitespace Function
-
-skips any blank space between characters as they are irrelvant, 
-but takes into account new lines as tomat0 uses them as delimeters
-
-Lexer* lexer: the lexer to skip whitespace
-*/
-
 /**
  * @brief Skips any blank space between characters. 
  * 
