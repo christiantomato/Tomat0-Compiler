@@ -320,7 +320,7 @@ ASTNode* parse_expression(Parser* parser) {
     //continue the loop as long as we are doing addition or subtraction to build up our expression
     while(parser->current_token->type == TOKEN_PLUS || parser->current_token->type == TOKEN_HYPHEN) {
         //get the operand (strdup!)
-        char* operand = strdup(parser->current_token->value);
+        char* operator = strdup(parser->current_token->value);
 
         //move past
         parser_advance(parser);
@@ -331,7 +331,7 @@ ASTNode* parse_expression(Parser* parser) {
         //create the binary operation node
         ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION);
         binary_op_node->specialization.binary_operation.left = left;
-        binary_op_node->specialization.binary_operation.operand = operand;
+        binary_op_node->specialization.binary_operation.operator = operator;
         binary_op_node->specialization.binary_operation.right = right;
 
         //now the left node can become the sub binary node we just created, and allows us to continue building an expression with the next term in the while loop (if any)
@@ -359,16 +359,16 @@ ASTNode* parse_term(Parser* parser) {
     ASTNode* left = parse_factor(parser);
 
     //continue the loop as long as we are multiplying or dividing to build up our tree
-    while(parser->current_token->type == TOKEN_ASTERIK || parser->current_token->type == TOKEN_FSLASH) {
+    while(parser->current_token->type == TOKEN_ASTERISK || parser->current_token->type == TOKEN_FSLASH) {
         //get operand and parse right term (strdup!)
-        char* operand = strdup(parser->current_token->value);
+        char* operator = strdup(parser->current_token->value);
         parser_advance(parser);
         ASTNode* right = parse_factor(parser);
 
         //create the binary operation node
         ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION);
         binary_op_node->specialization.binary_operation.left = left;
-        binary_op_node->specialization.binary_operation.operand = operand;
+        binary_op_node->specialization.binary_operation.operator = operator;
         binary_op_node->specialization.binary_operation.right = right;
 
         //set left as the binary operation to keep building the nested binary operations

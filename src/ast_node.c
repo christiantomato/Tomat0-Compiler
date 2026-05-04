@@ -34,7 +34,7 @@ ASTNode* init_node(NodeType type) {
         case AST_BINARY_OPERATION:
             node->specialization.binary_operation.left = NULL;
             node->specialization.binary_operation.right = NULL;
-            node->specialization.binary_operation.operand = NULL;
+            node->specialization.binary_operation.operator = NULL;
             break;
         case AST_NEGATION:
             node->specialization.negation.factor = NULL;
@@ -67,7 +67,7 @@ ASTNode* node: the target node for which we are finding the type
 return: type as a string pointer
 */
 
-char* node_type_str(ASTNode* node) {
+char* node_type_as_str(ASTNode* node) {
     switch(node->type) {
         case AST_PROGRAM: return "AST_PROGRAM"; break;
         case AST_VARIABLE_DECLARATION: return "AST_VARIABLE_DECLARATION"; break;
@@ -111,7 +111,7 @@ int indent: variable to keep track of the indentation spaces when we call recurs
 void print_ast(FILE* file, ASTNode* root, int indent) {
     //always start with printing the indentation and node title
     print_indent(file, indent);
-    fprintf(file, "NODE: %s\n", node_type_str(root));
+    fprintf(file, "NODE: %s\n", node_type_as_str(root));
 
     //print additional specfic details based on the node type
     switch(root->type) {
@@ -153,7 +153,7 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
             fprintf(file, "right = \n");
             print_ast(file, root->specialization.binary_operation.right, indent + 1);
             print_indent(file, indent);
-            fprintf(file, "operand = %s\n", root->specialization.binary_operation.operand);
+            fprintf(file, "operator = %s\n", root->specialization.binary_operation.operator);
             break;
         case AST_NEGATION:
             print_indent(file, indent);
