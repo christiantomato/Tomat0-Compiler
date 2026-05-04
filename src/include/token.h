@@ -66,7 +66,7 @@ typedef struct {
  * 
  * @param type The token type. 
  * @param value The token data. 
- * @return Token* Pointer to the created token. 
+ * @return Pointer to the created token. 
  */
 
 Token* init_token(TokenType type, char* value);
@@ -75,7 +75,7 @@ Token* init_token(TokenType type, char* value);
  * @brief Returns the enum name for the token as a string. 
  * 
  * @param token Pointer to the token. 
- * @return char* String corresponding to the enum name. 
+ * @return String corresponding to the enum name. 
  */
 
 char* token_type_as_str(Token* token);
@@ -84,7 +84,7 @@ char* token_type_as_str(Token* token);
  * @brief ToString for a token. 
  * 
  * @param token Generic pointer which should be a token (so we can pass the ToString to other functions).
- * @return char* String representation of the token. 
+ * @return String representation of the token. 
  */
 
 char* token_to_str(void* token);

@@ -87,7 +87,7 @@ List* tokenize_all(Lexer* lexer) {
  * Notice the restrictions this makes, like variable names not being able to start with numbers. 
  * 
  * @param lexer Pointer to the lexer. 
- * @return Token* Pointer to the created token. 
+ * @return Pointer to the created token. 
  */
 
 static Token* tokenize_next(Lexer* lexer) {
@@ -138,7 +138,7 @@ static Token* tokenize_next(Lexer* lexer) {
  * closing quotation has been reached. 
  * 
  * @param lexer Pointer to the lexer. 
- * @return Token* Pointer to the string token. 
+ * @return Pointer to the string token. 
  */
 
 static Token* tokenize_string(Lexer* lexer) {
@@ -177,7 +177,7 @@ static Token* tokenize_string(Lexer* lexer) {
  * snake_case or numbers in naming (the convention is camel case). 
  * 
  * @param lexer Pointer to the lexer. 
- * @return Token* Pointer to the identifier token. 
+ * @return Pointer to the identifier token. 
  */
 
 static Token* tokenize_ID(Lexer* lexer) {
@@ -220,7 +220,7 @@ static Token* tokenize_ID(Lexer* lexer) {
  * Creates a number token for any numeric characters, stores as a string (converts later).
  * 
  * @param lexer Pointer to the lexer. 
- * @return Token* Pointer to the number token. 
+ * @return Pointer to the number token. 
  */
 
 static Token* tokenize_number(Lexer* lexer) {
@@ -246,7 +246,7 @@ static Token* tokenize_number(Lexer* lexer) {
  * @param lexer Pointer to the lexer. 
  * @param token Pointer to the token to return. 
  * 
- * @return Token* Pointer to the current token being tokenized. 
+ * @return Pointer to the current token being tokenized. 
  */
 
 static Token* continue_with_token(Lexer* lexer, Token* token) {
@@ -261,7 +261,7 @@ static Token* continue_with_token(Lexer* lexer, Token* token) {
  * Used for saving the value of single characters. 
  *
  * @param lexer Pointer to the lexer. 
- * @return char* Null terminated, single char string so lexer can process. 
+ * @return Null terminated, single char string so lexer can process. 
  */
 
 static char* lexer_char_as_str(Lexer* lexer) {

@@ -28,7 +28,7 @@ typedef struct {
  * @brief Creates and initializes a new lexer. 
  * 
  * @param contents The string the lexer will traverse. 
- * @return Lexer* Pointer to the created lexer. 
+ * @return Pointer to the created lexer. 
  */
 
 Lexer* init_lexer(char* contents);
@@ -37,7 +37,7 @@ Lexer* init_lexer(char* contents);
  * @brief Starts the tokenization process for the provided initalized lexer. 
  * 
  * @param lexer Pointer to the lexer which will conduct lexical analysis on its contents. 
- * @return List* Pointer to a list containing token pointers. 
+ * @return Pointer to a list containing token pointers. 
  */
 
 List* tokenize_all(Lexer* lexer);

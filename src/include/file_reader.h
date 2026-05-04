@@ -10,7 +10,7 @@
  * @brief Reads the file contents and builds a string. 
  * 
  * @param filename The name of the file to be read. 
- * @return char* String of file contents. 
+ * @return String of file contents. 
  */
 
 char* read_file(const char* filename);
