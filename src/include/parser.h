@@ -5,6 +5,7 @@
  * Responsible for conducting syntactic analysis.
  * The parser makes sense of the tokens provided by the lexer,
  * and puts everything into a tree which describes the sequence in which the program is executed.
+ * Uses a LL(1) parsing design. 
  */
 
 #include "token.h"
