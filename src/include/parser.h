@@ -10,7 +10,6 @@
 
 #include "token.h"
 #include "ast_node.h"
-#include "symbol_table.h"
 
 #ifndef PARSER_H
 #define PARSER_H
@@ -46,7 +45,7 @@ Parser* init_parser(List* tokens);
  * @return Pointer to the root node of the parser.
  */
 
-ASTNode* parser_parse(Parser* parser, SymbolTable* table);
+ASTNode* parser_parse(Parser* parser);
 
 /**
  * @brief Frees allocated memory by the parser. 

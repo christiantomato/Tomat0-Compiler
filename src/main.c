@@ -36,10 +36,9 @@ int main(int argc, char *argv[]) {
 
     //intialize the parser and symbol table
     Parser* my_parser = init_parser(tokens_list);
-    SymbolTable* my_symbol_table = init_symbol_table();
 
     //parse everything and return the root node
-    ASTNode* ast_root = parser_parse(my_parser, my_symbol_table);
+    ASTNode* ast_root = parser_parse(my_parser);
 
     //write ast representation from root node now
     FILE* ast_file = fopen("output/ast_output.txt", "w");
@@ -53,19 +52,6 @@ int main(int argc, char *argv[]) {
     /*
      * CODE GENERATION
      */
-
-    //generate the assembly code
-    FILE* assembly_file = fopen("output/generated_asm.s", "w");
-    generate_assembly(assembly_file, ast_root, my_symbol_table);
-    //close the file
-    fclose(assembly_file);
-
-    //make an executable
-    system("gcc output/generated_asm.s -o tomat0executable");
-    //move compiled tomat0 file to output directory
-    system("mv tomat0executable output");
-    //execute
-    system("./output/tomat0executable");
     
     return 0;
 }
