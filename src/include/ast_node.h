@@ -11,6 +11,7 @@
  */
 
 #include "array_list.h"
+#include "types.h"
 #include <stdio.h>
 
 #ifndef AST_NODE_H
@@ -46,7 +47,7 @@ struct ast_node_struct;
  */
 
 typedef struct {
-    const char* data_type; /**< String representation of the data type. */
+    DataType data_type; /**< The type of data. */
     char* variable_name; /**< The name of the variable */
     struct ast_node_struct* assignment; /**< The assignment which may be a terminal or non-terminal node. */
 } VariableDeclaration;

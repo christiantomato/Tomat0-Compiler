@@ -266,13 +266,13 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
 
     //determine the data type
     if(parser->current_token->type == TOKEN_KEYWORD_INT) {
-        var_dec_node->specialization.variable_declaration.data_type = "int";
+        var_dec_node->specialization.variable_declaration.data_type = TYPE_INTEGER;
     }
     else if(parser->current_token->type == TOKEN_KEYWORD_STRING) {
-        var_dec_node->specialization.variable_declaration.data_type = "string";
+        var_dec_node->specialization.variable_declaration.data_type = TYPE_STRING;
     }
     else {
-        //no type? problem
+        //no type? problem  
         return NULL;
     }
 
@@ -426,7 +426,7 @@ ASTNode* parser_parse(Parser* parser, SymbolTable* table) {
         ASTNode* line_node = parse_line(parser);
         //if it is a declaration of some sort, add the new symbol
         if(line_node->type == AST_VARIABLE_DECLARATION) {
-            add_to_table(table, strdup(line_node->specialization.variable_declaration.variable_name), line_node->specialization.variable_declaration.data_type);
+            add_to_table(table, strdup(line_node->specialization.variable_declaration.variable_name), data_type_as_str(line_node->specialization.variable_declaration.data_type));
         }
         //then add each parsed statement to the children of the program node 
         list_add(parser->root->children, line_node);
