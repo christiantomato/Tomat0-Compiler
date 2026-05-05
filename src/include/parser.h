@@ -1,16 +1,11 @@
-/*
-Parser Structure
-
-responsible for conducting syntactic analysis
-the parser makes sense of the tokens provided by the lexer,
-and puts everything into a tree which describes the sequence in which the program is executed
-this parser uses a top-down recursive descent LL(1) parsing method
-
-ASTNode* root: the root node of the program, where execution starts (called the program node)
-List* tokens: the tokens that were created by the lexer, which the parser must make sense of
-Token* current_token: variable that keeps track of the current token the parser is parsing during algorithms
-unsigned int index: variable to help traverse through the tokens list during parsing algorithms
-*/
+/**
+ * @file parser.h
+ * @brief Parses a list of tokens and generates an abstract syntax tree. 
+ * 
+ * Responsible for conducting syntactic analysis.
+ * The parser makes sense of the tokens provided by the lexer,
+ * and puts everything into a tree which describes the sequence in which the program is executed.
+ */
 
 #include "token.h"
 #include "ast_node.h"
@@ -19,39 +14,46 @@ unsigned int index: variable to help traverse through the tokens list during par
 #ifndef PARSER_H
 #define PARSER_H
 
-typedef struct parser_struct {
-    ASTNode* root;
-    List* tokens;
-    Token* current_token;
-    unsigned int index;
+/**
+ * @struct Parser
+ * @brief The parser structure which parses tokens. 
+ */
+
+typedef struct {
+    ASTNode* root; /**< Reference to the root node. */
+    List* tokens; /**< List of tokens being parsed. */
+    Token* current_token; /**< Reference to the current token being processed. */
+    unsigned int index; /**< Index position for the tokens list. */
 } Parser;
 
-//create parser
+/**
+ * @brief Creates and initializes a parser.
+ * 
+ * @param tokens The list of tokens to parse. 
+ * @return Pointer to the parser. 
+ */
+
 Parser* init_parser(List* tokens);
-//moves to next token
-void parser_advance(Parser* parser);
-//looks ahead
-Token* parser_peek(Parser* parser, int ahead);
-//skips unecessary grammar
-void parser_skip(Parser* parser);
-//main parsing function which also builds the symbol table
+
+/**
+ * @brief Main parsing function. 
+ * 
+ * Parses through the entire tokens list and keeps track of declared variables with symbol table. 
+ * 
+ * @param parser Pointer to the parser.
+ * @param table Pointer to the symbol table. 
+ * @return Pointer to the root node of the parser.
+ */
+
 ASTNode* parser_parse(Parser* parser, SymbolTable* table);
 
-/*
-parsing functions (LL top down parsing)
-*/
+/**
+ * @brief Frees allocated memory by the parser. 
+ * 
+ * @param parser Pointer to the parser. 
+ * @return 0 for success, 1 otherwise.
+ */
 
-ASTNode* parse_line(Parser* parser);
-ASTNode* parse_variable_declaration(Parser* parser);
-ASTNode* parse_variable_assignment(Parser* parser);
-ASTNode* parse_print_statement(Parser* parser);
-ASTNode* parse_expression(Parser* parser);
-ASTNode* parse_term(Parser* parser);
-ASTNode* parse_factor(Parser* parser);
-
-//helper function to count strings that are parsed
-int next_string_id();
-//free allocated parser memory
 int free_parser(Parser* parser);
 
 #endif
