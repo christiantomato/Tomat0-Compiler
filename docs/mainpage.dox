@@ -1,0 +1,13 @@
+/** @mainpage Tomat0 Compiler Documentation
+ *
+ * Welcome to the documentation for the Tomat0 compiler.
+ *
+ * ## Overview
+ * This compiler performs:
+ * - Lexical analysis
+ * - Parsing
+ * - Code generation
+ *
+ * ## Pipeline
+ * Source → Tokens → AST → Assembly
+ */
