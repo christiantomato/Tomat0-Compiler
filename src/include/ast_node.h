@@ -124,7 +124,6 @@ typedef struct {
 
 typedef struct {
     char* value; /**< The string. */
-    unsigned int string_id; /**< The id for the string. */
 } StringLiteral;
 
 /**
