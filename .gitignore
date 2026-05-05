@@ -5,6 +5,9 @@ output/
 #ignore my notes
 notes/
 
+#ignore my main.tmt testing for now
+main.tmt
+
 #ignore documentations for now
 docs/
 Doxyfile
