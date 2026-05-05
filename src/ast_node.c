@@ -1,15 +1,14 @@
+/**
+ * @file ast_node.c
+ * @brief Implements defined functions for my ast node definition. 
+ */
+
 #include "include/ast_node.h"
 #include <stdlib.h>
 
 /*
-Initialize AST Node Function
-
-creates an ast node based on the given type
-
-NodeType type: the type of node it will be
-
-return: a pointer to the node
-*/
+ * Initalizes an ast node based on the given type.
+ */
 
 ASTNode* init_node(NodeType type) {
     //allocate memory for the node
@@ -41,7 +40,6 @@ ASTNode* init_node(NodeType type) {
             break;
         case AST_VARIABLE:
             node->specialization.variable.variable_name = NULL;
-            node->specialization.variable.value = NULL;
             break;
         case AST_INTEGER:
             node->specialization.integer_literal.value = 0;
@@ -58,14 +56,8 @@ ASTNode* init_node(NodeType type) {
 }
 
 /*
-AST Node Type As String Function
-
-converts the node type enum into a string
-
-ASTNode* node: the target node for which we are finding the type
-
-return: type as a string pointer
-*/
+ * Converts the node type enum into a string
+ */
 
 char* node_type_as_str(ASTNode* node) {
     switch(node->type) {
@@ -81,15 +73,12 @@ char* node_type_as_str(ASTNode* node) {
     }
 }
 
-/*
-Print Indentation Function
-
-helper method for the print ast function
-prints a tab space based on the indentation level (more tabs as we recurse deeper)
-
-FILE* file: the file we are writing the tab spaces to
-int indent: the amount of indents
-*/
+/**
+ * @brief Helper method to print tab spaces based on tree depth. 
+ * 
+ * @param file Pointer to the file we are printing the spaces to. 
+ * @param indent Tree level. 
+ */
 
 static void print_indent(FILE* file, int indent) {
     for(int i = 0; i < indent; i++) {
@@ -98,15 +87,9 @@ static void print_indent(FILE* file, int indent) {
 }
 
 /*
-Print Abstract Syntax Tree Function
-
-recursively writes the tree representation from the given root to a file in a preorder fashion
-levels in the tree are shown using an indentation
-
-FILE* file: the file we are wrting to
-ASTNode* root: the root we are starting at (usually starting from the program node)
-int indent: variable to keep track of the indentation spaces when we call recursively
-*/
+ * Recursively writes the tree representation from the given root to a file in a pre-order fashion.
+ * Levels in the tree are shown using an indentation.
+ */
 
 void print_ast(FILE* file, ASTNode* root, int indent) {
     //always start with printing the indentation and node title
@@ -164,10 +147,8 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
             print_indent(file, indent);
             fprintf(file, "variable_name = %s\n", root->specialization.variable.variable_name);
             print_indent(file, indent);
-            //values not determined through parsing actually so this field is unecessary
-            fprintf(file, "value = (determined at runtime)\n");
-            //below statment crashses as we do not know the value yet
-            //print_ast(file, root->specialization.variable.value, indent + 1);
+            //values not determined through parsing actually so this is unecessary
+            //fprintf(file, "value = (determined at runtime)\n");
             break;
         case AST_INTEGER:
             print_indent(file, indent);
@@ -183,29 +164,25 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
 }
 
 /*
-Free Node Function
-
-frees dynamically allocated memory for node and children nodes recursively
-any token values are freed by the parser, by freeing the entire tokens list
-frees entire tree if program node is inputted
-
-ASTNode* node: the root node
-
-return: 0 for success, 1 otherwise
-*/
+ * Frees dynamically allocated memory for nodes recursively, and for children iteratively. 
+ * Allocated memory for members of specialized ast nodes (like var names) are also freed. 
+ * Frees entire tree if program node is inputted. 
+ */
 
 int free_node(ASTNode* node) {
     //make sure not garbage
     if(node == NULL) {
         return 1;
     }
-    //free any dynamically allocated memory needed for specialized nodes
+    //for non terminal nodes, free members which have allocated memory. 
     switch(node->type) {
         case AST_VARIABLE_DECLARATION:
             free_node(node->specialization.variable_declaration.assignment);
+            free(node->specialization.variable_declaration.variable_name);
             break;
         case AST_VARIABLE_ASSIGNMENT:
             free_node(node->specialization.variable_assignment.assignment);
+            free(node->specialization.variable_assignment.variable_name);
             break;
         case AST_PRINT_STATEMENT:
             free_node(node->specialization.print_statement.statement);
@@ -213,25 +190,26 @@ int free_node(ASTNode* node) {
         case AST_BINARY_OPERATION:
             free_node(node->specialization.binary_operation.left);
             free_node(node->specialization.binary_operation.right);
+            free(node->specialization.binary_operation.operator);
             break;
         case AST_NEGATION:
             free_node(node->specialization.negation.factor);
             break;
         case AST_VARIABLE:
-            free_node(node->specialization.variable.value);
+            free(node->specialization.variable.variable_name);
             break;
         case AST_INTEGER: 
-            //nothing to free
+            //nothing to free.
             break;
         case AST_STRING:
-            //nothing to free 
+            free(node->specialization.string_literal.value);
             break;
         default:
             break;
     }
-    //free all children nodes recursively
+    //free the list of children nodes (if any) iteratively with free list. 
     if(node->children != NULL) {
-        free_complex_list(node->children, free_node_wrapper);
+        free_list(node->children, free_node_wrapper);
     }
     //free node itself
     free(node);
@@ -239,13 +217,9 @@ int free_node(ASTNode* node) {
 }
 
 /*
-Free Node Wrapper Function 
-
-a wrapper function for the free node function, utilized with my built-in array list
-to ensure i can free a list of nodes properly
-
-void* node: the node to be freed
-*/
+ * A wrapper function for the free node function, utilized with my built-in array list
+ * to ensure I can free a list of nodes properly. 
+ */
 
 void free_node_wrapper(void* node) {
     free_node((ASTNode*) node);
