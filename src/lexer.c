@@ -54,80 +54,45 @@ static void lexer_skip_whitespace(Lexer* lexer) {
     }
 }
 
-/*
- * Loops through with the tokenize next function to create a list of tokens. 
+/**
+ * @brief Returns the current lexer character as a string. 
+ * 
+ * Used for saving the value of single characters. 
+ *
+ * @param lexer Pointer to the lexer. 
+ * @return Null terminated, single char string so lexer can process. 
  */
 
-List* tokenize_all(Lexer* lexer) {
-    //create the list we are going to return, roughly estimate size needed
-    List* tokens_list = init_list(50);
-
-    //tokenize the contents
-    Token* token;
-    while((token = tokenize_next(lexer)) != NULL) {
-        //add to the list of tokens
-        list_add(tokens_list, token);
+static char* lexer_char_as_str(Lexer* lexer) {
+    //special case for a newline character
+    if(lexer->curr == '\n') {
+        //return it in the form "\n"
+        return strdup("\\n");
     }
-
-    //add the end of file token to the list once done tokenzing
-    list_add(tokens_list, init_token(TOKEN_EOF, strdup("eof")));
-
-    return tokens_list;
+    //lexer->c is char, we need to make it a proper null terminated string
+    char* char_as_str = malloc(2*sizeof(char));
+    //build the null terminated string
+    char_as_str[0] = lexer->curr;
+    char_as_str[1] = '\0';
+    return char_as_str;
 }
 
 /**
- * @brief The main function that is responsible for deciding the type of token encountered.
+ * @brief Continues tokenization and returns inputted token.
  * 
- * Examples: 
- * "hello world" (beginning with the quotation immediately indicates a string).
- * 123 (begininning with a numeric character immediately indicates an integer).
- * myVariable (beginning with an alphabetical character immediately indicates an identifier (keyword or name)).
- * + (single characters are easy to tokenize).
- * 
- * Notice the restrictions this makes, like variable names not being able to start with numbers. 
+ * Helper function, useful for single characters in the big switch case.
+ * Returns the current token processed so it can be propagated out, and advances lexer to get ready for next. 
  * 
  * @param lexer Pointer to the lexer. 
- * @return Pointer to the created token. 
+ * @param token Pointer to the token to return. 
+ * 
+ * @return Pointer to the current token being tokenized. 
  */
 
-static Token* tokenize_next(Lexer* lexer) {
-    //while we are not on the null terminating character and are still within the contents
-    while(lexer->curr != '\0' && lexer->index < strlen(lexer->contents)) {
-        lexer_skip_whitespace(lexer);
-
-        if(isdigit(lexer->curr)) {
-            return tokenize_number(lexer);
-        }
-
-        if(isalpha(lexer->curr)) {
-            return tokenize_ID(lexer);
-        }
-        
-        switch(lexer->curr) {
-            case '"': return tokenize_string(lexer); break;
-            //singular characters
-            case '\n': return continue_with_token(lexer, init_token(TOKEN_NEWLINE, lexer_char_as_str(lexer))); break;
-            case '=': return continue_with_token(lexer, init_token(TOKEN_EQUALS, lexer_char_as_str(lexer))); break;
-            case ';': return continue_with_token(lexer, init_token(TOKEN_SEMI, lexer_char_as_str(lexer))); break;
-            case ',': return continue_with_token(lexer, init_token(TOKEN_COMMA, lexer_char_as_str(lexer))); break;
-            case '.': return continue_with_token(lexer, init_token(TOKEN_PERIOD, lexer_char_as_str(lexer))); break;
-            case '\'': return continue_with_token(lexer, init_token(TOKEN_APOSTROPHE, lexer_char_as_str(lexer))); break;
-            case '_': return continue_with_token(lexer, init_token(TOKEN_UNDERSCORE, lexer_char_as_str(lexer))); break;
-            case '(': return continue_with_token(lexer, init_token(TOKEN_LPAREN, lexer_char_as_str(lexer))); break;
-            case ')': return continue_with_token(lexer, init_token(TOKEN_RPAREN, lexer_char_as_str(lexer))); break;
-            case '<': return continue_with_token(lexer, init_token(TOKEN_LCHEVRON, lexer_char_as_str(lexer))); break;
-            case '>': return continue_with_token(lexer, init_token(TOKEN_RCHEVRON, lexer_char_as_str(lexer))); break;
-            case '/': return continue_with_token(lexer, init_token(TOKEN_FSLASH, lexer_char_as_str(lexer))); break;
-            case '\\': return continue_with_token(lexer, init_token(TOKEN_BSLASH, lexer_char_as_str(lexer))); break;
-            case '+': return continue_with_token(lexer, init_token(TOKEN_PLUS, lexer_char_as_str(lexer))); break;
-            case '-': return continue_with_token(lexer, init_token(TOKEN_HYPHEN, lexer_char_as_str(lexer))); break;
-            case '*': return continue_with_token(lexer, init_token(TOKEN_ASTERISK, lexer_char_as_str(lexer))); break;
-            case '?': return continue_with_token(lexer, init_token(TOKEN_QUESTION, lexer_char_as_str(lexer))); break;
-            default: return NULL;
-        }
-    }
-    //return null if nothing is left to tokenize
-    return NULL;
+static Token* continue_with_token(Lexer* lexer, Token* token) {
+    //advance with the token
+    lexer_advance(lexer);
+    return token;
 }
 
 /**
@@ -238,44 +203,79 @@ static Token* tokenize_number(Lexer* lexer) {
 }
 
 /**
- * @brief Continues tokenization and returns inputted token.
+ * @brief The main function that is responsible for deciding the type of token encountered.
  * 
- * Helper function, useful for single characters in the big switch case.
- * Returns the current token processed so it can be propagated out, and advances lexer to get ready for next. 
+ * Examples: 
+ * "hello world" (beginning with the quotation immediately indicates a string).
+ * 123 (begininning with a numeric character immediately indicates an integer).
+ * myVariable (beginning with an alphabetical character immediately indicates an identifier (keyword or name)).
+ * + (single characters are easy to tokenize).
+ * 
+ * Notice the restrictions this makes, like variable names not being able to start with numbers. 
  * 
  * @param lexer Pointer to the lexer. 
- * @param token Pointer to the token to return. 
- * 
- * @return Pointer to the current token being tokenized. 
+ * @return Pointer to the created token. 
  */
 
-static Token* continue_with_token(Lexer* lexer, Token* token) {
-    //advance with the token
-    lexer_advance(lexer);
-    return token;
+static Token* tokenize_next(Lexer* lexer) {
+    //while we are not on the null terminating character and are still within the contents
+    while(lexer->curr != '\0' && lexer->index < strlen(lexer->contents)) {
+        lexer_skip_whitespace(lexer);
+
+        if(isdigit(lexer->curr)) {
+            return tokenize_number(lexer);
+        }
+
+        if(isalpha(lexer->curr)) {
+            return tokenize_ID(lexer);
+        }
+        
+        switch(lexer->curr) {
+            case '"': return tokenize_string(lexer); break;
+            //singular characters
+            case '\n': return continue_with_token(lexer, init_token(TOKEN_NEWLINE, lexer_char_as_str(lexer))); break;
+            case '=': return continue_with_token(lexer, init_token(TOKEN_EQUALS, lexer_char_as_str(lexer))); break;
+            case ';': return continue_with_token(lexer, init_token(TOKEN_SEMI, lexer_char_as_str(lexer))); break;
+            case ',': return continue_with_token(lexer, init_token(TOKEN_COMMA, lexer_char_as_str(lexer))); break;
+            case '.': return continue_with_token(lexer, init_token(TOKEN_PERIOD, lexer_char_as_str(lexer))); break;
+            case '\'': return continue_with_token(lexer, init_token(TOKEN_APOSTROPHE, lexer_char_as_str(lexer))); break;
+            case '_': return continue_with_token(lexer, init_token(TOKEN_UNDERSCORE, lexer_char_as_str(lexer))); break;
+            case '(': return continue_with_token(lexer, init_token(TOKEN_LPAREN, lexer_char_as_str(lexer))); break;
+            case ')': return continue_with_token(lexer, init_token(TOKEN_RPAREN, lexer_char_as_str(lexer))); break;
+            case '<': return continue_with_token(lexer, init_token(TOKEN_LCHEVRON, lexer_char_as_str(lexer))); break;
+            case '>': return continue_with_token(lexer, init_token(TOKEN_RCHEVRON, lexer_char_as_str(lexer))); break;
+            case '/': return continue_with_token(lexer, init_token(TOKEN_FSLASH, lexer_char_as_str(lexer))); break;
+            case '\\': return continue_with_token(lexer, init_token(TOKEN_BSLASH, lexer_char_as_str(lexer))); break;
+            case '+': return continue_with_token(lexer, init_token(TOKEN_PLUS, lexer_char_as_str(lexer))); break;
+            case '-': return continue_with_token(lexer, init_token(TOKEN_HYPHEN, lexer_char_as_str(lexer))); break;
+            case '*': return continue_with_token(lexer, init_token(TOKEN_ASTERISK, lexer_char_as_str(lexer))); break;
+            case '?': return continue_with_token(lexer, init_token(TOKEN_QUESTION, lexer_char_as_str(lexer))); break;
+            default: return NULL;
+        }
+    }
+    //return null if nothing is left to tokenize
+    return NULL;
 }
 
-/**
- * @brief Returns the current lexer character as a string. 
- * 
- * Used for saving the value of single characters. 
- *
- * @param lexer Pointer to the lexer. 
- * @return Null terminated, single char string so lexer can process. 
+/*
+ * Loops through with the tokenize next function to create a list of tokens. 
  */
 
-static char* lexer_char_as_str(Lexer* lexer) {
-    //special case for a newline character
-    if(lexer->curr == '\n') {
-        //return it in the form "\n"
-        return strdup("\\n");
+List* tokenize_all(Lexer* lexer) {
+    //create the list we are going to return, roughly estimate size needed
+    List* tokens_list = init_list(50);
+
+    //tokenize the contents
+    Token* token;
+    while((token = tokenize_next(lexer)) != NULL) {
+        //add to the list of tokens
+        list_add(tokens_list, token);
     }
-    //lexer->c is char, we need to make it a proper null terminated string
-    char* char_as_str = malloc(2*sizeof(char));
-    //build the null terminated string
-    char_as_str[0] = lexer->curr;
-    char_as_str[1] = '\0';
-    return char_as_str;
+
+    //add the end of file token to the list once done tokenzing
+    list_add(tokens_list, init_token(TOKEN_EOF, strdup("eof")));
+
+    return tokens_list;
 }
 
 /*

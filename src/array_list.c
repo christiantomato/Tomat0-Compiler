@@ -23,6 +23,30 @@ List* init_list(unsigned int init_capacity) {
     return list;
 }
 
+/**
+ * @brief Expands the capacity of the list.
+ *
+ * Helper which allocates a new array at double the current capacity, 
+ * copies all existing pointers into it, frees the old array, and updates the list's capacity.
+ *
+ * @param list Pointer to the list.
+ */
+
+static void expand_capacity(List* list) {
+    //double the size
+    void** new_array = malloc(list->current_capacity * 2 * sizeof(void*));
+    //update the current capacity
+    list->current_capacity = list->current_capacity * 2;
+    //copy the pointers into the new array
+    for(int i = 0; i < list->num_items; i++) {
+        new_array[i] = list->array[i];
+    }
+    //free the old array pointers
+    free(list->array);
+    //set the new array
+    list->array = new_array;
+}
+
 /*
  * If the list is at maximum capacity, it is expanded before the element is appended.
  */
@@ -61,29 +85,6 @@ void list_remove(List* list, unsigned int index, void (*free_func)(void*)) {
     list->num_items--;
 }
 
- /**
- * @brief Expands the capacity of the list.
- *
- * Helper which allocates a new array at double the current capacity, 
- * copies all existing pointers into it, frees the old array, and updates the list's capacity.
- *
- * @param list Pointer to the list.
- */
-
-static void expand_capacity(List* list) {
-    //double the size
-    void** new_array = malloc(list->current_capacity * 2 * sizeof(void*));
-    //update the current capacity
-    list->current_capacity = list->current_capacity * 2;
-    //copy the pointers into the new array
-    for(int i = 0; i < list->num_items; i++) {
-        new_array[i] = list->array[i];
-    }
-    //free the old array pointers
-    free(list->array);
-    //set the new array
-    list->array = new_array;
-}
 
 bool is_empty(List* list) {
     return list->num_items == 0;
