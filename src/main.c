@@ -1,3 +1,10 @@
+/**
+ * @file main.c
+ * @brief Goes through the compilation pipeline. 
+ * 
+ * Lexical Analysis -> Syntactic Analysis -> Code Generation
+ */
+
 #include "include/main.h"
 #include <stdio.h>
 #include <stdlib.h>

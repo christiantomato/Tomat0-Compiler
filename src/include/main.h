@@ -1,6 +1,7 @@
-/*
-Header Master File
-*/
+/**
+ * @file main.h
+ * @brief A sort of header master file. 
+ */
 
 #ifndef MAIN_H
 #define MAIN_H
