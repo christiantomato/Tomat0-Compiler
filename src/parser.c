@@ -429,7 +429,7 @@ ASTNode* parse_factor(Parser* parser) {
         //create the AST_VARIABLE
         ASTNode* variable_node = init_node(AST_VARIABLE);
         //set the name, remember in parsing value is not resolved yet so we leave that be
-        variable_node->specialization.variable.variable_name = parser->current_token->value;
+        variable_node->specialization.variable.variable_name = strdup(parser->current_token->value);
         //advance past
         parser_advance(parser);
         //return the node
