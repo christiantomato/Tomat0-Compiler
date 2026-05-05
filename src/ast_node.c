@@ -61,7 +61,7 @@ ASTNode* init_node(NodeType type) {
 
 char* node_type_as_str(ASTNode* node) {
     switch(node->type) {
-        case AST_PROGRAM: return "AST_PROGRAM"; break;
+        case AST_GLOBAL: return "AST_GLOBAL"; break;
         case AST_VARIABLE_DECLARATION: return "AST_VARIABLE_DECLARATION"; break;
         case AST_VARIABLE_ASSIGNMENT: return "AST_VARIABLE_ASSIGNMENT"; break;
         case AST_PRINT_STATEMENT: return "AST_PRINT_STATEMENT"; break;
@@ -98,7 +98,7 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
 
     //print additional specfic details based on the node type
     switch(root->type) {
-        case AST_PROGRAM:
+        case AST_GLOBAL:
             //iterate through the children statements and write them to file
             for(int i = 0; i < root->children->num_items; i++) {
                 //indent always 1 for program children

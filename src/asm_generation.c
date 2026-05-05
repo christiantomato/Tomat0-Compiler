@@ -18,7 +18,7 @@ return: can return information about last used register
 int node_to_asm(FILE* file, ASTNode* node, SymbolTable* table, RegisterManager* manager) {
     //switch on the node type
     switch(node->type) {
-        case AST_PROGRAM:
+        case AST_GLOBAL:
             //go through children nodes
             for(int i = 0; i < node->children->num_items; i++) {
                 //generate the asm for all nodes in the program

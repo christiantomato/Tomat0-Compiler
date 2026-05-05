@@ -27,7 +27,7 @@ Parser* init_parser(List* tokens) {
     //create a parser and allocate memory
     Parser* parser = malloc(sizeof(Parser));
     //initialize the root node to be a PROGRAM node
-    parser->root = init_node(AST_PROGRAM);
+    parser->root = init_node(AST_GLOBAL);
     //use the list of tokens passed in
     parser->tokens = tokens;
     //set the initial token to starting position in array
