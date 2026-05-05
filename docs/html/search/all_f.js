@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['todo_0',['TODO',['../readme.html#autotoc_md4',1,'']]],
+  ['todo_0',['TODO',['../md__r_e_a_d_m_e.html#autotoc_md4',1,'']]],
   ['token_1',['Token',['../struct_token.html',1,'']]],
   ['token_2ec_2',['token.c',['../token_8c.html',1,'']]],
   ['token_2eh_3',['token.h',['../token_8h.html',1,'']]],
@@ -39,7 +39,7 @@ var searchData=
   ['tokenize_5fstring_36',['tokenize_string',['../lexer_8c.html#aeab15b67cc27c6674be5026b40cae891',1,'lexer.c']]],
   ['tokens_37',['tokens',['../struct_parser.html#a63bafb871bdaf58c1d25ec3f35e8dca7',1,'Parser']]],
   ['tokentype_38',['TokenType',['../token_8h.html#aa520fbf142ba1e7e659590c07da31921',1,'token.h']]],
-  ['tomat0_20compiler_39',['Tomat0 Compiler',['../readme.html#autotoc_md2',1,'']]],
-  ['tomat0_20compiler_20documentation_40',['Tomat0 Compiler Documentation',['../index.html',1,'']]],
+  ['tomat0_20compiler_20documentation_39',['Tomat0 Compiler Documentation',['../index.html',1,'']]],
+  ['tomat0_20compiler_20readme_40',['Tomat0 Compiler README',['../md__r_e_a_d_m_e.html',1,'']]],
   ['type_41',['type',['../structast__node__struct.html#a7590939e59c6448f78799e2e4ce90e25',1,'ast_node_struct::type'],['../structsymbol__struct.html#a625281055565680e44db21ad21a0c530',1,'symbol_struct::type'],['../struct_token.html#a67919af9f3a80dc0b28a0ab1e6d5bf8a',1,'Token::type']]]
 ];

@@ -26,9 +26,7 @@ var NAVTREE =
 [
   [ "Tomat0 Compiler", "index.html", [
     [ "Tomat0 Compiler Documentation", "index.html", null ],
-    [ "README", "readme.html", [
-      [ "Tomat0 Compiler", "readme.html#autotoc_md2", null ]
-    ] ],
+    [ "Tomat0 Compiler README", "md__r_e_a_d_m_e.html", null ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -55,7 +53,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"union_a_s_t_specialization.html#aadbfe582297e6631b21fc381fb3c0db4"
+"union_a_s_t_specialization.html#acd80171b17cf3df8c69281de8b5eade8"
 ];
 
 const SYNCONMSG = 'click to disable panel synchronization';
