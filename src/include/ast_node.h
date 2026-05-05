@@ -143,7 +143,6 @@ typedef union {
 } ASTSpecialization;
 
 /**
- * @struct ASTNode
  * @brief A general node definition. 
  * 
  * Utilizes the union to be memory efficient. Node only utilizes memory needed for its specialization.
