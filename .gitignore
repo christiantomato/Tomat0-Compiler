@@ -3,5 +3,5 @@ output/
 *.out
 
 #ignore all documentation
-docs
+docs/
 Doxyfile
