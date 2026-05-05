@@ -1,0 +1,4 @@
+> Testing the ast
+
+int x = 2 + 4
+int y = x + 2
