@@ -96,17 +96,16 @@ typedef struct {
     struct ast_node_struct* factor; /**< The factor being negated. */
 } Negation;
 
+//TERMINAL NODES: 
+
 /**
  * @struct Variable
- * @brief Encodes a variable with its associated value. 
+ * @brief Encodes a variable
  */
 
 typedef struct {
     char* variable_name; /**< Variable name. */
-    struct ast_node_struct* value; /**< Variable Value. */
 } Variable;
-
-//TERMINAL NODES: 
 
 /**
  * @struct IntegerLiteral
