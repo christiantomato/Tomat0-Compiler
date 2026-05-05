@@ -1,6 +1,7 @@
-#ignore the C code executable
+#ignore outputs
+output/
 *.out
 
-#ignore the doxyfile and latex documenation
-docs/latex/
+#ignore all documentation
+docs
 Doxyfile
