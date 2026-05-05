@@ -117,7 +117,7 @@ int free_symbol_table(SymbolTable* table) {
         return 1;
     }
     //free the list
-    free_complex_list(table->symbols, free_symbol_wrapper);
+    free_list(table->symbols, free_symbol_wrapper);
     //free table
     free(table);
     return 0;

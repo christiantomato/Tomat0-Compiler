@@ -146,9 +146,6 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
         case AST_VARIABLE:
             print_indent(file, indent);
             fprintf(file, "variable_name = %s\n", root->specialization.variable.variable_name);
-            print_indent(file, indent);
-            //values not determined through parsing actually so this is unecessary
-            //fprintf(file, "value = (determined at runtime)\n");
             break;
         case AST_INTEGER:
             print_indent(file, indent);

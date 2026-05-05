@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
     fclose(assembly_file);
 
     //free rest of memory which is being used by parser
-    free_parser(my_parser);
+    //free_parser(my_parser);
 
     //make an executable
     system("gcc output/generated_asm.s -o tomat0executable");

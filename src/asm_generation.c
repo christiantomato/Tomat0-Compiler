@@ -93,7 +93,7 @@ int node_to_asm(FILE* file, ASTNode* node, SymbolTable* table, RegisterManager* 
 
             //switch on the operand (make sure to dereference)
             fprintf(file, "\t//binary operation\n");
-            switch(*node->specialization.binary_operation.operand) {
+            switch(*node->specialization.binary_operation.operator) {
                 case '+':
                     //add the two values 
                     fprintf(file, "\tadd x%d, x%d, x%d\n", result_reg, left_reg, right_reg);

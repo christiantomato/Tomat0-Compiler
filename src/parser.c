@@ -502,7 +502,7 @@ int free_parser(Parser* parser) {
     //free everything the parser uses
 
     //free tokens list
-    free_complex_list(parser->tokens, free_token_wrapper);
+    free_list(parser->tokens, free_token_wrapper);
     //free the nodes
     free_node(parser->root);
     //free parser itself
