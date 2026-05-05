@@ -34,14 +34,14 @@ int main(int argc, char *argv[]) {
     //parse everything and return the root node
     ASTNode* ast_root = parser_parse(my_parser, my_symbol_table);
 
-    //we can free the tokens and parser now
-    free_list(tokens_list, free_token_wrapper);
-    free_parser(my_parser);
-
     //write ast representation from root node now
     FILE* ast_file = fopen("output/ast_output.txt", "w");
     print_ast(ast_file, ast_root, 0);
     fclose(ast_file);
+
+    //we can free the tokens and parser now
+    free_list(tokens_list, free_token_wrapper);
+    free_parser(my_parser);
 
     /*
      * CODE GENERATION
