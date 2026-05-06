@@ -7,11 +7,11 @@
  * acting as the first step in breaking up our contents into meaningful units that can be more easily parsed. 
  */
 
-#include "token.h"
-#include "array_list.h"
-
 #ifndef LEXER_H
 #define LEXER_H
+
+#include "token.h"
+#include "array_list.h"
 
 /**
  * @struct Lexer

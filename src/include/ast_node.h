@@ -10,12 +10,11 @@
  * - function calls
  */
 
-#include "array_list.h"
-#include "types.h"
-#include <stdio.h>
-
 #ifndef AST_NODE_H
 #define AST_NODE_H
+
+#include "array_list.h"
+#include "types.h"
 
 /**
  * @enum NodeType

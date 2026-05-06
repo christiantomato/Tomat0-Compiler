@@ -6,11 +6,11 @@
  * Commonly used for storing tokens and AST nodes.
  */
 
-#include <stdbool.h>
-#include <stdio.h>
-
 #ifndef ARRAY_LIST_H
 #define ARRAY_LIST_H
+
+#include <stdbool.h>
+#include <stdio.h>
 
 /**
  * @struct List

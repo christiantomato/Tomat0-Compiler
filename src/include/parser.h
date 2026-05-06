@@ -8,11 +8,11 @@
  * Uses a LL(1) parsing design. 
  */
 
-#include "token.h"
-#include "ast_node.h"
-
 #ifndef PARSER_H
 #define PARSER_H
+
+#include "token.h"
+#include "ast_node.h"
 
 /**
  * @struct Parser
