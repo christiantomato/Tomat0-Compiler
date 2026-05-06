@@ -35,6 +35,9 @@ Scope* init_scope(Scope* parent);
 /**
  * @brief Looks up the desired symbol in all scopes. 
  * 
+ * Nested scopes can use symbols from higher level scopes, so when we look up a symbol, 
+ * we must traverse all the way up to the global scope to look for it. 
+ * 
  * @param scope Pointer to the current scope. 
  * @param name Name of symbol we are looking for. 
  * @return Pointer to the symbol. 
@@ -43,7 +46,10 @@ Scope* init_scope(Scope* parent);
 Symbol* lookup_symbol(Scope* scope, const char* name);
 
 /**
- * @brief Looks up the desired symbol in this scope. 
+ * @brief Looks up the desired symbol in only this scope. 
+ * 
+ * Each individual scope cannot have duplicate variable names, so this function is used 
+ * to make sure the symbol name doesn't already exist in this scope but its okay if it exists in higher scopes! (shadowing).
  * 
  * @param scope Pointer to the current scope. 
  * @param name Name of symbol we are looking for.
