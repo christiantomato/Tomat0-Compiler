@@ -173,7 +173,7 @@ void free_hash_table(HashTable* table) {
             curr = curr->next;
 
             //free the symbol
-            free(temp->symbol);
+            free_symbol(temp->symbol);
             //free node itself
             free(temp);
         }
