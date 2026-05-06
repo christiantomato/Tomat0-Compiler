@@ -74,10 +74,9 @@ bool is_max_capacity(List* list);
  *
  * @param list Pointer to the list.
  * @param free_func Function used to free each element.
- * @return 0 for success, 1 otherwise.
  */
 
-int free_list(List* list, void (*free_func)(void*));
+void free_list(List* list, void (*free_func)(void*));
 
 /**
  * @brief Prints the list to a file.

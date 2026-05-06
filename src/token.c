@@ -79,16 +79,11 @@ char* token_to_str(void* token) {
  * Frees all allocated memory of a token struct.
  */
 
-int free_token(Token* token) {
-    //ensure the token isn't garbage
-    if(token == NULL) {
-        return 1;
-    }
+void free_token(Token* token) {
     //free the pointer to the value of the token
     free(token->value);
     //free the token itself
     free(token);
-    return 0;
 }
 
 /*

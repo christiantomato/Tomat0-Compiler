@@ -99,12 +99,7 @@ bool is_max_capacity(List* list) {
  * the array and list structure are freed.
  */
 
-int free_list(List* list, void (*free_func)(void*)) {
-    //ensure the list isn't garbage
-    if(list == NULL) {
-        return 1;
-    }
-
+void free_list(List* list, void (*free_func)(void*)) {
     //if provided free the data stored
     if(free_func) {
         //free deep
@@ -118,7 +113,6 @@ int free_list(List* list, void (*free_func)(void*)) {
     free(list->array);
     //free the list structure itself
     free(list);
-    return 0;
 }
 
 /*

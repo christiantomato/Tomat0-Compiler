@@ -29,6 +29,8 @@ Symbol* init_symbol(char* name, SymbolKind kind) {
  */
 
 void free_symbol(Symbol* symbol) {
+    //free name since we strdup'd it
     free(symbol->name);
+    //free symbol itself
     free(symbol);
 }

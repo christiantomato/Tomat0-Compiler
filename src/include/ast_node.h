@@ -186,10 +186,9 @@ void print_ast(FILE* file, ASTNode* root, int indent);
  * @brief Frees the allocated memory for a node. 
  * 
  * @param node Pointer to the node. 
- * @return 0 for success, 1 otherwise. 
  */
 
-int free_node(ASTNode* node);
+void free_node(ASTNode* node);
 
 /**
  * @brief Wrapper for the free node function. 

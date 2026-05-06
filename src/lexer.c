@@ -282,14 +282,9 @@ List* tokenize_all(Lexer* lexer) {
  * Frees all memory allocated by the lexer struct.
  */
 
-int free_lexer(Lexer* lexer) {
-    //ensure the lexer isn't garbage
-    if(lexer == NULL) {
-        return 1;
-    }
+void free_lexer(Lexer* lexer) {
     //free the pointer to the contents
     free(lexer->contents);
     //free the lexer itself
     free(lexer);
-    return 0;
 }

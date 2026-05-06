@@ -51,9 +51,8 @@ ASTNode* parser_parse(Parser* parser);
  * @brief Frees allocated memory by the parser. 
  * 
  * @param parser Pointer to the parser. 
- * @return 0 for success, 1 otherwise.
  */
 
-int free_parser(Parser* parser);
+void free_parser(Parser* parser);
 
 #endif

@@ -163,11 +163,7 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
  * Frees entire tree if program node is inputted. 
  */
 
-int free_node(ASTNode* node) {
-    //make sure not garbage
-    if(node == NULL) {
-        return 1;
-    }
+void free_node(ASTNode* node) {
     //for non terminal nodes, free members which have allocated memory. 
     switch(node->type) {
         case AST_VARIABLE_DECLARATION:
@@ -201,13 +197,11 @@ int free_node(ASTNode* node) {
         default:
             break;
     }
+
     //free the list of children nodes (if any) iteratively with free list. 
-    if(node->children != NULL) {
-        free_list(node->children, free_node_wrapper);
-    }
+    free_list(node->children, free_node_wrapper);
     //free node itself
     free(node);
-    return 0;
 }
 
 /*

@@ -46,9 +46,8 @@ List* tokenize_all(Lexer* lexer);
  * @brief Frees all allocated memory by the lexer.
  * 
  * @param lexer Pointer to the lexer. 
- * @return 0 for success, 1 otherwise.
  */
 
-int free_lexer(Lexer* lexer);
+void free_lexer(Lexer* lexer);
 
 #endif

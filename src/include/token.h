@@ -93,10 +93,9 @@ char* token_to_str(void* token);
  * @brief Frees the allocated memory for a token. 
  * 
  * @param token Pointer to the token. 
- * @return 0 if successful, 1 otherwise. 
  */
 
-int free_token(Token* token);
+void free_token(Token* token);
 
 /**
  * @brief Wrapper for the free token function. 

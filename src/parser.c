@@ -428,12 +428,7 @@ ASTNode* parser_parse(Parser* parser) {
  * ASTNode root must live for the code generation pass. 
  */
 
-int free_parser(Parser* parser) {
-    //make sure parser isn't garbage
-    if(parser == NULL) {
-        return 1;
-    }
+void free_parser(Parser* parser) {
     //free parser itself
     free(parser);
-    return 0;
 }
