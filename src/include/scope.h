@@ -20,9 +20,8 @@
 typedef struct scope_struct {
     struct scope_struct* parent; /**< The parent scope. */
     HashTable* symbol_table; /**< The symbol table for the scope. */
-    int current_offset; /**< The current offset for variables that are being stored in this scope. */
+    int current_offset; /**< The frame pointer offset for variables inside the scope. */
 } Scope;
-
 
 /**
  * @brief Creates and initalizes a new scope. 
