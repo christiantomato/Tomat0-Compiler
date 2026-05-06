@@ -49,6 +49,23 @@ typedef struct {
 
 Symbol* init_symbol(char* name, SymbolKind kind); 
 
+/**
+ * @brief Returns the enum for symbol kind as a string. 
+ * 
+ * @param symbol Pointer to the symbol. 
+ * @return String representation of the enum. 
+ */
+
+char* symbol_kind_as_str(Symbol* symbol);
+
+/**
+ * @brief A toString for a symbol. 
+ * 
+ * @param symbol Generic pointer to the symbol.
+ * @return String representation of the symbol. 
+ */
+
+char* symbol_to_str(void* symbol);
 
 /**
  * @brief Frees memory allocated by a symbol. 
