@@ -11,6 +11,33 @@
 
 int main(int argc, char *argv[]) {
 
+    //Testing...
+
+    //make some symbols
+    Symbol* sym1 = init_symbol("counter", SYMBOL_VARIABLE);
+    Symbol* sym2 = init_symbol("calculate", SYMBOL_FUNCTION);
+    Symbol* sym3 = init_symbol("foo", SYMBOL_VARIABLE);
+
+    //make a hash table
+    HashTable* table = init_hash_table(5);
+
+    //add the symbols
+    hash_put(table, sym1);
+    hash_put(table, sym2);
+    hash_put(table, sym3);
+
+    //remove
+    hash_remove(table, sym1->name);
+
+    //get one
+    Symbol* mine = hash_get(table, sym2->name);
+    printf("%s", symbol_to_str(mine));
+
+    //lets see it
+    FILE* symbols_file = fopen("output/symbols_output.csv", "w");
+    hash_print(symbols_file, table);
+    fclose(symbols_file);
+
     /*
      * LEXICAL ANALYSIS
      */
