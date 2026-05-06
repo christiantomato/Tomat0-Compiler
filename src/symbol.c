@@ -1,6 +1,6 @@
 /**
  * @file symbol.c
- * @brief Implements symbol.h functions. 
+ * @brief Implements functions for my symbol definition. 
  */
 
 #include "include/symbol.h"
