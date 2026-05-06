@@ -44,9 +44,7 @@ static int hash_function(HashTable* table, const char* key) {
     return hash_value;
 }
 
-/**
- * @brief Inserts a symbol into the hash table. 
- * 
+/*
  * Nodes are inserted to the head of the linked list. 
  */
 
@@ -76,6 +74,10 @@ void hash_put(HashTable* table, Symbol* symbol) {
     table->buckets[index] = new_node;
 }
 
+/*
+ * Gets a symbol from the table. 
+ */
+
 Symbol* hash_get(HashTable* table, const char* symbol_name) {
     //get the index of where it should be 
     int index = hash_function(table, symbol_name);
@@ -96,6 +98,10 @@ Symbol* hash_get(HashTable* table, const char* symbol_name) {
     //didn't find
     return NULL;
 }
+
+/*
+ * Removes a symbol from the table.  
+ */
 
 void hash_remove(HashTable* table, const char* symbol_name) {
     //get the position of where it should be
@@ -130,10 +136,47 @@ void hash_remove(HashTable* table, const char* symbol_name) {
     printf("Exception: node not found.\n");
 }
 
-void hash_print(FILE* file, HashTable* table) {
+/*
+ * Prints the table representation to a file. 
+ * Loops through each bucket and linked list. 
+ */
 
+void hash_print(FILE* file, HashTable* table) {
+    //loop through each bucket
+    for(int i = 0; i < table->size; i++) {
+        //get the head
+        HashNode* curr = table->buckets[i];
+
+        //go through the linked list
+        while(curr != NULL) {
+            fprintf(file, "%s\n", symbol_to_str(curr->symbol));
+            curr = curr->next;
+        }
+    }
 }
 
-void free_hash_table(HashTable* table) {
+/*
+ * Frees allocated memory by the hash table.  
+ */
 
+void free_hash_table(HashTable* table) {
+    //loop through each bucket
+    for(int i = 0; i < table->size; i++) {
+        //get the head
+        HashNode* curr = table->buckets[i];
+
+        //go through the linked list
+        while(curr != NULL) {
+            HashNode* temp = curr;
+            //save pointer to the next
+            curr = curr->next;
+            //free node
+            free(temp);
+        }
+    }
+    
+    //free the buckets
+    free(table->buckets);
+    //free the table itself
+    free(table);
 }
