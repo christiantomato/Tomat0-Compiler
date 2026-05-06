@@ -167,10 +167,14 @@ void free_hash_table(HashTable* table) {
 
         //go through the linked list
         while(curr != NULL) {
+            //set a temp
             HashNode* temp = curr;
-            //save pointer to the next
+            //save pointer to the next so we can free
             curr = curr->next;
-            //free node
+
+            //free the symbol
+            free(temp->symbol);
+            //free node itself
             free(temp);
         }
     }
