@@ -20,7 +20,7 @@
 typedef struct scope_struct {
     struct scope_struct* parent; /**< The parent scope. */
     HashTable* symbol_table; /**< The symbol table for the scope. */
-    int current_offset; /**< The frame pointer offset for variables inside the scope. */
+    int current_offset; /**< The next free stack slot relative to the frame pointer of this scope. */
 } Scope;
 
 /**
@@ -33,14 +33,24 @@ typedef struct scope_struct {
 Scope* init_scope(Scope* parent);
 
 /**
- * @brief Looks up the desired symbol in the scope. 
+ * @brief Looks up the desired symbol in all scopes. 
  * 
- * @param scope Pointer to the scope. 
+ * @param scope Pointer to the current scope. 
  * @param name Name of symbol we are looking for. 
  * @return Pointer to the symbol. 
  */
 
 Symbol* lookup_symbol(Scope* scope, const char* name);
+
+/**
+ * @brief Looks up the desired symbol in this scope. 
+ * 
+ * @param scope Pointer to the current scope. 
+ * @param name Name of symbol we are looking for.
+ * @return Pointer to the symbol.
+ */
+
+Symbol* lookup_symbol_in_scope(Scope* scope, const char* name);
 
 /**
  * @brief Adds a symbol to the symbol table of the scope. 
@@ -50,6 +60,24 @@ Symbol* lookup_symbol(Scope* scope, const char* name);
  */
 
 void add_symbol(Scope* scope, Symbol* symbol);
+
+/**
+ * @brief Enter a scope.
+ * 
+ * @param current_scope Pointer to the current scope. 
+ * @return Pointer to the nested scope. 
+ */
+
+Scope* enter_scope(Scope* current_scope);
+
+/**
+ * @brief Exits a scope. 
+ * 
+ * @param current_scope Pointer to the current scope. 
+ * @return Pointer to the parent scope. 
+ */
+
+Scope* exit_scope(Scope* current_scope);
 
 /**
  * @brief Frees allocated memory by the scope. 
