@@ -15,7 +15,7 @@
 /**
  * @brief Defines a hash node for symbols. 
  * 
- * Implementing the linked lists for each hash position using pointers. 
+ * Implementing the singly linked lists for each hash position using pointers. 
  */
 
 typedef struct hash_node_struct {
