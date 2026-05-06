@@ -41,7 +41,7 @@ Scope* init_scope(Scope* parent);
  * @return Pointer to the symbol. 
  */
 
-Symbol* lookup_symbol(Scope* scope, char* name);
+Symbol* lookup_symbol(Scope* scope, const char* name);
 
 /**
  * @brief Adds a symbol to the symbol table of the scope. 
