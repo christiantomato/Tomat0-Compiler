@@ -130,6 +130,12 @@ static ASTNode* parse_factor(Parser* parser) {
 
     //check for an identifier
     if(parser->current_token->type == TOKEN_ID) {
+        //SEMANTIC ANALYSIS: ensure the variable exists 
+        if(lookup_symbol(parser->current_scope, parser->current_token->value) == NULL) {
+            //variable doesn't exist
+            printf("SEMANTIC ERROR: Variable has not been declared.\n");
+        }
+
         //create the AST_VARIABLE
         ASTNode* variable_node = init_node(AST_VARIABLE, parser->current_scope);
         //set the name, remember in parsing value is not resolved yet so we leave that be
@@ -266,22 +272,32 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
     }
     else {
         //no type? problem  
+        printf("SYNTAX ERROR: Invalid type.\n");
         return NULL;
     }
 
     //advance to the next token
     parser_advance(parser);
 
-
-    //expect a variable name
+    //expect the variable name
     if(parser->current_token->type == TOKEN_ID) {
+        //SEMANTICS: ensure the variable doesn't already exist in this scope
+        if(lookup_symbol_in_scope(parser->current_scope, parser->current_token->value) != NULL) {
+            //alrady exists
+            printf("SEMANTIC ERROR: Variable already exists in this scope.\n");
+        }
         //duplicate the token value (fixing double free errors)
         var_dec_node->specialization.variable_declaration.variable_name = strdup(parser->current_token->value);
     }
     else {
-        //problem in syntax
+        //problem in variable name
+        printf("SYNTAX ERROR: Invalid variable name.\n");
         return NULL;
     }
+
+    //create the symbol and add to the table
+    Symbol* var_symbol = init_symbol(parser->current_token->value, SYMBOL_VARIABLE);
+    add_symbol(parser->current_scope, var_symbol);
 
     //advance to next
     parser_advance(parser);
@@ -292,6 +308,7 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
     }
     else {
         //problem
+        printf("SYNTAX ERROR: Expected equals.\n");
         return NULL;
     }
 
@@ -303,13 +320,19 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
 }
 
 /**
- * @brief Parses a variable assignment instruction (for reassignemnts).
+ * @brief Parses a variable assignment instruction (for already created variables).
  * 
  * @param parser Pointer to the parser. 
  * @return Pointer to the created assignment node. 
  */
 
 static ASTNode* parse_variable_assignment(Parser* parser) {
+    //SEMANTICS: ensure the variable already exists
+    if(lookup_symbol(parser->current_scope, parser->current_token->value) == NULL) {
+        //variable doesn't exist
+        printf("SEMANTIC ERROR: Variable has not been declared.\n");
+    }
+
     //create the node we will return
     ASTNode* var_assignment_node = init_node(AST_VARIABLE_ASSIGNMENT, parser->current_scope);
 
@@ -385,7 +408,7 @@ static ASTNode* parse_print_statement(Parser* parser) {
  */
 
 static ASTNode* parse_line(Parser* parser) {
-    //go through each type of statement it could be 
+    //determine what the instruction is by the first token
     if(parser->current_token->type == TOKEN_KEYWORD_INT || parser->current_token->type == TOKEN_KEYWORD_STRING) {
        return parse_variable_declaration(parser);
     }
@@ -397,6 +420,7 @@ static ASTNode* parse_line(Parser* parser) {
     }
     else {
         //invalid statement
+        printf("SEMANTIC ERROR: Invalid Statement.\n");
         return NULL;
     }
 }
