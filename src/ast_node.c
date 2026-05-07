@@ -10,12 +10,15 @@
  * Initalizes an ast node based on the given type.
  */
 
-ASTNode* init_node(NodeType type) {
+ASTNode* init_node(NodeType type, Scope* scope) {
     //allocate memory for the node
     ASTNode* node = malloc(sizeof(ASTNode));
+    //set type and scope
     node->type = type;
+    node->scope = scope;
     //start off with a children list of size 3 (most nodes don't actually use the children list anyways)
-    node->children = init_list(3);
+    node->children = init_list(5);
+
     //initialize values needed for each node specilization
     switch(type) {
         case AST_VARIABLE_DECLARATION:

@@ -15,6 +15,7 @@
 
 #include "array_list.h"
 #include "types.h"
+#include "scope.h"
 
 /**
  * @enum NodeType
@@ -145,22 +146,25 @@ typedef union {
  * @brief A general node definition. 
  * 
  * Utilizes the union to be memory efficient. Node only utilizes memory needed for its specialization.
+ * Each node has a pointer to the scope it lives in.
  */
 
 typedef struct ast_node_struct {
     NodeType type; /**< The type of node. */
     List* children; /**< Pointer to the nodes children (if any). */
     ASTSpecialization specialization; /**< Its specialization from the union. */
+    Scope* scope; /**< The scope where this node lives. */
 } ASTNode;
 
 /**
  * @brief Creates and initalizes a new node. 
  * 
  * @param type The node type. 
+ * @param scope The scope it lives in. 
  * @return Pointer to the newly created node. 
  */
 
-ASTNode* init_node(NodeType type);
+ASTNode* init_node(NodeType type, Scope* scope);
 
 /**
  * @brief Returns the enum name for the node as a string. 
