@@ -1,3 +1,6 @@
-> testing
+> testing semantic errors
+> y not declared yet
 
-y = 3
+int x = y + 2
+
+
