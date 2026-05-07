@@ -43,6 +43,8 @@ char* token_type_as_str(Token* token) {
         case TOKEN_UNDERSCORE: return "TOKEN_UNDERSCORE"; break;
         case TOKEN_LPAREN: return "TOKEN_LPAREN"; break;
         case TOKEN_RPAREN: return "TOKEN_RPAREN"; break;
+        case TOKEN_LCURLY: return "TOKEN_LCURLY"; break;
+        case TOKEN_RCURLY: return "TOKEN_RCURLY"; break;
         case TOKEN_LCHEVRON: return "TOKEN_LCHEVRON"; break;
         case TOKEN_RCHEVRON: return "TOKEN_RCHEVRON"; break;
         case TOKEN_FSLASH: return "TOKEN_FSLASH"; break;
