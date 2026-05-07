@@ -96,7 +96,6 @@ Symbol* hash_get(HashTable* table, const char* symbol_name) {
     }
 
     //didn't find
-    printf("HASH EXCEPTION: node not found.\n");
     return NULL;
 }
 
