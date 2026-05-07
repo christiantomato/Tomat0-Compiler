@@ -23,14 +23,22 @@
 Parser* init_parser(List* tokens) {
     //create a parser and allocate memory
     Parser* parser = malloc(sizeof(Parser));
-    //initialize the root node to be a PROGRAM node
-    parser->root = init_node(AST_GLOBAL);
+
     //use the list of tokens passed in
     parser->tokens = tokens;
     //set the initial token to starting position in array
     parser->current_token = parser->tokens->array[0];
     //initialize the index at zero
     parser->index = 0;
+
+    //initalize the root node and global scope
+    Scope* global_scope = init_scope(NULL);
+    parser->root = init_node(AST_GLOBAL, global_scope);
+    parser->current_scope = global_scope;
+    //init list and add global scope
+    parser->scopes = init_list(10);
+    list_add(parser->scopes, global_scope);
+    
     return parser;
 }
 
@@ -113,7 +121,7 @@ static ASTNode* parse_factor(Parser* parser) {
         //advance to the factor
         parser_advance(parser);
         //create the negation node
-        ASTNode* negation_node = init_node(AST_NEGATION);
+        ASTNode* negation_node = init_node(AST_NEGATION, parser->current_scope);
         //assign
         negation_node->specialization.negation.factor = parse_factor(parser);
         //return the node
@@ -123,7 +131,7 @@ static ASTNode* parse_factor(Parser* parser) {
     //check for an identifier
     if(parser->current_token->type == TOKEN_ID) {
         //create the AST_VARIABLE
-        ASTNode* variable_node = init_node(AST_VARIABLE);
+        ASTNode* variable_node = init_node(AST_VARIABLE, parser->current_scope);
         //set the name, remember in parsing value is not resolved yet so we leave that be
         variable_node->specialization.variable.variable_name = strdup(parser->current_token->value);
         //advance past
@@ -135,7 +143,7 @@ static ASTNode* parse_factor(Parser* parser) {
     //check for an integer literal
     if(parser->current_token->type == TOKEN_NUM) {
         //create the AST_INTEGER
-        ASTNode* integer_node = init_node(AST_INTEGER);
+        ASTNode* integer_node = init_node(AST_INTEGER, parser->current_scope);
         //assign
         integer_node->specialization.integer_literal.value = atoi(parser->current_token->value);
         //advance past the number
@@ -147,7 +155,7 @@ static ASTNode* parse_factor(Parser* parser) {
     //check for string literal
     if(parser->current_token->type == TOKEN_STRING) {
         //create an AST_STRING
-        ASTNode* string_node = init_node(AST_STRING);
+        ASTNode* string_node = init_node(AST_STRING, parser->current_scope);
         //assign the string (make sure to duplicate)
         string_node->specialization.string_literal.value = strdup(parser->current_token->value);
         //advance past
@@ -183,7 +191,7 @@ static ASTNode* parse_term(Parser* parser) {
         ASTNode* right = parse_factor(parser);
 
         //create the binary operation node
-        ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION);
+        ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION, parser->current_scope);
         binary_op_node->specialization.binary_operation.left = left;
         binary_op_node->specialization.binary_operation.operator = operator;
         binary_op_node->specialization.binary_operation.right = right;
@@ -223,7 +231,7 @@ static ASTNode* parse_expression(Parser* parser) {
         ASTNode* right = parse_term(parser);
 
         //create the binary operation node
-        ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION);
+        ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION, parser->current_scope);
         binary_op_node->specialization.binary_operation.left = left;
         binary_op_node->specialization.binary_operation.operator = operator;
         binary_op_node->specialization.binary_operation.right = right;
@@ -247,7 +255,7 @@ static ASTNode* parse_expression(Parser* parser) {
 
 static ASTNode* parse_variable_declaration(Parser* parser) {
     //create the node we will return
-    ASTNode* var_dec_node = init_node(AST_VARIABLE_DECLARATION);
+    ASTNode* var_dec_node = init_node(AST_VARIABLE_DECLARATION, parser->current_scope);
 
     //determine the data type
     if(parser->current_token->type == TOKEN_KEYWORD_INT) {
@@ -303,7 +311,7 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
 
 static ASTNode* parse_variable_assignment(Parser* parser) {
     //create the node we will return
-    ASTNode* var_assignment_node = init_node(AST_VARIABLE_ASSIGNMENT);
+    ASTNode* var_assignment_node = init_node(AST_VARIABLE_ASSIGNMENT, parser->current_scope);
 
     //get the variable name to reassign to 
     var_assignment_node->specialization.variable_assignment.variable_name = strdup(parser->current_token->value);
@@ -333,7 +341,7 @@ static ASTNode* parse_variable_assignment(Parser* parser) {
 
 static ASTNode* parse_print_statement(Parser* parser) {
     //create the node we will return
-    ASTNode* print_node = init_node(AST_PRINT_STATEMENT);
+    ASTNode* print_node = init_node(AST_PRINT_STATEMENT, parser->current_scope);
 
     //move past the keyword (sout)
     parser_advance(parser);
@@ -397,7 +405,7 @@ static ASTNode* parse_line(Parser* parser) {
  * The main parsing function which will build the abstract syntax tree to the root program node.
  */
 
-ASTNode* parser_parse(Parser* parser) {
+Program* parser_parse(Parser* parser) {
     //parse until we reach the end of file token
     while(parser->current_token->type != TOKEN_EOF) {
         //first skip everything that does not need to be parsed
@@ -418,8 +426,8 @@ ASTNode* parser_parse(Parser* parser) {
         //then add each parsed statement to the children of the global node 
         list_add(parser->root->children, line_node);
     }
-    //return the root node 
-    return parser->root;
+    //return the program struct
+    return init_program(parser->root, parser->scopes);
 }
 
 /*
@@ -429,6 +437,6 @@ ASTNode* parser_parse(Parser* parser) {
  */
 
 void free_parser(Parser* parser) {
-    //free parser itself
+    //free parser itself, everything else it built must live on. 
     free(parser);
 }

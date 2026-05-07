@@ -93,4 +93,12 @@ Scope* exit_scope(Scope* current_scope);
 
 void free_scope(Scope* scope);
 
+/**
+ * @brief Wrapper for free function. 
+ * 
+ * @param scope Generic pointer to the scope. 
+ */
+
+void free_scope_wrapper(void* scope);
+
 #endif
