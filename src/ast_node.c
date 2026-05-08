@@ -11,49 +11,15 @@
  */
 
 ASTNode* init_node(NodeType type, Scope* scope) {
-    //allocate memory for the node
-    ASTNode* node = malloc(sizeof(ASTNode));
+    //allocate for node using calloc to set default values
+    ASTNode* node = calloc(1, sizeof(ASTNode));
+
     //set type and scope
     node->type = type;
     node->scope = scope;
-    //start off with a children list of size 3 (most nodes don't actually use the children list anyways)
-    node->children = init_list(5);
+    //set each node with a children size of 3 (most don't use)
+    node->children = init_list(3);
 
-    //initialize values needed for each node specilization
-    switch(type) {
-        case AST_VARIABLE_DECLARATION:
-            node->specialization.variable_declaration.data_type = 0;
-            node->specialization.variable_declaration.variable_name = NULL;
-            node->specialization.variable_declaration.assignment = NULL;
-            break;
-        case AST_VARIABLE_ASSIGNMENT:
-            node->specialization.variable_assignment.variable_name = NULL;
-            node->specialization.variable_assignment.assignment = NULL;
-            break;
-        case AST_PRINT_STATEMENT:
-            node->specialization.print_statement.statement = NULL;
-            break;
-        case AST_BINARY_OPERATION:
-            node->specialization.binary_operation.left = NULL;
-            node->specialization.binary_operation.right = NULL;
-            node->specialization.binary_operation.operator = NULL;
-            break;
-        case AST_NEGATION:
-            node->specialization.negation.factor = NULL;
-            break;
-        case AST_VARIABLE:
-            node->specialization.variable.variable_name = NULL;
-            break;
-        case AST_INTEGER:
-            node->specialization.integer_literal.value = 0;
-            break;
-        case AST_STRING:
-            node->specialization.string_literal.value = "\0";
-            break;
-        default:
-            //specialization not needed (ex. AST_PROGRAM)
-            break;
-    }
     return node;
 }
 
