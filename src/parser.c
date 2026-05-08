@@ -263,12 +263,15 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
     //create the node we will return
     ASTNode* var_dec_node = init_node(AST_VARIABLE_DECLARATION, parser->current_scope);
 
-    //determine the data type
+    //determine the data type and save it for the symbol
+    DataType type; 
     if(parser->current_token->type == TOKEN_KEYWORD_INT) {
         var_dec_node->specialization.variable_declaration.data_type = TYPE_INTEGER;
+        type = TYPE_INTEGER;
     }
     else if(parser->current_token->type == TOKEN_KEYWORD_STRING) {
         var_dec_node->specialization.variable_declaration.data_type = TYPE_STRING;
+        type = TYPE_STRING;
     }
     else {
         //no type? problem  
