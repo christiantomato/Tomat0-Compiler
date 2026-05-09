@@ -40,7 +40,7 @@ char* token_type_as_str(Token* token) {
         case TOKEN_KEYWORD_TOMATO: return "TOKEN_KEYWORD_TOMATO"; break;
         case TOKEN_KEYWORD_THROW: return "TOKEN_KEYWORD_THROW"; break;
         case TOKEN_ID: return "TOKEN_ID"; break;
-        case TOKEN_INT: return "TOKEN_INT"; break;
+        case TOKEN_NUM: return "TOKEN_NUM"; break;
         case TOKEN_STRING: return "TOKEN_STRING"; break;
         case TOKEN_NEWLINE: return "TOKEN_NEWLINE"; break;
         case TOKEN_TAB: return "TOKEN_TAB"; break;
