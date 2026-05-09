@@ -64,11 +64,16 @@ static void lexer_skip_whitespace(Lexer* lexer) {
  */
 
 static char* lexer_char_as_str(Lexer* lexer) {
-    //special case for a newline character
+    //special case for a newline character and tab character
     if(lexer->curr == '\n') {
         //return it in the form "\n"
         return strdup("\\n");
     }
+    else if(lexer->curr == '\t') {
+        //return it in the for "\t"
+        return strdup("\\t");
+    }
+
     //lexer->c is char, we need to make it a proper null terminated string
     char* char_as_str = malloc(2*sizeof(char));
     //build the null terminated string
@@ -157,20 +162,44 @@ static Token* tokenize_ID(Lexer* lexer) {
         lexer_advance(lexer);
     }
 
-    //checks if our identifier is a keyword
+    //check if the identifier is a keyword
     if(strcmp(id_value, "int") == 0) {
         return init_token(TOKEN_KEYWORD_INT, id_value);
     }
     else if(strcmp(id_value, "string") == 0) {
         return init_token(TOKEN_KEYWORD_STRING, id_value);
     }
-    else if(strcmp(id_value, "sout") == 0) {
-        return init_token(TOKEN_KEYWORD_SOUT, id_value);
+    else if(strcmp(id_value, "bool") == 0) {
+        return init_token(TOKEN_KEYWORD_BOOL, id_value);
+    }
+    else if(strcmp(id_value, "print") == 0) {
+        return init_token(TOKEN_KEYWORD_PRINT, id_value);
     }
     else if(strcmp(id_value, "if") == 0) {
         return init_token(TOKEN_KEYWORD_IF, id_value);
     }
     else if(strcmp(id_value, "while") == 0) {
+        return init_token(TOKEN_KEYWORD_WHILE, id_value);
+    }
+    else if(strcmp(id_value, "true") == 0) {
+        return init_token(TOKEN_KEYWORD_TRUE, id_value);
+    }
+    else if(strcmp(id_value, "false") == 0) {
+        return init_token(TOKEN_KEYWORD_FALSE, id_value);
+    }
+    else if(strcmp(id_value, "yields") == 0) {
+        return init_token(TOKEN_KEYWORD_WHILE, id_value);
+    }
+    else if(strcmp(id_value, "harvest") == 0) {
+        return init_token(TOKEN_KEYWORD_WHILE, id_value);
+    }
+    else if(strcmp(id_value, "sprout") == 0) {
+        return init_token(TOKEN_KEYWORD_WHILE, id_value);
+    }
+    else if(strcmp(id_value, "tomato") == 0) {
+        return init_token(TOKEN_KEYWORD_WHILE, id_value);
+    }
+    else if(strcmp(id_value, "throw") == 0) {
         return init_token(TOKEN_KEYWORD_WHILE, id_value);
     }
     else {
@@ -234,6 +263,8 @@ static Token* tokenize_next(Lexer* lexer) {
             case '"': return tokenize_string(lexer); break;
             //singular characters
             case '\n': return continue_with_token(lexer, init_token(TOKEN_NEWLINE, lexer_char_as_str(lexer))); break;
+            case '\t': return continue_with_token(lexer, init_token(TOKEN_TAB, lexer_char_as_str(lexer))); break;
+            case '~': return continue_with_token(lexer, init_token(TOKEN_TILDA, lexer_char_as_str(lexer))); break;
             case '=': return continue_with_token(lexer, init_token(TOKEN_EQUALS, lexer_char_as_str(lexer))); break;
             case ';': return continue_with_token(lexer, init_token(TOKEN_SEMI, lexer_char_as_str(lexer))); break;
             case ',': return continue_with_token(lexer, init_token(TOKEN_COMMA, lexer_char_as_str(lexer))); break;
