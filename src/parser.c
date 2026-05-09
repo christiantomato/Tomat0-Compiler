@@ -267,8 +267,8 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
     //determine the data type and save it for the symbol
     DataType type; 
     if(parser->current_token->type == TOKEN_KEYWORD_INT) {
-        var_dec_node->specialization.variable_declaration.data_type = TYPE_INTEGER;
-        type = TYPE_INTEGER;
+        var_dec_node->specialization.variable_declaration.data_type = TYPE_INT;
+        type = TYPE_INT;
     }
     else if(parser->current_token->type == TOKEN_KEYWORD_STRING) {
         var_dec_node->specialization.variable_declaration.data_type = TYPE_STRING;
@@ -434,7 +434,7 @@ static ASTNode* parse_line(Parser* parser) {
     else if(parser->current_token->type == TOKEN_ID) {
         return parse_variable_assignment(parser);
     }
-    else if(parser->current_token->type == TOKEN_KEYWORD_SOUT) {
+    else if(parser->current_token->type == TOKEN_KEYWORD_PRINT) {
         return parse_print_statement(parser);
     }
     else {

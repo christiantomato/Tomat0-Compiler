@@ -1,17 +1,1 @@
-~ global variable
-integer pi = 3
-
-~ function declaration
-double(integer x) yields integer
-    harvest x * 2
-
-~ entry point
-sprout tomato
-    integer x = 5
-    if(x > 5)
-        ~ does something
-        print(balls)
-        throw tomato
-
-    ~ signals end of program
-    harvest tomato
+~ testing tabbing

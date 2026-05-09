@@ -48,7 +48,7 @@ static void lexer_advance(Lexer* lexer) {
  */
 
 static void lexer_skip_whitespace(Lexer* lexer) {
-    //skip blank space - but not newlines!
+    //skip blank space - but not newlines or tabs!
     while(isspace(lexer->curr) && lexer->curr != '\n') {
         lexer_advance(lexer);
     }
@@ -263,7 +263,6 @@ static Token* tokenize_next(Lexer* lexer) {
             case '"': return tokenize_string(lexer); break;
             //singular characters
             case '\n': return continue_with_token(lexer, init_token(TOKEN_NEWLINE, lexer_char_as_str(lexer))); break;
-            case '\t': return continue_with_token(lexer, init_token(TOKEN_TAB, lexer_char_as_str(lexer))); break;
             case '~': return continue_with_token(lexer, init_token(TOKEN_TILDA, lexer_char_as_str(lexer))); break;
             case '=': return continue_with_token(lexer, init_token(TOKEN_EQUALS, lexer_char_as_str(lexer))); break;
             case ';': return continue_with_token(lexer, init_token(TOKEN_SEMI, lexer_char_as_str(lexer))); break;

@@ -40,7 +40,6 @@ typedef enum {
     TOKEN_NUM,
     TOKEN_STRING,
     TOKEN_NEWLINE,
-    TOKEN_TAB,
     TOKEN_TILDA,
     TOKEN_EQUALS,
     TOKEN_SEMI,

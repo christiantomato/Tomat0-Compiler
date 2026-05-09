@@ -43,7 +43,6 @@ char* token_type_as_str(Token* token) {
         case TOKEN_NUM: return "TOKEN_NUM"; break;
         case TOKEN_STRING: return "TOKEN_STRING"; break;
         case TOKEN_NEWLINE: return "TOKEN_NEWLINE"; break;
-        case TOKEN_TAB: return "TOKEN_TAB"; break;
         case TOKEN_TILDA: return "TOKEN_TILDA"; break;
         case TOKEN_EQUALS: return "TOKEN_EQUALS"; break;
         case TOKEN_SEMI: return "TOKEN_SEMI"; break;
