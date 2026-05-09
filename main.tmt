@@ -1,6 +1,7 @@
-> testing semantic errors
-> y not declared yet
+~ testing
 
-int x = y + 2
+function double()
+    harvest x
+
 
 
