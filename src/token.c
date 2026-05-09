@@ -34,6 +34,7 @@ char* token_type_as_str(Token* token) {
         case TOKEN_KEYWORD_WHILE: return "TOKEN_KEYWORD_WHILE"; break;
         case TOKEN_KEYWORD_TRUE: return "TOKEN_KEYWORD_TRUE"; break;
         case TOKEN_KEYWORD_FALSE: return "TOKEN_KEYWORD_FALSE"; break;
+        case TOKEN_KEYWORD_IS: return "TOKEN_KEYWORD_IS"; break;
         case TOKEN_KEYWORD_YIELDS: return "TOKEN_KEYWORD_YIELDS"; break;
         case TOKEN_KEYWORD_HARVEST: return "TOKEN_KEYWORD_HARVEST"; break;
         case TOKEN_KEYWORD_SPROUT: return "TOKEN_KEYWORD_SPROUT"; break;
