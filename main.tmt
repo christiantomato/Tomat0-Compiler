@@ -1,8 +1,6 @@
 ~ testing
 
 sprout tomato {
-    int x = 5
-    x = 5 + 2
-    print(x)
+    int x = -5
     harvest tomato
 }
