@@ -1,1 +1,8 @@
-~ testing tabbing
+~ testing
+
+sprout tomato {
+    int x = 5
+    x = 5 + 2
+    print(x)
+    harvest tomato
+}

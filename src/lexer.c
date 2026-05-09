@@ -188,19 +188,19 @@ static Token* tokenize_ID(Lexer* lexer) {
         return init_token(TOKEN_KEYWORD_FALSE, id_value);
     }
     else if(strcmp(id_value, "yields") == 0) {
-        return init_token(TOKEN_KEYWORD_WHILE, id_value);
+        return init_token(TOKEN_KEYWORD_YIELDS, id_value);
     }
     else if(strcmp(id_value, "harvest") == 0) {
-        return init_token(TOKEN_KEYWORD_WHILE, id_value);
+        return init_token(TOKEN_KEYWORD_HARVEST, id_value);
     }
     else if(strcmp(id_value, "sprout") == 0) {
-        return init_token(TOKEN_KEYWORD_WHILE, id_value);
+        return init_token(TOKEN_KEYWORD_SPROUT, id_value);
     }
     else if(strcmp(id_value, "tomato") == 0) {
-        return init_token(TOKEN_KEYWORD_WHILE, id_value);
+        return init_token(TOKEN_KEYWORD_TOMATO, id_value);
     }
     else if(strcmp(id_value, "throw") == 0) {
-        return init_token(TOKEN_KEYWORD_WHILE, id_value);
+        return init_token(TOKEN_KEYWORD_THROW, id_value);
     }
     else {
         //return as a regular identifier (for function or variable names)
