@@ -254,6 +254,7 @@ static ASTNode* parse_expression(Parser* parser) {
  * @brief Parses a variable declaration instruction. 
  * 
  * Variable declarations in Tomat0 must include a data type and assignment. 
+ * Variables are also semantically checked here and added to the scopes symbol table, adding offset when needed.
  * 
  * @param parser Pointer to the parser. 
  * @return Pointer to the variable declaration node. 
@@ -298,8 +299,23 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
         return NULL;
     }
 
-    //create the symbol and add to the table
+    //create the variable symbol
     Symbol* var_symbol = init_symbol(parser->current_token->value, SYMBOL_VARIABLE);
+    //set its data type
+    var_symbol->data.var_sym.type = type;
+    //determine whether it will be dynamically or statically allocated (is it in global scope?)
+    if(parser->current_scope->parent == NULL) {
+        //global variable
+        var_symbol->data.var_sym.is_static = true;
+    }
+    else {
+        //local variable
+        var_symbol->data.var_sym.is_static = false;
+        //assign offset
+        parser->current_scope->current_offset -= 8;
+        var_symbol->data.var_sym.offset = parser->current_scope->current_offset;
+    }
+    //add it to the symbol table of the current scope
     add_symbol(parser->current_scope, var_symbol);
 
     //advance to next
