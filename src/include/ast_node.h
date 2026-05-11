@@ -4,10 +4,10 @@
  * 
  * These include: 
  * - variable declarations
+ * - function declarations
  * - print statements
  * - binary operations
- * - binary operations
- * - function calls
+ * - and more
  */
 
 #ifndef AST_NODE_H
@@ -25,6 +25,7 @@
 typedef enum {
     AST_GLOBAL,
     AST_ENTRY_POINT,
+    AST_BLOCK,
     AST_FUNCTION_DECLARATION,
     AST_FUNCTION_CALL,
     AST_VARIABLE_DECLARATION,
@@ -41,6 +42,19 @@ typedef enum {
 struct ast_node_struct;
 
 //NON TERMINAL NODES: 
+
+/**
+ * @struct FunctionDeclaration
+ * @brief Represent a function declaration. 
+ * 
+ */
+
+typedef struct {
+    char* function_name;
+    //parameters..? 
+    DataType return_type;
+    struct ast_node_struct* code_block;
+} FunctionDeclaration;
 
 /**
  * @struct VariableDeclaration
@@ -64,6 +78,15 @@ typedef struct {
     char* variable_name; /**< The variable being assigned a value. */
     struct ast_node_struct* assignment; /**< The assignement node. */
 } VariableAssignment;
+
+/**
+ * @struct Block
+ * @brief Represents a code block of instructions.
+ */
+
+typedef struct {
+    List* statements; /**< A list of ast nodes representing the statements in the block. */
+} Block;
 
 /**
  * @struct PrintStatement
@@ -154,7 +177,6 @@ typedef union {
 
 typedef struct ast_node_struct {
     NodeType type; /**< The type of node. */
-    List* children; /**< Pointer to the nodes children (if any). */
     ASTSpecialization specialization; /**< Its specialization from the union. */
     Scope* scope; /**< The scope where this node lives. */
 } ASTNode;
