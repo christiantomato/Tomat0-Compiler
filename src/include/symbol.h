@@ -17,14 +17,23 @@
  * These include: 
  * - variables
  * - functions
- * - parameters
  */
 
 typedef enum {
     SYMBOL_VARIABLE,
     SYMBOL_FUNCTION,
-    SYMBOL_PARAMETER
  } SymbolKind;
+
+/**
+ * @enum VariableStorage
+ * @brief Enum for the different types of variable storage.
+ */
+
+typedef enum {
+    STORAGE_GLOBAL,
+    STORAGE_LOCAL,
+    STORAGE_PARAMETER
+} VariableStorage;
 
 /**
  * @struct VariableSymbol
@@ -33,8 +42,8 @@ typedef enum {
 
 typedef struct {
     DataType type; /**< The data type. */
-    bool is_static; /**< Is the variable local or static? */
-    int offset; /**< The stack relative offset (not used for static variables). */
+    VariableStorage storage; /**< The method of storage for the variable. */
+    int offset; /**< The stack frame relative offset (positive for params, negative for locals, not used for static variables). */
 } VariableSymbol;
 
 /**
@@ -48,15 +57,6 @@ typedef struct {
 } FunctionSymbol;
 
 /**
- * @struct ParameterSymbol
- * @brief Encodes necessary data need for a parameter.
- */
-
-typedef struct {
-    DataType type; /**< The data type. */
-} ParameterSymbol;
-
-/**
  * @union SymbolData
  * @brief A union so we can store specific data for each type.
  */
@@ -64,7 +64,6 @@ typedef struct {
 typedef union {
     VariableSymbol var_sym;
     FunctionSymbol func_sym;
-    ParameterSymbol param_sym;
 } SymbolData;
 
 /**

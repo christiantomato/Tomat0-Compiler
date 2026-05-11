@@ -20,6 +20,11 @@ Symbol* init_symbol(char* name, SymbolKind kind) {
     //set the kind
     symbol->kind = kind;
 
+    //initalize param list if it is a function symbol
+    if(kind == SYMBOL_FUNCTION) {
+        symbol->data.func_sym.parameters = init_list(3);
+    }
+
     return symbol;
 }
 
@@ -31,7 +36,6 @@ char* symbol_kind_as_str(Symbol* symbol) {
     switch(symbol->kind) {
         case SYMBOL_VARIABLE: return "SYMBOL_VARIABLE";
         case SYMBOL_FUNCTION: return "SYMBOL_FUNCTION";
-        case SYMBOL_PARAMETER: return "SYMBOL_PARAMETER";
         default: return "SYMBOL_UNKNOWN";
     }
 }
