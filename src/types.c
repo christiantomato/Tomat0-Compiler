@@ -11,10 +11,9 @@
 
 char* data_type_as_str(DataType type) {
     switch(type) {
-        case TYPE_INTEGER: return "TYPE_INTEGER";
+        case TYPE_INT: return "TYPE_INT";
         case TYPE_STRING: return "TYPE_STRING";
         case TYPE_BOOL: return "TYPE_BOOL";
-        case TYPE_FLOAT: return "TYPE_FLOAT";
         default: return "TYPE_UNKNOWN";
     }
 }

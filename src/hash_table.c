@@ -33,8 +33,8 @@ HashTable* init_hash_table(int size) {
  */
 
 static int hash_function(HashTable* table, const char* key) {
-    //start with the first character in the key
-    int hash_value = key[0];
+    //start with the first character in the key (mod in case the variable name is 1 char)
+    int hash_value = key[0] % table->size;
 
     //loop through and compute the polynomial using Horner's rule
     for(int i = 1; key[i] != '\0'; i++) {
@@ -58,7 +58,7 @@ void hash_put(HashTable* table, Symbol* symbol) {
     while(curr != NULL) {
         //check if symbol names are the same (not allowed)
         if(strcmp(curr->symbol->name, symbol->name) == 0) {
-            printf("Exception: duplicate symbol names.\n");
+            printf("HASH EXCEPTION: Duplicate symbol names.\n");
             return;
         }
         //move through the linked list
@@ -133,7 +133,7 @@ void hash_remove(HashTable* table, const char* symbol_name) {
         curr = curr->next;
     }
     //wasnt found
-    printf("Exception: node not found.\n");
+    printf("HASH EXCEPTION: node not found.\n");
 }
 
 /*

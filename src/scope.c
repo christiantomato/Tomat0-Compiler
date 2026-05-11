@@ -91,3 +91,11 @@ void free_scope(Scope* scope) {
     //free scope itself
     free(scope);
 }
+
+/*
+ * To be able to pass to array list. 
+ */
+
+void free_scope_wrapper(void* scope) {
+    free_scope((Scope*) scope);
+}

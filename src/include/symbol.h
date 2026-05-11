@@ -6,37 +6,75 @@
 #ifndef SYMBOL_H
 #define SYMBOL_H
 
+#include "types.h"
+#include "array_list.h"
+#include <stdbool.h>
+
 /**
  * @enum SymbolType
  * @brief Enum for the different types of symbols we can encounter. 
  * 
  * These include: 
- * - variable names
- * - function names
- * - parameter names
+ * - variables
+ * - functions
  */
 
 typedef enum {
     SYMBOL_VARIABLE,
     SYMBOL_FUNCTION,
-    SYMBOL_PARAM
  } SymbolKind;
 
 /**
+ * @enum VariableStorage
+ * @brief Enum for the different types of variable storage.
+ */
+
+typedef enum {
+    STORAGE_GLOBAL,
+    STORAGE_LOCAL,
+    STORAGE_PARAMETER
+} VariableStorage;
+
+/**
+ * @struct VariableSymbol
+ * @brief Encodes necessary data needed for a variable.
+ */
+
+typedef struct {
+    DataType type; /**< The data type. */
+    VariableStorage storage; /**< The method of storage for the variable. */
+    int offset; /**< The stack frame relative offset (positive for params, negative for locals, not used for static variables). */
+} VariableSymbol;
+
+/**
+ * @struct FunctionSymbol
+ * @brief Encpdes necessary data needed for a function. 
+ */
+
+typedef struct {
+    DataType return_type; /**< The return type. */
+    List* parameters; /**< The list of parameters. */
+} FunctionSymbol;
+
+/**
+ * @union SymbolData
+ * @brief A union so we can store specific data for each type.
+ */
+
+typedef union {
+    VariableSymbol var_sym;
+    FunctionSymbol func_sym;
+} SymbolData;
+
+/**
  * @struct Symbol
- * @brief Defines the data needed to represent a symbol. 
- * 
- * This data is scope relative. 
+ * @brief Defines all symbol types. 
  */
 
 typedef struct {
     char* name; /**< The symbol name. */
     SymbolKind kind; /**< The kind of symbol. */
-    int offset; /**< Offset relative to the frame pointer in its current stack frame. */
-
-    //future? 
-    //int size
-    //DataType data_type;
+    SymbolData data; /** The data for the symbol. */
 } Symbol;
 
 /**

@@ -10,47 +10,34 @@
  * Initalizes an ast node based on the given type.
  */
 
-ASTNode* init_node(NodeType type) {
-    //allocate memory for the node
-    ASTNode* node = malloc(sizeof(ASTNode));
-    node->type = type;
-    //start off with a children list of size 3 (most nodes don't actually use the children list anyways)
-    node->children = init_list(3);
-    //initialize values needed for each node specilization
+ASTNode* init_node(NodeType type, Scope* scope) {
+    //allocate for node using calloc to set default values
+    ASTNode* node = calloc(1, sizeof(ASTNode));
+
+    //initalize lists for nodes that need it
     switch(type) {
-        case AST_VARIABLE_DECLARATION:
-            node->specialization.variable_declaration.data_type = 0;
-            node->specialization.variable_declaration.variable_name = NULL;
-            node->specialization.variable_declaration.assignment = NULL;
+        case AST_GLOBAL: 
+            node->specialization.block.statements = init_list(5);
             break;
-        case AST_VARIABLE_ASSIGNMENT:
-            node->specialization.variable_assignment.variable_name = NULL;
-            node->specialization.variable_assignment.assignment = NULL;
+        case AST_ENTRY_POINT: 
+            node->specialization.block.statements = init_list(10);
             break;
-        case AST_PRINT_STATEMENT:
-            node->specialization.print_statement.statement = NULL;
+        case AST_BLOCK: 
+            node->specialization.block.statements = init_list(5);
             break;
-        case AST_BINARY_OPERATION:
-            node->specialization.binary_operation.left = NULL;
-            node->specialization.binary_operation.right = NULL;
-            node->specialization.binary_operation.operator = NULL;
+        case AST_FUNCTION_DECLARATION:
+            node->specialization.func_dec.parameters = init_list(3);
             break;
-        case AST_NEGATION:
-            node->specialization.negation.factor = NULL;
+        case AST_FUNCTION_CALL:
+            node->specialization.func_call.parameter_inputs = init_list(3);
             break;
-        case AST_VARIABLE:
-            node->specialization.variable.variable_name = NULL;
-            break;
-        case AST_INTEGER:
-            node->specialization.integer_literal.value = 0;
-            break;
-        case AST_STRING:
-            node->specialization.string_literal.value = "\0";
-            break;
-        default:
-            //specialization not needed (ex. AST_PROGRAM)
-            break;
+        default: break;
     }
+
+    //set type and scope
+    node->type = type;
+    node->scope = scope;
+
     return node;
 }
 
@@ -61,14 +48,22 @@ ASTNode* init_node(NodeType type) {
 char* node_type_as_str(ASTNode* node) {
     switch(node->type) {
         case AST_GLOBAL: return "AST_GLOBAL"; break;
+        case AST_ENTRY_POINT: return "AST_ENTRY_POINT"; break;
+        case AST_BLOCK: return "AST_BLOCK"; break;
+        case AST_FUNCTION_DECLARATION: return "AST_FUNCTION_DECLARATION"; break;
+        case AST_FUNCTION_CALL: return "AST_FUNCTION_CALL"; break;
         case AST_VARIABLE_DECLARATION: return "AST_VARIABLE_DECLARATION"; break;
         case AST_VARIABLE_ASSIGNMENT: return "AST_VARIABLE_ASSIGNMENT"; break;
-        case AST_PRINT_STATEMENT: return "AST_PRINT_STATEMENT"; break;
         case AST_BINARY_OPERATION: return "AST_BINARY_OPERATION"; break;
+        case AST_PRINT_STATEMENT: return "AST_PRINT_STATEMENT"; break;
+        case AST_RETURN_STATEMENT: return "AST_RETURN_STATEMENT"; break;
         case AST_NEGATION: return "AST_NEGATION"; break;
+        case AST_PARAMETER: return "AST_PARAMETER"; break;
         case AST_VARIABLE: return "AST_VARIABLE"; break;
-        case AST_INTEGER: return "AST_INTEGER"; break;
+        case AST_NUMBER: return "AST_NUMBER"; break;
         case AST_STRING: return "AST_STRING"; break;
+        case AST_THROW: return "AST_THROW"; break;
+        case AST_RUNTIME_END: return "AST_RUNTIME_END";
     }
 }
 
@@ -98,61 +93,115 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
     //print additional specfic details based on the node type
     switch(root->type) {
         case AST_GLOBAL:
-            //iterate through the children statements and write them to file
-            for(int i = 0; i < root->children->num_items; i++) {
+            //iterate through the statements in the global scope and print
+            for(int i = 0; i < root->specialization.block.statements->num_items; i++) {
                 //indent always 1 for program children
-                print_ast(file, root->children->array[i], 1);
+                print_ast(file, root->specialization.block.statements->array[i], 1);
             }
-            break;   
+            break;
+        case AST_ENTRY_POINT:
+            //go through statements in the main function and print
+            for(int i = 0; i < root->specialization.block.statements->num_items; i++) {
+                //indent always 1 for program children
+                print_ast(file, root->specialization.block.statements->array[i], indent + 1);
+            }
+            break;
+        case AST_BLOCK:
+            //print out statements in this block
+            for(int i = 0; i < root->specialization.block.statements->num_items; i++) {
+                //indent always 1 for program children
+                print_ast(file, root->specialization.block.statements->array[i], indent + 1);
+            }
+            break;
+        case AST_FUNCTION_DECLARATION:
+            //list out the relevant information, remembering to print current indent
+            print_indent(file, indent);
+            fprintf(file, "function_name = %s\n", root->specialization.func_dec.function_name);
+            print_indent(file, indent);
+            fprintf(file, "parameters = \n"); 
+            //iterate through parameters
+            for(int i = 0; i < root->specialization.func_dec.parameters->num_items; i++) {
+                print_ast(file, root->specialization.func_dec.parameters->array[i], indent + 1);
+            }
+            print_indent(file, indent);
+            fprintf(file, "return_type = %s\n", data_type_as_str(root->specialization.func_dec.return_type));
+            print_indent(file, indent);
+            fprintf(file, "code_block: \n");
+            //print out whole code block
+            print_ast(file, root->specialization.func_dec.code_block, indent + 1);
+            break;
+        case AST_FUNCTION_CALL:
+            print_indent(file, indent);
+            fprintf(file, "function_name = %s\n", root->specialization.func_call.function_name);
+            print_indent(file, indent);
+            fprintf(file, "parameter_values = \n");
+            //iterate through parameter values
+            for(int i = 0; i < root->specialization.func_call.parameter_inputs->num_items; i++) {
+                print_ast(file, root->specialization.func_call.parameter_inputs->array[i], indent + 1);
+            }
+            break;
         case AST_VARIABLE_DECLARATION:
-            //list out the relevant information, remembering to indent our information before each print statement
             print_indent(file, indent);
-            fprintf(file, "data_type = %s\n", data_type_as_str(root->specialization.variable_declaration.data_type));
+            fprintf(file, "data_type = %s\n", data_type_as_str(root->specialization.var_dec.data_type));
             print_indent(file, indent);
-            fprintf(file, "variable_name = %s\n", root->specialization.variable_declaration.variable_name);
+            fprintf(file, "variable_name = %s\n", root->specialization.var_dec.variable_name);
             //assignment is also a node, so recurse into that
             print_indent(file, indent);
             fprintf(file, "assignment = \n");
-            print_ast(file, root->specialization.variable_declaration.assignment, indent + 1);
+            print_ast(file, root->specialization.var_dec.assignment, indent + 1);
             break;
         case AST_VARIABLE_ASSIGNMENT:
             print_indent(file, indent);
-            fprintf(file, "name = %s\n", root->specialization.variable_assignment.variable_name);
+            fprintf(file, "name = %s\n", root->specialization.var_assign.variable_name);
             print_indent(file, indent);
             fprintf(file, "assignment = \n");
-            print_ast(file, root->specialization.variable_assignment.assignment, indent + 1);
-            break;
-        case AST_PRINT_STATEMENT:
-            print_indent(file, indent);
-            fprintf(file, "output = \n");
-            print_ast(file, root->specialization.print_statement.statement, indent + 1);
+            print_ast(file, root->specialization.var_assign.assignment, indent + 1);
             break;
         case AST_BINARY_OPERATION:
             print_indent(file, indent);
             fprintf(file, "left = \n");
-            print_ast(file, root->specialization.binary_operation.left, indent + 1);
+            print_ast(file, root->specialization.binary_op.left, indent + 1);
             print_indent(file, indent);
             fprintf(file, "right = \n");
-            print_ast(file, root->specialization.binary_operation.right, indent + 1);
+            print_ast(file, root->specialization.binary_op.right, indent + 1);
             print_indent(file, indent);
-            fprintf(file, "operator = %s\n", root->specialization.binary_operation.operator);
+            fprintf(file, "operator = %s\n", root->specialization.binary_op.operator);
+            break;
+        case AST_PRINT_STATEMENT:
+            print_indent(file, indent);
+            fprintf(file, "output = \n");
+            print_ast(file, root->specialization.print_statement.operand, indent + 1);
+            break;
+        case AST_RETURN_STATEMENT:
+            print_indent(file, indent);
+            fprintf(file, "return = \n");
+            print_ast(file, root->specialization.print_statement.operand, indent + 1);
             break;
         case AST_NEGATION:
             print_indent(file, indent);
-            fprintf(file, "negate (-) = \n");
-            print_ast(file, root->specialization.negation.factor, indent + 1);
+            fprintf(file, "negate = \n");
+            print_ast(file, root->specialization.negation.operand, indent + 1);
+            break;
+        case AST_PARAMETER:
+            print_indent(file, indent);
+            fprintf(file, "parameter_type = %s\n", data_type_as_str(root->specialization.param.parameter_type));
+            print_indent(file, indent);
+            fprintf(file, "parameter_name = %s\n", root->specialization.param.parameter_name);
             break;
         case AST_VARIABLE:
             print_indent(file, indent);
-            fprintf(file, "variable_name = %s\n", root->specialization.variable.variable_name);
+            fprintf(file, "variable_name = %s\n", root->specialization.var.variable_name);
             break;
-        case AST_INTEGER:
+        case AST_NUMBER:
             print_indent(file, indent);
-            fprintf(file, "value = %d\n", root->specialization.integer_literal.value);
+            fprintf(file, "value = %d\n", root->specialization.num.value);
             break;
         case AST_STRING:
             print_indent(file, indent);
-            fprintf(file, "value = '%s'\n", root->specialization.string_literal.value);
+            fprintf(file, "value = '%s'\n", root->specialization.string.value);
+            break;
+        default:
+            //will just print out ast type name.
             break;
     }
 }
@@ -166,40 +215,66 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
 void free_node(ASTNode* node) {
     //for non terminal nodes, free members which have allocated memory. 
     switch(node->type) {
+        case AST_GLOBAL: 
+            //free all the statements inside the global scope
+            free_list(node->specialization.block.statements, free_node_wrapper);
+        case AST_ENTRY_POINT:
+            //free all main entry instructions
+            free_list(node->specialization.block.statements, free_node_wrapper);
+        case AST_BLOCK:
+            //free all statements
+            free_list(node->specialization.block.statements, free_node_wrapper);
+        case AST_FUNCTION_DECLARATION:
+            //free name, ast params, and code block
+            free(node->specialization.func_dec.function_name);
+            free_list(node->specialization.func_dec.parameters, free_node_wrapper);
+            free_node(node->specialization.func_dec.code_block);
+        case AST_FUNCTION_CALL:
+            //free name and param inputs
+            free(node->specialization.func_call.function_name);
+            free_list(node->specialization.func_call.parameter_inputs, free_node_wrapper);
         case AST_VARIABLE_DECLARATION:
-            free_node(node->specialization.variable_declaration.assignment);
-            free(node->specialization.variable_declaration.variable_name);
+            //free name and assignment
+            free(node->specialization.var_dec.variable_name);
+            free_node(node->specialization.var_dec.assignment);
             break;
         case AST_VARIABLE_ASSIGNMENT:
-            free_node(node->specialization.variable_assignment.assignment);
-            free(node->specialization.variable_assignment.variable_name);
-            break;
-        case AST_PRINT_STATEMENT:
-            free_node(node->specialization.print_statement.statement);
+            //free name and assignment
+            free(node->specialization.var_assign.variable_name);
+            free_node(node->specialization.var_assign.assignment);
             break;
         case AST_BINARY_OPERATION:
-            free_node(node->specialization.binary_operation.left);
-            free_node(node->specialization.binary_operation.right);
-            free(node->specialization.binary_operation.operator);
+            //free operator and nodes
+            free(node->specialization.binary_op.operator);
+            free_node(node->specialization.binary_op.left);
+            free_node(node->specialization.binary_op.right);
             break;
+        case AST_PRINT_STATEMENT:
+            //free operand
+            free_node(node->specialization.print_statement.operand);
+            break;
+        case AST_RETURN_STATEMENT: 
+            free_node(node->specialization.return_statement.operand);
         case AST_NEGATION:
-            free_node(node->specialization.negation.factor);
+            free_node(node->specialization.negation.operand);
             break;
+        case AST_PARAMETER:
+            //free name
+            free(node->specialization.param.parameter_name);
         case AST_VARIABLE:
-            free(node->specialization.variable.variable_name);
+            //free name
+            free(node->specialization.var.variable_name);
             break;
-        case AST_INTEGER: 
-            //nothing to free.
+        case AST_NUMBER: 
+            //nothing to free
             break;
         case AST_STRING:
-            free(node->specialization.string_literal.value);
+            free(node->specialization.string.value);
             break;
         default:
             break;
     }
 
-    //free the list of children nodes (if any) iteratively with free list. 
-    free_list(node->children, free_node_wrapper);
     //free node itself
     free(node);
 }

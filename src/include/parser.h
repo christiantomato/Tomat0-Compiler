@@ -13,17 +13,20 @@
 
 #include "token.h"
 #include "ast_node.h"
+#include "program.h"
 
 /**
  * @struct Parser
- * @brief The parser structure which parses tokens. 
+ * @brief The parser structure which parses tokens and builds the ast. 
  */
 
 typedef struct {
-    ASTNode* root; /**< Reference to the root node. */
-    List* tokens; /**< List of tokens being parsed. */
+    List* tokens; /**< List of tokens that are passed in, to be parsed. */
     Token* current_token; /**< Reference to the current token being processed. */
     unsigned int index; /**< Index position for the tokens list. */
+    ASTNode* root; /**< Reference to the root node of the ast. */
+    Scope* current_scope; /**< Reference to the current scope we are in. */
+    List* scopes; /**< Reference to all scopes that are created in the program. */
 } Parser;
 
 /**
@@ -38,14 +41,13 @@ Parser* init_parser(List* tokens);
 /**
  * @brief Main parsing function. 
  * 
- * Parses through the entire tokens list and keeps track of declared variables with symbol table. 
+ * Parses through the entire tokens list and keeps track of declared variables with symbol tables. 
  * 
  * @param parser Pointer to the parser.
- * @param table Pointer to the symbol table. 
- * @return Pointer to the root node of the parser.
+ * @return Pointer to the program struct representation.
  */
 
-ASTNode* parser_parse(Parser* parser);
+Program* parser_parse(Parser* parser);
 
 /**
  * @brief Frees allocated memory by the parser. 

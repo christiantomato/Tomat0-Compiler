@@ -13,14 +13,17 @@
  */
 
 Symbol* init_symbol(char* name, SymbolKind kind) {
-    //create a symbol
-    Symbol* symbol = malloc(sizeof(Symbol));
+    //allocate for the symbol, using calloc for default values
+    Symbol* symbol = calloc(1, sizeof(Symbol));
     //make a string copy for the name
     symbol->name = strdup(name);
     //set the kind
     symbol->kind = kind;
-    //set default offset (handled later by scope)
-    symbol->offset = 0;
+
+    //initalize param list if it is a function symbol
+    if(kind == SYMBOL_FUNCTION) {
+        symbol->data.func_sym.parameters = init_list(3);
+    }
 
     return symbol;
 }
@@ -33,7 +36,6 @@ char* symbol_kind_as_str(Symbol* symbol) {
     switch(symbol->kind) {
         case SYMBOL_VARIABLE: return "SYMBOL_VARIABLE";
         case SYMBOL_FUNCTION: return "SYMBOL_FUNCTION";
-        case SYMBOL_PARAM: return "SYMBOL_PARAM";
         default: return "SYMBOL_UNKNOWN";
     }
 }
@@ -45,15 +47,15 @@ char* symbol_to_str(void* symbol) {
 
     //figure out length needed and allocate space for it
     int length = snprintf(NULL, 0, 
-        "SYMBOL NAME: %s, SYMBOL KIND: %s, FRAME POINTER OFFSET: %d", 
-        the_symbol->name, symbol_kind_as_str(the_symbol), the_symbol->offset);
+        "SYMBOL NAME: %s, SYMBOL KIND: %s", 
+        the_symbol->name, symbol_kind_as_str(the_symbol));
     
     symbol_str = malloc(length + 1);
 
     //build the string
     snprintf(symbol_str, length + 1, 
-        "SYMBOL NAME: %s, SYMBOL KIND: %s, FRAME POINTER OFFSET: %d",
-        the_symbol->name, symbol_kind_as_str(the_symbol), the_symbol->offset);
+        "SYMBOL NAME: %s, SYMBOL KIND: %s",
+        the_symbol->name, symbol_kind_as_str(the_symbol));
     return symbol_str;
 }
 
