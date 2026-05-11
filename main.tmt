@@ -1,1 +1,15 @@
 ~ global variables
+
+~ define a function
+func calculate(int x, int y) yields int {
+    harvest 1
+}
+
+~ entry point
+sprout {
+    ~ attempt incorrect arguments
+    int result = calculate(1)
+    ~ attempt incorrect type
+    int resultTwo = calculate("hi", 3)
+    harvest tomato
+}
