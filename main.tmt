@@ -1,6 +1,5 @@
 ~ global variables
 int pi = 3
-string greeting = "hello world"
 
 ~ function declaration
 double(int x) yields int {
