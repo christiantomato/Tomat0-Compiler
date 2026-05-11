@@ -266,28 +266,28 @@ static Token* tokenize_next(Lexer* lexer) {
         }
         
         switch(lexer->curr) {
-            case '"': return tokenize_string(lexer); break;
+            case '"': return tokenize_string(lexer);
             //singular characters
-            case '\n': return continue_with_token(lexer, init_token(TOKEN_NEWLINE, lexer_char_as_str(lexer))); break;
-            case '~': return continue_with_token(lexer, init_token(TOKEN_TILDA, lexer_char_as_str(lexer))); break;
-            case '=': return continue_with_token(lexer, init_token(TOKEN_EQUALS, lexer_char_as_str(lexer))); break;
-            case ';': return continue_with_token(lexer, init_token(TOKEN_SEMI, lexer_char_as_str(lexer))); break;
-            case ',': return continue_with_token(lexer, init_token(TOKEN_COMMA, lexer_char_as_str(lexer))); break;
-            case '.': return continue_with_token(lexer, init_token(TOKEN_PERIOD, lexer_char_as_str(lexer))); break;
-            case '\'': return continue_with_token(lexer, init_token(TOKEN_APOSTROPHE, lexer_char_as_str(lexer))); break;
-            case '_': return continue_with_token(lexer, init_token(TOKEN_UNDERSCORE, lexer_char_as_str(lexer))); break;
-            case '(': return continue_with_token(lexer, init_token(TOKEN_LPAREN, lexer_char_as_str(lexer))); break;
-            case ')': return continue_with_token(lexer, init_token(TOKEN_RPAREN, lexer_char_as_str(lexer))); break;
-            case '{': return continue_with_token(lexer, init_token(TOKEN_LCURLY, lexer_char_as_str(lexer))); break;
-            case '}': return continue_with_token(lexer, init_token(TOKEN_RCURLY, lexer_char_as_str(lexer))); break;
-            case '<': return continue_with_token(lexer, init_token(TOKEN_LCHEVRON, lexer_char_as_str(lexer))); break;
-            case '>': return continue_with_token(lexer, init_token(TOKEN_RCHEVRON, lexer_char_as_str(lexer))); break;
-            case '/': return continue_with_token(lexer, init_token(TOKEN_FSLASH, lexer_char_as_str(lexer))); break;
-            case '\\': return continue_with_token(lexer, init_token(TOKEN_BSLASH, lexer_char_as_str(lexer))); break;
-            case '+': return continue_with_token(lexer, init_token(TOKEN_PLUS, lexer_char_as_str(lexer))); break;
-            case '-': return continue_with_token(lexer, init_token(TOKEN_HYPHEN, lexer_char_as_str(lexer))); break;
-            case '*': return continue_with_token(lexer, init_token(TOKEN_ASTERISK, lexer_char_as_str(lexer))); break;
-            case '?': return continue_with_token(lexer, init_token(TOKEN_QUESTION, lexer_char_as_str(lexer))); break;
+            case '\n': return continue_with_token(lexer, init_token(TOKEN_NEWLINE, lexer_char_as_str(lexer))); 
+            case '~': return continue_with_token(lexer, init_token(TOKEN_TILDA, lexer_char_as_str(lexer))); 
+            case '=': return continue_with_token(lexer, init_token(TOKEN_EQUALS, lexer_char_as_str(lexer))); 
+            case ';': return continue_with_token(lexer, init_token(TOKEN_SEMI, lexer_char_as_str(lexer))); 
+            case ',': return continue_with_token(lexer, init_token(TOKEN_COMMA, lexer_char_as_str(lexer))); 
+            case '.': return continue_with_token(lexer, init_token(TOKEN_PERIOD, lexer_char_as_str(lexer))); 
+            case '\'': return continue_with_token(lexer, init_token(TOKEN_APOSTROPHE, lexer_char_as_str(lexer))); 
+            case '_': return continue_with_token(lexer, init_token(TOKEN_UNDERSCORE, lexer_char_as_str(lexer))); 
+            case '(': return continue_with_token(lexer, init_token(TOKEN_LPAREN, lexer_char_as_str(lexer))); 
+            case ')': return continue_with_token(lexer, init_token(TOKEN_RPAREN, lexer_char_as_str(lexer))); 
+            case '{': return continue_with_token(lexer, init_token(TOKEN_LCURLY, lexer_char_as_str(lexer))); 
+            case '}': return continue_with_token(lexer, init_token(TOKEN_RCURLY, lexer_char_as_str(lexer))); 
+            case '<': return continue_with_token(lexer, init_token(TOKEN_LCHEVRON, lexer_char_as_str(lexer))); 
+            case '>': return continue_with_token(lexer, init_token(TOKEN_RCHEVRON, lexer_char_as_str(lexer))); 
+            case '/': return continue_with_token(lexer, init_token(TOKEN_FSLASH, lexer_char_as_str(lexer))); 
+            case '\\': return continue_with_token(lexer, init_token(TOKEN_BSLASH, lexer_char_as_str(lexer))); 
+            case '+': return continue_with_token(lexer, init_token(TOKEN_PLUS, lexer_char_as_str(lexer))); 
+            case '-': return continue_with_token(lexer, init_token(TOKEN_HYPHEN, lexer_char_as_str(lexer))); 
+            case '*': return continue_with_token(lexer, init_token(TOKEN_ASTERISK, lexer_char_as_str(lexer))); 
+            case '?': return continue_with_token(lexer, init_token(TOKEN_QUESTION, lexer_char_as_str(lexer))); 
             default: return NULL;
         }
     }
