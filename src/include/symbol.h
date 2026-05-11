@@ -23,7 +23,7 @@
 typedef enum {
     SYMBOL_VARIABLE,
     SYMBOL_FUNCTION,
-    SYMBOL_PARAM
+    SYMBOL_PARAMETER
  } SymbolKind;
 
 /**
