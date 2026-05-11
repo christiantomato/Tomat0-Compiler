@@ -14,6 +14,26 @@ ASTNode* init_node(NodeType type, Scope* scope) {
     //allocate for node using calloc to set default values
     ASTNode* node = calloc(1, sizeof(ASTNode));
 
+    //initalize lists for nodes that need it
+    switch(type) {
+        case AST_GLOBAL: 
+            node->specialization.block.statements = init_list(5);
+            break;
+        case AST_ENTRY_POINT: 
+            node->specialization.block.statements = init_list(10);
+            break;
+        case AST_BLOCK: 
+            node->specialization.block.statements = init_list(5);
+            break;
+        case AST_FUNCTION_DECLARATION:
+            node->specialization.func_dec.parameters = init_list(3);
+            break;
+        case AST_FUNCTION_CALL:
+            node->specialization.func_call.parameter_inputs = init_list(3);
+            break;
+        default: break;
+    }
+
     //set type and scope
     node->type = type;
     node->scope = scope;
@@ -109,6 +129,7 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
             fprintf(file, "code_block: \n");
             //print out whole code block
             print_ast(file, root->specialization.func_dec.code_block, indent + 1);
+            break;
         case AST_FUNCTION_CALL:
             print_indent(file, indent);
             fprintf(file, "function_name = %s\n", root->specialization.func_call.function_name);
@@ -118,6 +139,7 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
             for(int i = 0; i < root->specialization.func_call.parameter_inputs->num_items; i++) {
                 print_ast(file, root->specialization.func_call.parameter_inputs->array[i], indent + 1);
             }
+            break;
         case AST_VARIABLE_DECLARATION:
             print_indent(file, indent);
             fprintf(file, "data_type = %s\n", data_type_as_str(root->specialization.var_dec.data_type));
@@ -164,7 +186,7 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
             print_indent(file, indent);
             fprintf(file, "parameter_type = %s\n", data_type_as_str(root->specialization.param.parameter_type));
             print_indent(file, indent);
-            fprintf("parameter_name = %s\n", root->specialization.param.parameter_name);
+            fprintf(file, "parameter_name = %s\n", root->specialization.param.parameter_name);
             break;
         case AST_VARIABLE:
             print_indent(file, indent);

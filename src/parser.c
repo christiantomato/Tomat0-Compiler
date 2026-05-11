@@ -35,11 +35,24 @@ Parser* init_parser(List* tokens) {
     Scope* global_scope = init_scope(NULL);
     parser->root = init_node(AST_GLOBAL, global_scope);
     parser->current_scope = global_scope;
-    //init list and add global scope
-    parser->scopes = init_list(10);
+    //init scopes list and add global scope
+    parser->scopes = init_list(5);
     list_add(parser->scopes, global_scope);
     
     return parser;
+}
+
+/**
+ * @brief Looks ahead 1 token.
+ * 
+ * As we are using an LL(1) parser, we look ahead at most 1 token to make decisions.
+ * 
+ * @param parser Pointer to the parser.
+ * @return Pointer to the token.
+ */
+
+static Token* parser_peek1(Parser* parser) {
+    return parser->tokens->array[parser->index + 1];
 }
 
 /**
@@ -63,7 +76,7 @@ static void parser_advance(Parser* parser) {
 static void parser_skip(Parser* parser) {
     while(true) {
         //skip rchevron comments
-        if(parser->current_token->type == TOKEN_RCHEVRON) {
+        if(parser->current_token->type == TOKEN_TILDA) {
             //skip everything until we hit a newline (then check again for comments), or end token
             while(parser->current_token->type != TOKEN_NEWLINE && parser->current_token->type != TOKEN_EOF) {
                 parser_advance(parser);
@@ -123,35 +136,70 @@ static ASTNode* parse_factor(Parser* parser) {
         //create the negation node
         ASTNode* negation_node = init_node(AST_NEGATION, parser->current_scope);
         //assign
-        negation_node->specialization.negation.factor = parse_factor(parser);
+        negation_node->specialization.negation.operand = parse_factor(parser);
         //return the node
         return negation_node;
     }
 
     //check for an identifier
     if(parser->current_token->type == TOKEN_ID) {
-        //SEMANTIC ANALYSIS: ensure the variable exists 
-        if(lookup_symbol(parser->current_scope, parser->current_token->value) == NULL) {
-            //variable doesn't exist
-            printf("SEMANTIC ERROR: Variable has not been declared.\n");
-        }
+        //check if it is a function call
+        if(parser_peek1(parser)->type == TOKEN_LPAREN) {
+            //create the AST_FUNCTION_CALL
+            ASTNode* func_call_node = init_node(AST_FUNCTION_CALL, parser->current_scope);
 
-        //create the AST_VARIABLE
-        ASTNode* variable_node = init_node(AST_VARIABLE, parser->current_scope);
-        //set the name, remember in parsing value is not resolved yet so we leave that be
-        variable_node->specialization.variable.variable_name = strdup(parser->current_token->value);
-        //advance past
-        parser_advance(parser);
-        //return the node
-        return variable_node;
+            //get function name
+            func_call_node->specialization.func_call.function_name = strdup(parser->current_token->value);
+
+            //advance past name and opening bracket
+            parser_advance(parser); parser_advance(parser);
+
+            //parse parameters
+            while(parser->current_token->type != TOKEN_RPAREN) {
+                //create the parameter being parsed, which is an expression
+                ASTNode* param;
+                param = parse_expression(parser);
+
+                //skip past comma if there is one
+                if(parser->current_token->type == TOKEN_COMMA) {
+                    parser_advance(parser);
+                }
+
+                //add it to the param list
+                list_add(func_call_node->specialization.func_call.parameter_inputs, param);
+            }
+
+            //advance past closing
+            parser_advance(parser);
+
+            return func_call_node;
+        }
+        else {
+            //variable declaration
+
+            //SEMANTIC ANALYSIS: ensure the variable exists 
+            if(lookup_symbol(parser->current_scope, parser->current_token->value) == NULL) {
+                //variable doesn't exist
+                printf("SEMANTIC ERROR: Variable has not been declared.\n");
+            }
+
+            //create the AST_VARIABLE
+            ASTNode* variable_node = init_node(AST_VARIABLE, parser->current_scope);
+            //set the name, remember in parsing value is not resolved yet so we leave that be
+            variable_node->specialization.var.variable_name = strdup(parser->current_token->value);
+            //advance past
+            parser_advance(parser);
+            //return the node
+            return variable_node;
+        }
     }
 
     //check for an integer literal
     if(parser->current_token->type == TOKEN_NUM) {
-        //create the AST_INTEGER
-        ASTNode* integer_node = init_node(AST_INTEGER, parser->current_scope);
+        //create the AST_NUMBER
+        ASTNode* integer_node = init_node(AST_NUMBER, parser->current_scope);
         //assign
-        integer_node->specialization.integer_literal.value = atoi(parser->current_token->value);
+        integer_node->specialization.num.value = atoi(parser->current_token->value);
         //advance past the number
         parser_advance(parser);
         //return the node
@@ -163,7 +211,7 @@ static ASTNode* parse_factor(Parser* parser) {
         //create an AST_STRING
         ASTNode* string_node = init_node(AST_STRING, parser->current_scope);
         //assign the string (make sure to duplicate)
-        string_node->specialization.string_literal.value = strdup(parser->current_token->value);
+        string_node->specialization.string.value = strdup(parser->current_token->value);
         //advance past
         parser_advance(parser);
         //return
@@ -198,9 +246,9 @@ static ASTNode* parse_term(Parser* parser) {
 
         //create the binary operation node
         ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION, parser->current_scope);
-        binary_op_node->specialization.binary_operation.left = left;
-        binary_op_node->specialization.binary_operation.operator = operator;
-        binary_op_node->specialization.binary_operation.right = right;
+        binary_op_node->specialization.binary_op.left = left;
+        binary_op_node->specialization.binary_op.operator = operator;
+        binary_op_node->specialization.binary_op.right = right;
 
         //set left as the binary operation to keep building the nested binary operations
         left = binary_op_node;
@@ -238,9 +286,9 @@ static ASTNode* parse_expression(Parser* parser) {
 
         //create the binary operation node
         ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION, parser->current_scope);
-        binary_op_node->specialization.binary_operation.left = left;
-        binary_op_node->specialization.binary_operation.operator = operator;
-        binary_op_node->specialization.binary_operation.right = right;
+        binary_op_node->specialization.binary_op.left = left;
+        binary_op_node->specialization.binary_op.operator = operator;
+        binary_op_node->specialization.binary_op.right = right;
 
         //now the left node can become the sub binary node we just created, and allows us to continue building an expression with the next term in the while loop (if any)
         left = binary_op_node;
@@ -248,6 +296,127 @@ static ASTNode* parse_expression(Parser* parser) {
 
     //return the node that has built up the expression
     return left;
+}
+
+/**
+ * @brief Parses a parameter during a function declaration.
+ * 
+ * @param parser Pointer to the parser.
+ * @
+ */
+
+static ASTNode* parse_parameter(Parser* parser) {
+    //the parameter node we will return
+    ASTNode* param_node = init_node(AST_PARAMETER, parser->current_scope);
+
+    //expect a data type
+    if(parser->current_token->type == TOKEN_KEYWORD_INT) {
+        param_node->specialization.param.parameter_type = TYPE_INT;
+    }
+    else if(parser->current_token->type == TOKEN_KEYWORD_STRING) {
+        param_node->specialization.param.parameter_type = TYPE_STRING;
+    }
+    else {
+        printf("SYNTAX ERROR: Unrecognized parameter type.\n");
+        return NULL;
+    }
+
+    //move past
+    parser_advance(parser);
+
+    //expect parameter name
+    if(parser->current_token->type == TOKEN_ID) {
+        param_node->specialization.param.parameter_name = strdup(parser->current_token->value);
+    }
+    else {
+        printf("SYNTAX ERROR: Expected parameter name.\n");
+        return NULL;
+    }
+
+    //advance past id
+    parser_advance(parser);
+
+    return param_node;
+}
+
+//forward declare parse blocok
+static ASTNode* parse_block(Parser* parser);
+
+/**
+ * @brief Parses a function declaration. 
+ * 
+ * @param parser Pointer to the parser.
+ * @return Pointer to the function declaration node.
+ */
+
+static ASTNode* parse_function_declaration(Parser* parser) {
+    //create the node we will return
+    ASTNode* func_dec_node = init_node(AST_FUNCTION_DECLARATION, parser->current_scope);
+
+    //advance past the keyword func
+    parser_advance(parser);
+
+    //expect the function name
+    if(parser->current_token->type == TOKEN_ID) {
+        func_dec_node->specialization.func_dec.function_name = strdup(parser->current_token->value);
+    }
+    else {
+        printf("SYNTAX ERROR: Expected function identifier.\n");
+        return NULL;
+    }
+
+    parser_advance(parser);
+
+    //expect opening bracket
+    if(parser->current_token->type == TOKEN_LPAREN) {
+        //advance past bracket
+        parser_advance(parser);
+
+        //parse parameters until we reach the closing bracket
+        while(parser->current_token->type != TOKEN_RPAREN) {
+            list_add(func_dec_node->specialization.func_dec.parameters, parse_parameter(parser));
+            //check for comma for multiple params
+            if(parser->current_token->type == TOKEN_COMMA) {
+                //skip it
+                parser_advance(parser);
+            }
+        }
+
+        //advance past the closing
+        parser_advance(parser);
+
+        //expect the keyword yields
+        if(parser->current_token->type == TOKEN_KEYWORD_YIELDS) {
+            parser_advance(parser);
+        }
+        else {
+            printf("SYNTAX ERROR: Expected keyword yields.\n");
+            return NULL;
+        }
+
+        //expect return type
+        if(parser->current_token->type == TOKEN_KEYWORD_INT) {
+            func_dec_node->specialization.func_dec.return_type = TYPE_INT;
+        }
+        else if(parser->current_token->type == TOKEN_KEYWORD_STRING) {
+            func_dec_node->specialization.func_dec.return_type = TYPE_STRING;
+        }
+        else {
+            printf("SYNTAX ERROR: Unrecognized return type.\n");
+            return NULL;
+        }
+
+        //advance past type
+        parser_advance(parser);
+
+        //finally parse the code block and return
+        func_dec_node->specialization.func_dec.code_block = parse_block(parser);
+        return func_dec_node;
+    }
+    else {
+        printf("SYNTAX ERROR: Expected left parentheses.\n");
+        return NULL;
+    }
 }
 
 /**
@@ -267,11 +436,11 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
     //determine the data type and save it for the symbol
     DataType type; 
     if(parser->current_token->type == TOKEN_KEYWORD_INT) {
-        var_dec_node->specialization.variable_declaration.data_type = TYPE_INT;
+        var_dec_node->specialization.var_dec.data_type = TYPE_INT;
         type = TYPE_INT;
     }
     else if(parser->current_token->type == TOKEN_KEYWORD_STRING) {
-        var_dec_node->specialization.variable_declaration.data_type = TYPE_STRING;
+        var_dec_node->specialization.var_dec.data_type = TYPE_STRING;
         type = TYPE_STRING;
     }
     else {
@@ -291,7 +460,7 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
             printf("SEMANTIC ERROR: Variable already exists in this scope.\n");
         }
         //duplicate the token value (fixing double free errors)
-        var_dec_node->specialization.variable_declaration.variable_name = strdup(parser->current_token->value);
+        var_dec_node->specialization.var_dec.variable_name = strdup(parser->current_token->value);
     }
     else {
         //problem in variable name
@@ -332,7 +501,7 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
     }
 
     //recurse down and parse the assignment value
-    var_dec_node->specialization.variable_declaration.assignment = parse_expression(parser);
+    var_dec_node->specialization.var_dec.assignment = parse_expression(parser);
     
     //return the node once finished
     return var_dec_node;
@@ -356,7 +525,7 @@ static ASTNode* parse_variable_assignment(Parser* parser) {
     ASTNode* var_assignment_node = init_node(AST_VARIABLE_ASSIGNMENT, parser->current_scope);
 
     //get the variable name to reassign to 
-    var_assignment_node->specialization.variable_assignment.variable_name = strdup(parser->current_token->value);
+    var_assignment_node->specialization.var_assign.variable_name = strdup(parser->current_token->value);
 
     //advance and expect equals
     parser_advance(parser);
@@ -369,7 +538,7 @@ static ASTNode* parse_variable_assignment(Parser* parser) {
         return NULL;
     }
     //parse the expression of the reassignment
-    var_assignment_node->specialization.variable_assignment.assignment = parse_expression(parser);
+    var_assignment_node->specialization.var_assign.assignment = parse_expression(parser);
 
     return var_assignment_node;
 }
@@ -394,11 +563,12 @@ static ASTNode* parse_print_statement(Parser* parser) {
     }
     else {
         //problem 
+        printf("SYNTAX ERROR: Expected LPAREN.\n");
         return NULL;
     }
 
     //evaluate expression in parens
-    print_node->specialization.print_statement.statement = parse_expression(parser);
+    print_node->specialization.print_statement.operand = parse_expression(parser);
 
     //ensure closing paren
     if(parser->current_token->type == TOKEN_RPAREN) {
@@ -406,6 +576,7 @@ static ASTNode* parse_print_statement(Parser* parser) {
     }
     else {
         //bad syntax, problem
+        printf("SYNTAX ERROR: Expected RPAREN.\n");
         return NULL; 
     }
 
@@ -414,34 +585,105 @@ static ASTNode* parse_print_statement(Parser* parser) {
 }
 
 /**
- * @brief Parses a singular line of source code.
+ * @brief Parses a return statement instruction. 
  * 
+ * @param parser Pointer to the parser.
+ * @return Pointer to the created return statement node. 
+ */
+
+static ASTNode* parse_return_statement(Parser* parser) {
+    //create the node we will return
+    ASTNode* return_node = init_node(AST_RETURN_STATEMENT, parser->current_scope);
+
+    //move past the keyword (harvest)
+    parser_advance(parser);
+
+    //evaluate expression to return
+    return_node->specialization.return_statement.operand = parse_expression(parser);
+
+    //done return statement
+    return return_node;
+}
+
+/**
+ * @brief Parses a singular line of source code. 
+ * 
+ * Determines the instruction by looking at first token, peeking if needed.
  * Tomat0 enforces only 1 instruction per line, since we don't use delimeters.
- * Current available instructions: 
- * - variable declarations
- * - variable assignments
- * - print statements
  * 
  * @param parser Pointer to the parser. 
  * @return Pointer to the created node. 
  */
 
 static ASTNode* parse_line(Parser* parser) {
-    //determine what the instruction is by the first token
-    if(parser->current_token->type == TOKEN_KEYWORD_INT || parser->current_token->type == TOKEN_KEYWORD_STRING) {
-       return parse_variable_declaration(parser);
+    switch(parser->current_token->type) {
+        case TOKEN_KEYWORD_FUNC: return parse_function_declaration(parser);
+        case TOKEN_KEYWORD_INT: return parse_variable_declaration(parser); 
+        case TOKEN_KEYWORD_STRING: return parse_variable_declaration(parser);
+        case TOKEN_ID: return parse_variable_assignment(parser);
+        case TOKEN_KEYWORD_PRINT: return parse_print_statement(parser); 
+        case TOKEN_KEYWORD_HARVEST: 
+            //check if it is a return statement or runtime end
+            if(parser_peek1(parser)->type == TOKEN_KEYWORD_TOMATO) {
+                //advance past the ending statement
+                parser_advance(parser); parser_advance(parser);
+                return init_node(AST_RUNTIME_END, parser->current_scope);
+            }
+            else {
+                return parse_return_statement(parser);
+            }
+        case TOKEN_KEYWORD_SPROUT: {
+            //advance past 
+            parser_advance(parser);
+            //parse the main function block statement
+            ASTNode* main = parse_block(parser);
+            //set this block node to the entry point
+            main->type = AST_ENTRY_POINT;
+            return main;
+        }
+        default: 
+            printf("SYNTAX ERROR: Not a valid instruction.\n");
+            return NULL;
     }
-    else if(parser->current_token->type == TOKEN_ID) {
-        return parse_variable_assignment(parser);
-    }
-    else if(parser->current_token->type == TOKEN_KEYWORD_PRINT) {
-        return parse_print_statement(parser);
+}
+
+/** 
+ * @brief Parses a function block. 
+ * 
+ * For function declarations, ifs, whiles, and main entry point.
+ * 
+ * @param parser Pointer to the parser. 
+ * @return Pointer to the block node.
+ */
+
+static ASTNode* parse_block(Parser* parser) {
+    //create the node we will return
+    ASTNode* block_node = init_node(AST_BLOCK, parser->current_scope);
+
+    //expect the opening curly brace 
+    if(parser->current_token->type == TOKEN_LCURLY) {
+        parser_advance(parser);
     }
     else {
-        //invalid statement
-        printf("SEMANTIC ERROR: Invalid Statement.\n");
-        return NULL;
+        printf("SYNTAX ERROR: Expected Left Curly Brace.\n");
     }
+
+    //parse lines until we have reached the right curly
+    while(parser->current_token->type != TOKEN_RCURLY) {
+        //skip any whitespace
+        parser_skip(parser);
+        //parse a line
+        ASTNode* line_node = parse_line(parser);
+        //add it to the statements
+        list_add(block_node->specialization.block.statements, line_node);
+        //skip any white space
+        parser_skip(parser);
+    }
+
+    //advance past the rcurly to finish
+    parser_advance(parser);
+
+    return block_node;
 }
 
 /*
@@ -460,14 +702,8 @@ Program* parser_parse(Parser* parser) {
         }
         //parse a line and keep a pointer to the created node
         ASTNode* line_node = parse_line(parser);
-
-        //if it is a declaration, add the new symbol
-        if(line_node->type == AST_VARIABLE_DECLARATION) {
-            //add to table? 
-        }
-
-        //then add each parsed statement to the children of the global node 
-        list_add(parser->root->children, line_node);
+        //add to the global scope statements
+        list_add(parser->root->specialization.block.statements, line_node);
     }
     //return the program struct
     return init_program(parser->root, parser->scopes);
