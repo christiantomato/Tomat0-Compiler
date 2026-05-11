@@ -172,6 +172,9 @@ static Token* tokenize_ID(Lexer* lexer) {
     else if(strcmp(id_value, "bool") == 0) {
         return init_token(TOKEN_KEYWORD_BOOL, id_value);
     }
+    else if(strcmp(id_value, "func") == 0) {
+        return init_token(TOKEN_KEYWORD_FUNC, id_value);
+    }
     else if(strcmp(id_value, "print") == 0) {
         return init_token(TOKEN_KEYWORD_PRINT, id_value);
     }

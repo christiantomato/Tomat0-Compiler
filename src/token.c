@@ -29,6 +29,7 @@ char* token_type_as_str(Token* token) {
         case TOKEN_KEYWORD_INT: return "TOKEN_KEYWORD_INT"; break;
         case TOKEN_KEYWORD_STRING: return "TOKEN_KEYWORD_STRING"; break;
         case TOKEN_KEYWORD_BOOL: return "TOKEN_KEYWORD_BOOL"; break;
+        case TOKEN_KEYWORD_FUNC: return "TOKEN_KEYWORD_FUNC"; break;
         case TOKEN_KEYWORD_PRINT: return "TOKEN_KEYWORD_PRINT"; break;
         case TOKEN_KEYWORD_IF: return "TOKEN_KEYWORD_IF"; break;
         case TOKEN_KEYWORD_WHILE: return "TOKEN_KEYWORD_WHILE"; break;
