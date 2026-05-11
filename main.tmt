@@ -1,6 +1,21 @@
-~ testing
+~ global variables
+int pi = 3
+string greeting = "hello world"
 
+~ function declaration
+double(int x) yields int {
+    x = x * 2
+    harvest x
+}
+
+~ entry point
 sprout tomato {
-    int x = -5
+    int mine = 10
+    mine = double(mine)
+    print(mine)
+    print(greeting)
+    print(pi)
+
+    ~ end program
     harvest tomato
 }
