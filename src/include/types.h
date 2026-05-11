@@ -9,13 +9,14 @@
 /**
  * @enum DataType
  * @brief Describes different types of data types supported in Tomat0. 
+ * 
+ * Note: Strings will be immutable. 
  */
 
  typedef enum {
-    TYPE_INTEGER,
+    TYPE_INT,
     TYPE_STRING,
     TYPE_BOOL,
-    TYPE_FLOAT
  } DataType;
 
  /**

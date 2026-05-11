@@ -28,13 +28,24 @@ char* token_type_as_str(Token* token) {
     switch(token->type) {
         case TOKEN_KEYWORD_INT: return "TOKEN_KEYWORD_INT"; break;
         case TOKEN_KEYWORD_STRING: return "TOKEN_KEYWORD_STRING"; break;
-        case TOKEN_KEYWORD_SOUT: return "TOKEN_KEYWORD_SOUT"; break;
+        case TOKEN_KEYWORD_BOOL: return "TOKEN_KEYWORD_BOOL"; break;
+        case TOKEN_KEYWORD_FUNC: return "TOKEN_KEYWORD_FUNC"; break;
+        case TOKEN_KEYWORD_PRINT: return "TOKEN_KEYWORD_PRINT"; break;
         case TOKEN_KEYWORD_IF: return "TOKEN_KEYWORD_IF"; break;
         case TOKEN_KEYWORD_WHILE: return "TOKEN_KEYWORD_WHILE"; break;
+        case TOKEN_KEYWORD_TRUE: return "TOKEN_KEYWORD_TRUE"; break;
+        case TOKEN_KEYWORD_FALSE: return "TOKEN_KEYWORD_FALSE"; break;
+        case TOKEN_KEYWORD_IS: return "TOKEN_KEYWORD_IS"; break;
+        case TOKEN_KEYWORD_YIELDS: return "TOKEN_KEYWORD_YIELDS"; break;
+        case TOKEN_KEYWORD_HARVEST: return "TOKEN_KEYWORD_HARVEST"; break;
+        case TOKEN_KEYWORD_SPROUT: return "TOKEN_KEYWORD_SPROUT"; break;
+        case TOKEN_KEYWORD_TOMATO: return "TOKEN_KEYWORD_TOMATO"; break;
+        case TOKEN_KEYWORD_THROW: return "TOKEN_KEYWORD_THROW"; break;
         case TOKEN_ID: return "TOKEN_ID"; break;
+        case TOKEN_NUM: return "TOKEN_NUM"; break;
         case TOKEN_STRING: return "TOKEN_STRING"; break;
         case TOKEN_NEWLINE: return "TOKEN_NEWLINE"; break;
-        case TOKEN_NUM: return "TOKEN_NUM"; break;
+        case TOKEN_TILDA: return "TOKEN_TILDA"; break;
         case TOKEN_EQUALS: return "TOKEN_EQUALS"; break;
         case TOKEN_SEMI: return "TOKEN_SEMI"; break;
         case TOKEN_COMMA: return "TOKEN_COMMA"; break;

@@ -1,17 +1,12 @@
-~ global variable
-integer pi = 3
+~ global variables
+int pi = 3
 
-~ function declaration
-double(integer x) yields integer
-    harvest x * 2
+func multiply(int x, int y) yields int {
+    harvest x * y
+}
 
-~ entry point
-sprout tomato
-    integer x = 5
-    if(x > 5)
-        ~ does something
-        print(balls)
-        throw tomato
-
-    ~ signals end of program
+sprout {
+    int result = multiply(1, 2)
+    print(result)
     harvest tomato
+}

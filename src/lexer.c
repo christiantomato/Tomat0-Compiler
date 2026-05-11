@@ -48,7 +48,7 @@ static void lexer_advance(Lexer* lexer) {
  */
 
 static void lexer_skip_whitespace(Lexer* lexer) {
-    //skip blank space - but not newlines!
+    //skip blank space - but not newlines or tabs!
     while(isspace(lexer->curr) && lexer->curr != '\n') {
         lexer_advance(lexer);
     }
@@ -64,11 +64,16 @@ static void lexer_skip_whitespace(Lexer* lexer) {
  */
 
 static char* lexer_char_as_str(Lexer* lexer) {
-    //special case for a newline character
+    //special case for a newline character and tab character
     if(lexer->curr == '\n') {
         //return it in the form "\n"
         return strdup("\\n");
     }
+    else if(lexer->curr == '\t') {
+        //return it in the for "\t"
+        return strdup("\\t");
+    }
+
     //lexer->c is char, we need to make it a proper null terminated string
     char* char_as_str = malloc(2*sizeof(char));
     //build the null terminated string
@@ -157,21 +162,51 @@ static Token* tokenize_ID(Lexer* lexer) {
         lexer_advance(lexer);
     }
 
-    //checks if our identifier is a keyword
+    //check if the identifier is a keyword
     if(strcmp(id_value, "int") == 0) {
         return init_token(TOKEN_KEYWORD_INT, id_value);
     }
     else if(strcmp(id_value, "string") == 0) {
         return init_token(TOKEN_KEYWORD_STRING, id_value);
     }
-    else if(strcmp(id_value, "sout") == 0) {
-        return init_token(TOKEN_KEYWORD_SOUT, id_value);
+    else if(strcmp(id_value, "bool") == 0) {
+        return init_token(TOKEN_KEYWORD_BOOL, id_value);
+    }
+    else if(strcmp(id_value, "func") == 0) {
+        return init_token(TOKEN_KEYWORD_FUNC, id_value);
+    }
+    else if(strcmp(id_value, "print") == 0) {
+        return init_token(TOKEN_KEYWORD_PRINT, id_value);
     }
     else if(strcmp(id_value, "if") == 0) {
         return init_token(TOKEN_KEYWORD_IF, id_value);
     }
     else if(strcmp(id_value, "while") == 0) {
         return init_token(TOKEN_KEYWORD_WHILE, id_value);
+    }
+    else if(strcmp(id_value, "true") == 0) {
+        return init_token(TOKEN_KEYWORD_TRUE, id_value);
+    }
+    else if(strcmp(id_value, "false") == 0) {
+        return init_token(TOKEN_KEYWORD_FALSE, id_value);
+    }
+    else if(strcmp(id_value, "is") == 0) {
+        return init_token(TOKEN_KEYWORD_IS, id_value);
+    }
+    else if(strcmp(id_value, "yields") == 0) {
+        return init_token(TOKEN_KEYWORD_YIELDS, id_value);
+    }
+    else if(strcmp(id_value, "harvest") == 0) {
+        return init_token(TOKEN_KEYWORD_HARVEST, id_value);
+    }
+    else if(strcmp(id_value, "sprout") == 0) {
+        return init_token(TOKEN_KEYWORD_SPROUT, id_value);
+    }
+    else if(strcmp(id_value, "tomato") == 0) {
+        return init_token(TOKEN_KEYWORD_TOMATO, id_value);
+    }
+    else if(strcmp(id_value, "throw") == 0) {
+        return init_token(TOKEN_KEYWORD_THROW, id_value);
     }
     else {
         //return as a regular identifier (for function or variable names)
@@ -231,27 +266,28 @@ static Token* tokenize_next(Lexer* lexer) {
         }
         
         switch(lexer->curr) {
-            case '"': return tokenize_string(lexer); break;
+            case '"': return tokenize_string(lexer);
             //singular characters
-            case '\n': return continue_with_token(lexer, init_token(TOKEN_NEWLINE, lexer_char_as_str(lexer))); break;
-            case '=': return continue_with_token(lexer, init_token(TOKEN_EQUALS, lexer_char_as_str(lexer))); break;
-            case ';': return continue_with_token(lexer, init_token(TOKEN_SEMI, lexer_char_as_str(lexer))); break;
-            case ',': return continue_with_token(lexer, init_token(TOKEN_COMMA, lexer_char_as_str(lexer))); break;
-            case '.': return continue_with_token(lexer, init_token(TOKEN_PERIOD, lexer_char_as_str(lexer))); break;
-            case '\'': return continue_with_token(lexer, init_token(TOKEN_APOSTROPHE, lexer_char_as_str(lexer))); break;
-            case '_': return continue_with_token(lexer, init_token(TOKEN_UNDERSCORE, lexer_char_as_str(lexer))); break;
-            case '(': return continue_with_token(lexer, init_token(TOKEN_LPAREN, lexer_char_as_str(lexer))); break;
-            case ')': return continue_with_token(lexer, init_token(TOKEN_RPAREN, lexer_char_as_str(lexer))); break;
-            case '{': return continue_with_token(lexer, init_token(TOKEN_LCURLY, lexer_char_as_str(lexer))); break;
-            case '}': return continue_with_token(lexer, init_token(TOKEN_RCURLY, lexer_char_as_str(lexer))); break;
-            case '<': return continue_with_token(lexer, init_token(TOKEN_LCHEVRON, lexer_char_as_str(lexer))); break;
-            case '>': return continue_with_token(lexer, init_token(TOKEN_RCHEVRON, lexer_char_as_str(lexer))); break;
-            case '/': return continue_with_token(lexer, init_token(TOKEN_FSLASH, lexer_char_as_str(lexer))); break;
-            case '\\': return continue_with_token(lexer, init_token(TOKEN_BSLASH, lexer_char_as_str(lexer))); break;
-            case '+': return continue_with_token(lexer, init_token(TOKEN_PLUS, lexer_char_as_str(lexer))); break;
-            case '-': return continue_with_token(lexer, init_token(TOKEN_HYPHEN, lexer_char_as_str(lexer))); break;
-            case '*': return continue_with_token(lexer, init_token(TOKEN_ASTERISK, lexer_char_as_str(lexer))); break;
-            case '?': return continue_with_token(lexer, init_token(TOKEN_QUESTION, lexer_char_as_str(lexer))); break;
+            case '\n': return continue_with_token(lexer, init_token(TOKEN_NEWLINE, lexer_char_as_str(lexer))); 
+            case '~': return continue_with_token(lexer, init_token(TOKEN_TILDA, lexer_char_as_str(lexer))); 
+            case '=': return continue_with_token(lexer, init_token(TOKEN_EQUALS, lexer_char_as_str(lexer))); 
+            case ';': return continue_with_token(lexer, init_token(TOKEN_SEMI, lexer_char_as_str(lexer))); 
+            case ',': return continue_with_token(lexer, init_token(TOKEN_COMMA, lexer_char_as_str(lexer))); 
+            case '.': return continue_with_token(lexer, init_token(TOKEN_PERIOD, lexer_char_as_str(lexer))); 
+            case '\'': return continue_with_token(lexer, init_token(TOKEN_APOSTROPHE, lexer_char_as_str(lexer))); 
+            case '_': return continue_with_token(lexer, init_token(TOKEN_UNDERSCORE, lexer_char_as_str(lexer))); 
+            case '(': return continue_with_token(lexer, init_token(TOKEN_LPAREN, lexer_char_as_str(lexer))); 
+            case ')': return continue_with_token(lexer, init_token(TOKEN_RPAREN, lexer_char_as_str(lexer))); 
+            case '{': return continue_with_token(lexer, init_token(TOKEN_LCURLY, lexer_char_as_str(lexer))); 
+            case '}': return continue_with_token(lexer, init_token(TOKEN_RCURLY, lexer_char_as_str(lexer))); 
+            case '<': return continue_with_token(lexer, init_token(TOKEN_LCHEVRON, lexer_char_as_str(lexer))); 
+            case '>': return continue_with_token(lexer, init_token(TOKEN_RCHEVRON, lexer_char_as_str(lexer))); 
+            case '/': return continue_with_token(lexer, init_token(TOKEN_FSLASH, lexer_char_as_str(lexer))); 
+            case '\\': return continue_with_token(lexer, init_token(TOKEN_BSLASH, lexer_char_as_str(lexer))); 
+            case '+': return continue_with_token(lexer, init_token(TOKEN_PLUS, lexer_char_as_str(lexer))); 
+            case '-': return continue_with_token(lexer, init_token(TOKEN_HYPHEN, lexer_char_as_str(lexer))); 
+            case '*': return continue_with_token(lexer, init_token(TOKEN_ASTERISK, lexer_char_as_str(lexer))); 
+            case '?': return continue_with_token(lexer, init_token(TOKEN_QUESTION, lexer_char_as_str(lexer))); 
             default: return NULL;
         }
     }

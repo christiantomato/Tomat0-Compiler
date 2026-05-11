@@ -4,10 +4,10 @@
  * 
  * These include: 
  * - variable declarations
+ * - function declarations
  * - print statements
  * - binary operations
- * - binary operations
- * - function calls
+ * - and more
  */
 
 #ifndef AST_NODE_H
@@ -19,25 +19,66 @@
 
 /**
  * @enum NodeType
- * @brief Represents all possible node types that can be parsed. 
+ * @brief Represents all possible node types in our abstract syntax tree. 
  */
 
 typedef enum {
     AST_GLOBAL,
+    AST_ENTRY_POINT,
+    AST_BLOCK,
+    AST_FUNCTION_DECLARATION,
+    AST_FUNCTION_CALL,
     AST_VARIABLE_DECLARATION,
     AST_VARIABLE_ASSIGNMENT,
-    AST_PRINT_STATEMENT,
     AST_BINARY_OPERATION,
+    AST_PRINT_STATEMENT,
+    AST_RETURN_STATEMENT,
     AST_NEGATION,
+    AST_PARAMETER,
     AST_VARIABLE,
-    AST_INTEGER,
-    AST_STRING
+    AST_NUMBER,
+    AST_STRING,
+    AST_THROW,
+    AST_RUNTIME_END
 } NodeType;
 
 //Forward declare the general ast node structure, so we can use them when defining specific ast node structs.  
 struct ast_node_struct;
 
-//NON TERMINAL NODES: 
+//NON TERMINAL NODES:
+
+/**
+ * @struct Block
+ * @brief Represents a code block of instructions.
+ */
+
+typedef struct {
+    List* statements; /**< A list of ast nodes for all the statements in the block. */
+} Block;
+
+/**
+ * @struct FunctionDeclaration
+ * @brief Represents a function declaration. 
+ */
+
+typedef struct {
+    char* function_name; /**< The function name. */
+    List* parameters; /**< The parameter list (which will contain AST_PARAMETER nodes). */
+    DataType return_type; /**< The return type. */
+    struct ast_node_struct* code_block; /**< The actual function code. */
+} FunctionDeclaration;
+
+/**
+ * @struct FunctionCall
+ * @brief Represents a function call.
+ * 
+ * Passed in parameters can be literals, variables, or expressions.
+ */
+
+typedef struct {
+    char* function_name; /**< The function that is being called. */
+    List* parameter_inputs; /**< List of AST nodes that are passed in for the parameters. */
+} FunctionCall;
 
 /**
  * @struct VariableDeclaration
@@ -63,15 +104,6 @@ typedef struct {
 } VariableAssignment;
 
 /**
- * @struct PrintStatement
- * @brief Represents a print statement instruction. 
- */
-
-typedef struct {
-    struct ast_node_struct* statement; /**< The statement to print. */
-} PrintStatement;
-
-/**
  * @struct BinaryOperation
  * @brief Represents a binary operation instruction between 2 nodes. 
  * 
@@ -88,16 +120,33 @@ typedef struct {
     char* operator; /**< The operator. */
 } BinaryOperation;
 
+//The following 3 nodes have the same definition, but represent different things.
+
 /**
- * @struct Negation
- * @brief Represents a negation instruction. 
+ * @struct UnaryOperation
+ * @brief Represents a unary operation. 
+ * 
+ * Current operations include:
+ * - Negation: -(node)
+ * - Return Statements: return(node)
+ * - Print Statenments: print(node)
  */
 
 typedef struct {
-    struct ast_node_struct* factor; /**< The factor being negated. */
-} Negation;
+    struct ast_node_struct* operand; /**< The node operand. */
+} UnaryOperation;
 
 //TERMINAL NODES: 
+
+/**
+ * @struct Parameter
+ * @brief Encodes a parameter from a function declaration.
+ */
+
+typedef struct {
+    DataType parameter_type; /**< The parameter type. */
+    char* parameter_name; /**< The paramete rname */
+} Parameter;
 
 /**
  * @struct Variable
@@ -109,13 +158,13 @@ typedef struct {
 } Variable;
 
 /**
- * @struct IntegerLiteral
- * @brief Represents an integer.  
+ * @struct NumberLiteral
+ * @brief Represents a number.  
  */
 
 typedef struct {
-    int value; /**< The integer value. */
-} IntegerLiteral;
+    int value; /**< The number value. */
+} NumberLiteral;
 
 /**
  * @struct StringLiteral
@@ -128,18 +177,23 @@ typedef struct {
 
 /**
  * @union ASTSpecialization
- * @brief A union so a node can choose its specific type. 
+ * @brief A union so a node can choose the data it needs to hold based on its type. 
  */
 
 typedef union {
-    VariableDeclaration variable_declaration;
-    VariableAssignment variable_assignment;
-    PrintStatement print_statement;
-    BinaryOperation binary_operation;
-    Negation negation;
-    Variable variable;
-    IntegerLiteral integer_literal;
-    StringLiteral string_literal;
+    Block block;
+    FunctionDeclaration func_dec;
+    FunctionCall func_call;
+    VariableDeclaration var_dec;
+    VariableAssignment var_assign;
+    BinaryOperation binary_op;
+    UnaryOperation print_statement;
+    UnaryOperation return_statement;
+    UnaryOperation negation;
+    Parameter param;
+    Variable var;
+    NumberLiteral num;
+    StringLiteral string;
 } ASTSpecialization;
 
 /**
@@ -151,7 +205,6 @@ typedef union {
 
 typedef struct ast_node_struct {
     NodeType type; /**< The type of node. */
-    List* children; /**< Pointer to the nodes children (if any). */
     ASTSpecialization specialization; /**< Its specialization from the union. */
     Scope* scope; /**< The scope where this node lives. */
 } ASTNode;
