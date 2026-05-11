@@ -94,6 +94,39 @@ static void parser_skip(Parser* parser) {
     }
 }
 
+/**
+ * @brief Resolves the type for a factor.
+ * 
+ * Used semantically to check types being passed into a function call.
+ * 
+ * @param parser Pointer to the parser.
+ * @param factor Pointer to the node we are checking.
+ * @return The expected data type.
+ */
+
+static DataType resolve_factor_type(Parser* parser, ASTNode* factor) {
+    switch(factor->type) {
+        case AST_FUNCTION_CALL: {
+            //check the return type
+            Symbol* function = lookup_symbol(parser->current_scope, factor->specialization.func_call.function_name);
+            return function->data.func_sym.return_type;
+        }
+        case AST_VARIABLE: {
+            //check the data type
+            Symbol* variable = lookup_symbol(parser->current_scope, factor->specialization.var.variable_name);
+            return variable->data.var_sym.type;
+        }
+        case AST_NEGATION: 
+            //assume integer
+            return TYPE_INT;
+        case AST_NUMBER:
+            return TYPE_INT;
+        case AST_STRING:
+            return TYPE_STRING;
+        default: return -1;
+    }
+}
+
 //forward declare parse expression, as parse factor recursively calls it
 static ASTNode* parse_expression(Parser* parser);
 
@@ -143,8 +176,16 @@ static ASTNode* parse_factor(Parser* parser) {
 
     //check for an identifier
     if(parser->current_token->type == TOKEN_ID) {
-        //check if it is a function call
+        //function call
         if(parser_peek1(parser)->type == TOKEN_LPAREN) {
+            //SEMANTIC ANALYSIS: ensure the function exists
+            Symbol* func_symbol = lookup_symbol(parser->current_scope, parser->current_token->value);
+            if(func_symbol == NULL) {
+                //function doesn't exist
+                printf("SEMANTIC ERROR: Function has not been declared.\n");
+                return NULL;
+            }
+
             //create the AST_FUNCTION_CALL
             ASTNode* func_call_node = init_node(AST_FUNCTION_CALL, parser->current_scope);
 
@@ -154,11 +195,24 @@ static ASTNode* parse_factor(Parser* parser) {
             //advance past name and opening bracket
             parser_advance(parser); parser_advance(parser);
 
+            //keep an index for func params
+            int param_index = 0;
+
             //parse parameters
             while(parser->current_token->type != TOKEN_RPAREN) {
-                //create the parameter being parsed, which is an expression
-                ASTNode* param;
-                param = parse_expression(parser);
+                //parse the parameter, which we will restrict to being a factor for simplicity
+                ASTNode* param_node;
+                param_node = parse_factor(parser);
+
+                //check if types match
+                DataType param_type = resolve_factor_type(parser, param_node);
+                Symbol* param_symbol = (Symbol*) func_symbol->data.func_sym.parameters->array[param_index];
+                DataType expected_type = param_symbol->data.var_sym.type;
+
+                if(param_type != expected_type) {
+                    printf("SEMANTIC ERROR: Parameter type does not match function definition.\n");
+                    return NULL;
+                }
 
                 //skip past comma if there is one
                 if(parser->current_token->type == TOKEN_COMMA) {
@@ -166,7 +220,15 @@ static ASTNode* parse_factor(Parser* parser) {
                 }
 
                 //add it to the param list
-                list_add(func_call_node->specialization.func_call.parameter_inputs, param);
+                list_add(func_call_node->specialization.func_call.parameter_inputs, param_node);
+
+                //increase param counter
+                param_index++;
+            }
+
+            //check if it was the correct amount of arguments
+            if(param_index != func_symbol->data.func_sym.parameters->num_items) {
+                printf("SEMANTIC ERROR: Incorrect amount of arguments.\n");
             }
 
             //advance past closing
@@ -174,9 +236,8 @@ static ASTNode* parse_factor(Parser* parser) {
 
             return func_call_node;
         }
+        //variable call
         else {
-            //variable declaration
-
             //SEMANTIC ANALYSIS: ensure the variable exists 
             if(lookup_symbol(parser->current_scope, parser->current_token->value) == NULL) {
                 //variable doesn't exist
@@ -357,14 +418,26 @@ static ASTNode* parse_function_declaration(Parser* parser) {
     parser_advance(parser);
 
     //expect the function name
-    if(parser->current_token->type == TOKEN_ID) {
-        func_dec_node->specialization.func_dec.function_name = strdup(parser->current_token->value);
-    }
-    else {
+    if(parser->current_token->type != TOKEN_ID) {
         printf("SYNTAX ERROR: Expected function identifier.\n");
         return NULL;
     }
 
+    //get the name, add to node, and initalize a symbol
+    char* function_name = parser->current_token->value;
+    func_dec_node->specialization.func_dec.function_name = strdup(function_name);
+    Symbol* func_symbol = init_symbol(function_name, SYMBOL_FUNCTION);
+
+    //add symbol to the current scope (which is global)
+    add_symbol(parser->current_scope, func_symbol);
+
+    //save the old scope and enter the function scope
+    Scope* global_scope = parser->current_scope;
+    Scope* func_scope = enter_scope(global_scope);
+    list_add(parser->scopes, func_scope);
+    parser->current_scope = func_scope;
+
+    //advance past name
     parser_advance(parser);
 
     //expect opening bracket
@@ -372,9 +445,27 @@ static ASTNode* parse_function_declaration(Parser* parser) {
         //advance past bracket
         parser_advance(parser);
 
+        //parameters begin at +16 and are assigned +8 offsets relative to the stack frame
+        int param_offset = 16;
+
         //parse parameters until we reach the closing bracket
         while(parser->current_token->type != TOKEN_RPAREN) {
-            list_add(func_dec_node->specialization.func_dec.parameters, parse_parameter(parser));
+            //parse a parameter
+            ASTNode* param_node = parse_parameter(parser);
+            //add to the list
+            list_add(func_dec_node->specialization.func_dec.parameters, param_node);
+
+            //create the symbol and add it to the scope
+            Symbol* param_symbol = init_symbol(param_node->specialization.param.parameter_name, SYMBOL_VARIABLE);
+            //get the data and asisgn offset
+            param_symbol->data.var_sym.type = param_node->specialization.param.parameter_type;
+            param_symbol->data.var_sym.storage = STORAGE_PARAMETER;
+            param_symbol->data.var_sym.offset = param_offset;
+            param_offset += 8;
+            add_symbol(parser->current_scope, param_symbol);
+            //add the symbol to the func symbol param list
+            list_add(func_symbol->data.func_sym.parameters, param_symbol);
+
             //check for comma for multiple params
             if(parser->current_token->type == TOKEN_COMMA) {
                 //skip it
@@ -397,9 +488,11 @@ static ASTNode* parse_function_declaration(Parser* parser) {
         //expect return type
         if(parser->current_token->type == TOKEN_KEYWORD_INT) {
             func_dec_node->specialization.func_dec.return_type = TYPE_INT;
+            func_symbol->data.func_sym.return_type = TYPE_INT;
         }
         else if(parser->current_token->type == TOKEN_KEYWORD_STRING) {
             func_dec_node->specialization.func_dec.return_type = TYPE_STRING;
+            func_symbol->data.func_sym.return_type = TYPE_STRING;
         }
         else {
             printf("SYNTAX ERROR: Unrecognized return type.\n");
@@ -411,6 +504,9 @@ static ASTNode* parse_function_declaration(Parser* parser) {
 
         //finally parse the code block and return
         func_dec_node->specialization.func_dec.code_block = parse_block(parser);
+
+        //return to old scope (global)
+        parser->current_scope = global_scope;
         return func_dec_node;
     }
     else {
@@ -472,14 +568,14 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
     Symbol* var_symbol = init_symbol(parser->current_token->value, SYMBOL_VARIABLE);
     //set its data type
     var_symbol->data.var_sym.type = type;
-    //determine whether it will be dynamically or statically allocated (is it in global scope?)
+    //determine whether its storage type
     if(parser->current_scope->parent == NULL) {
         //global variable
-        var_symbol->data.var_sym.is_static = true;
+        var_symbol->data.var_sym.storage = STORAGE_GLOBAL;
     }
     else {
         //local variable
-        var_symbol->data.var_sym.is_static = false;
+        var_symbol->data.var_sym.storage = STORAGE_LOCAL;
         //assign offset
         parser->current_scope->current_offset -= 8;
         var_symbol->data.var_sym.offset = parser->current_scope->current_offset;

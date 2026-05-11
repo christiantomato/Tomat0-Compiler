@@ -1,12 +1,1 @@
 ~ global variables
-int pi = 3
-
-func multiply(int x, int y) yields int {
-    harvest x * y
-}
-
-sprout {
-    int result = multiply(1, 2)
-    print(result)
-    harvest tomato
-}
