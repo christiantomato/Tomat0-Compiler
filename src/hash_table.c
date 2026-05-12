@@ -137,22 +137,41 @@ void hash_remove(HashTable* table, const char* symbol_name) {
 }
 
 /*
- * Prints the table representation to a file. 
- * Loops through each bucket and linked list. 
+ * Returns the table representation as a string.
+ * Loops through each bucket and linked list.
  */
 
-void hash_print(FILE* file, HashTable* table) {
-    //loop through each bucket
-    for(int i = 0; i < table->size; i++) {
-        //get the head
-        HashNode* curr = table->buckets[i];
+char* hash_to_str(void* table) {
+    HashTable* hash_table = (HashTable*) table;
+    //start with empty string
+    char* result = strdup("");
 
-        //go through the linked list
+    //loop through each bucket
+    for(int i = 0; i < hash_table->size; i++) {
+        HashNode* curr = hash_table->buckets[i];
+
+        //loop linked list
         while(curr != NULL) {
-            fprintf(file, "%s\n", symbol_to_str(curr->symbol));
+            //get the symbol representation
+            char* symbol_str = symbol_to_str(curr->symbol);
+
+            //get length and write to string
+            int length = snprintf(NULL, 0, "%s%s\n", result, symbol_str);
+            char* new_result = malloc(length + 1);
+            //concatenate
+            snprintf(new_result, length + 1, "%s%s\n", result, symbol_str);
+
+            //free old
+            free(result);
+            free(symbol_str);
+
+            //set the new built string
+            result = new_result;
+            //continue
             curr = curr->next;
         }
     }
+    return result;
 }
 
 /*
