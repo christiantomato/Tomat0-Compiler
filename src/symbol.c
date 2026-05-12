@@ -29,6 +29,19 @@ Symbol* init_symbol(char* name, SymbolKind kind) {
 }
 
 /*
+ * VariableStorage enum as a string. 
+ */
+
+char* storage_type_as_str(VariableSymbol symbol) {
+    switch(symbol.storage) {
+        case STORAGE_GLOBAL: return "STORAGE_GLOBAL";
+        case STORAGE_LOCAL: return "STORAGE_LOCAL";
+        case STORAGE_PARAMETER: return "STORAGE_PARAMETER";
+        default: return "STORAGE_UNKNOWN";
+    }
+}
+
+/*
  * SymbolKind enum as a string. 
  */
 
@@ -40,22 +53,39 @@ char* symbol_kind_as_str(Symbol* symbol) {
     }
 }
 
+/*
+ * ToString for any symbol type.
+ */
+
 char* symbol_to_str(void* symbol) {
     Symbol* the_symbol = (Symbol*) symbol;
     //the string to return 
     char* symbol_str;
 
-    //figure out length needed and allocate space for it
-    int length = snprintf(NULL, 0, 
-        "SYMBOL NAME: %s, SYMBOL KIND: %s", 
-        the_symbol->name, symbol_kind_as_str(the_symbol));
-    
-    symbol_str = malloc(length + 1);
+    if(the_symbol->kind == SYMBOL_VARIABLE) {
+        //figure out length needed and allocate space for it
+        int length = snprintf(NULL, 0, 
+            "NAME: %s, KIND: %s, DATA TYPE: %s, STORAGE: %s, OFFSET: %d",  
+            the_symbol->name, symbol_kind_as_str(the_symbol), data_type_as_str(the_symbol->data.var_sym.type), storage_type_as_str(the_symbol->data.var_sym), the_symbol->data.var_sym.offset);
 
-    //build the string
-    snprintf(symbol_str, length + 1, 
-        "SYMBOL NAME: %s, SYMBOL KIND: %s",
-        the_symbol->name, symbol_kind_as_str(the_symbol));
+        symbol_str = malloc(length + 1);
+
+        //write to string
+        snprintf(symbol_str, length + 1, 
+            "NAME: %s, KIND: %s, DATA TYPE: %s, STORAGE: %s, OFFSET: %d",  
+            the_symbol->name, symbol_kind_as_str(the_symbol), data_type_as_str(the_symbol->data.var_sym.type), storage_type_as_str(the_symbol->data.var_sym), the_symbol->data.var_sym.offset);
+    }
+    else if(the_symbol->kind == SYMBOL_FUNCTION) {
+         int length = snprintf(NULL, 0, 
+        "NAME: %s, KIND: %s, RETURN TYPE: %s",  
+        the_symbol->name, symbol_kind_as_str(the_symbol), data_type_as_str(the_symbol->data.func_sym.return_type));
+
+        symbol_str = malloc(length + 1);
+
+        snprintf(symbol_str, length + 1, 
+            "NAME: %s, KIND: %s, RETURN TYPE: %s",  
+            the_symbol->name, symbol_kind_as_str(the_symbol), data_type_as_str(the_symbol->data.func_sym.return_type));
+    }
     return symbol_str;
 }
 
