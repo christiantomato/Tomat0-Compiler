@@ -1,15 +1,15 @@
 ~ global variables
+string greeting = "hi"
 
 ~ define a function
 func calculate(int x, int y) yields int {
-    harvest 1
+    harvest x * y + 2
 }
 
 ~ entry point
 sprout {
-    ~ attempt incorrect arguments
-    int result = calculate(1)
-    ~ attempt incorrect type
-    int resultTwo = calculate("hi", 3)
+    ~ little example
+    int result = calculate(-1, 1)
+    sout(result)
     harvest tomato
 }

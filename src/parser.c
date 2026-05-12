@@ -20,7 +20,7 @@
  * Creates and initializes a parser with the tokens list. 
  */
 
-Parser* init_parser(List* tokens) {
+Parser* init_parser(List* tokens) { 
     //create a parser and allocate memory
     Parser* parser = malloc(sizeof(Parser));
 
@@ -43,6 +43,44 @@ Parser* init_parser(List* tokens) {
 }
 
 /**
+ * @brief Advances the parser to the next token in the list. 
+ * 
+ * @param parser Pointer to the parser.
+ */
+
+static void parser_advance(Parser* parser) {
+    parser->index++;
+    //update current
+    parser->current_token = parser->tokens->array[parser->index];
+}
+
+/**
+ * @brief For parsing error handling
+ * 
+ * Skips through until the next line when there is a syntax error.
+ * Helpful so we don't get infinte loops and makes debugging easy.
+ * 
+ * @param parser Pointer to the parser.
+ */
+
+static void parser_sync(Parser* parser) {
+    printf("syncing parser...\n");
+    while(
+        parser->current_token->type != TOKEN_NEWLINE &&
+        parser->current_token->type != TOKEN_RCURLY &&
+        parser->current_token->type != TOKEN_EOF
+    ) {
+        //skip through
+        parser_advance(parser);
+    }
+
+    //go to new line once done
+    if(parser->current_token->type == TOKEN_NEWLINE) {
+        parser_advance(parser);
+    }
+}
+
+/**
  * @brief Looks ahead 1 token.
  * 
  * As we are using an LL(1) parser, we look ahead at most 1 token to make decisions.
@@ -53,18 +91,6 @@ Parser* init_parser(List* tokens) {
 
 static Token* parser_peek1(Parser* parser) {
     return parser->tokens->array[parser->index + 1];
-}
-
-/**
- * @brief Advances the parser to the next token in the list. 
- * 
- * @param parser Pointer to the parser.
- */
-
-static void parser_advance(Parser* parser) {
-    parser->index++;
-    //update current
-    parser->current_token = parser->tokens->array[parser->index];
 }
 
 /**
@@ -241,7 +267,7 @@ static ASTNode* parse_factor(Parser* parser) {
             //SEMANTIC ANALYSIS: ensure the variable exists 
             if(lookup_symbol(parser->current_scope, parser->current_token->value) == NULL) {
                 //variable doesn't exist
-                printf("SEMANTIC ERROR: Variable has not been declared.\n");
+                printf("SEMANTIC ERROR: Variable %s has not been declared.\n", parser->current_token->value);
             }
 
             //create the AST_VARIABLE
@@ -379,6 +405,7 @@ static ASTNode* parse_parameter(Parser* parser) {
     }
     else {
         printf("SYNTAX ERROR: Unrecognized parameter type.\n");
+        parser_sync(parser);
         return NULL;
     }
 
@@ -391,6 +418,7 @@ static ASTNode* parse_parameter(Parser* parser) {
     }
     else {
         printf("SYNTAX ERROR: Expected parameter name.\n");
+        parser_sync(parser);
         return NULL;
     }
 
@@ -400,7 +428,7 @@ static ASTNode* parse_parameter(Parser* parser) {
     return param_node;
 }
 
-//forward declare parse blocok
+//forward declare parse block
 static ASTNode* parse_block(Parser* parser);
 
 /**
@@ -420,6 +448,7 @@ static ASTNode* parse_function_declaration(Parser* parser) {
     //expect the function name
     if(parser->current_token->type != TOKEN_ID) {
         printf("SYNTAX ERROR: Expected function identifier.\n");
+        parser_sync(parser);
         return NULL;
     }
 
@@ -482,6 +511,7 @@ static ASTNode* parse_function_declaration(Parser* parser) {
         }
         else {
             printf("SYNTAX ERROR: Expected keyword yields.\n");
+            parser_sync(parser);
             return NULL;
         }
 
@@ -496,6 +526,7 @@ static ASTNode* parse_function_declaration(Parser* parser) {
         }
         else {
             printf("SYNTAX ERROR: Unrecognized return type.\n");
+            parser_sync(parser);
             return NULL;
         }
 
@@ -511,6 +542,7 @@ static ASTNode* parse_function_declaration(Parser* parser) {
     }
     else {
         printf("SYNTAX ERROR: Expected left parentheses.\n");
+        parser_sync(parser);
         return NULL;
     }
 }
@@ -542,6 +574,7 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
     else {
         //no type? problem  
         printf("SYNTAX ERROR: Invalid type.\n");
+        parser_sync(parser);
         return NULL;
     }
 
@@ -561,6 +594,7 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
     else {
         //problem in variable name
         printf("SYNTAX ERROR: Invalid variable name.\n");
+        parser_sync(parser);
         return NULL;
     }
 
@@ -593,6 +627,7 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
     else {
         //problem
         printf("SYNTAX ERROR: Expected equals.\n");
+        parser_sync(parser);
         return NULL;
     }
 
@@ -614,7 +649,7 @@ static ASTNode* parse_variable_assignment(Parser* parser) {
     //SEMANTICS: ensure the variable already exists
     if(lookup_symbol(parser->current_scope, parser->current_token->value) == NULL) {
         //variable doesn't exist
-        printf("SEMANTIC ERROR: Variable has not been declared.\n");
+        printf("SEMANTIC ERROR: Variable %s has not been declared.\n", parser->current_token->value);
     }
 
     //create the node we will return
@@ -660,6 +695,7 @@ static ASTNode* parse_print_statement(Parser* parser) {
     else {
         //problem 
         printf("SYNTAX ERROR: Expected LPAREN.\n");
+        parser_sync(parser);
         return NULL;
     }
 
@@ -673,6 +709,7 @@ static ASTNode* parse_print_statement(Parser* parser) {
     else {
         //bad syntax, problem
         printf("SYNTAX ERROR: Expected RPAREN.\n");
+        parser_sync(parser);
         return NULL; 
     }
 
@@ -739,12 +776,13 @@ static ASTNode* parse_line(Parser* parser) {
         }
         default: 
             printf("SYNTAX ERROR: Not a valid instruction.\n");
+            parser_sync(parser);
             return NULL;
     }
 }
 
 /** 
- * @brief Parses a function block. 
+ * @brief Parses a block of code.
  * 
  * For function declarations, ifs, whiles, and main entry point.
  * 
@@ -762,6 +800,7 @@ static ASTNode* parse_block(Parser* parser) {
     }
     else {
         printf("SYNTAX ERROR: Expected Left Curly Brace.\n");
+        parser_sync(parser);
     }
 
     //parse lines until we have reached the right curly
