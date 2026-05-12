@@ -86,6 +86,15 @@ Scope* enter_scope(Scope* current_scope);
 Scope* exit_scope(Scope* current_scope);
 
 /**
+ * @brief ToString for a scope. 
+ * 
+ * @param scope Pointer to the scope
+ * @return String representation.
+ */
+
+char* scope_to_str(void* scope);
+
+/**
  * @brief Frees allocated memory by the scope. 
  * 
  * @param scope Pointer to the scope. 

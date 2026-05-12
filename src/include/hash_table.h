@@ -70,13 +70,13 @@ Symbol* hash_get(HashTable* table, const char* symbol_name);
 void hash_remove(HashTable* table, const char* symbol_name);
 
 /**
- * @brief Writes a representation of the table to a file. 
+ * @brief ToString for a hash table. 
  * 
- * @param file Pointer to the file. 
  * @param table Pointer to the table. 
+ * @return String representation.
  */
 
-void hash_print(FILE* file, HashTable* table);
+char* hash_to_str(void* table);
 
 /**
  * @brief Frees allocated memory by the hash table. 
