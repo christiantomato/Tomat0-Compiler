@@ -18,6 +18,7 @@
  */
 
 typedef struct scope_struct {
+    char* name; /**< A name for the scope - useful when debugging. */
     struct scope_struct* parent; /**< The parent scope. */
     HashTable* symbol_table; /**< The symbol table for the scope. */
     int current_offset; /**< The next free stack slot relative to the frame pointer of this scope. */

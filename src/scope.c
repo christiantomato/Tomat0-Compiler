@@ -15,6 +15,8 @@
 Scope* init_scope(Scope* parent) {
     //create and allocate for the scope
     Scope* scope = malloc(sizeof(Scope));
+    //set name to null for now
+    scope->name = NULL;
     //set the parent
     scope->parent = parent;
     //initalize a symbol_table
@@ -92,15 +94,15 @@ char* scope_to_str(void* scope) {
 
     //figure out length needed and allocate space for it
     int length = snprintf(NULL, 0, 
-        "SCOPES SYMBOL TABLE:\n%s",  
-        hash_to_str(the_scope->symbol_table));
+        "SCOPE: %s\n%s",  
+        the_scope->name, hash_to_str(the_scope->symbol_table));
 
         scope_str = malloc(length + 1);
 
         //write to string
         snprintf(scope_str, length + 1, 
-        "SCOPES SYMBOL TABLE:\n%s",  
-        hash_to_str(the_scope->symbol_table));
+        "SCOPE: %s\n%s",  
+        the_scope->name, hash_to_str(the_scope->symbol_table));
 
     return scope_str;
 }
@@ -110,6 +112,8 @@ char* scope_to_str(void* scope) {
  */
 
 void free_scope(Scope* scope) {
+    //free name
+    free(scope->name);
     //free the symbol table
     free(scope->symbol_table);
     //free scope itself
