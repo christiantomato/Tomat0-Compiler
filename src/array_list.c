@@ -122,6 +122,9 @@ void free_list(List* list, void (*free_func)(void*)) {
 
 void print_list(FILE* file, List* list, char* (*to_string_func)(void*)) {
     for(int i = 0; i < list->num_items; i++) {
-        fprintf(file, "%s\n", to_string_func(list->array[i]));
+        char* to_string = to_string_func(list->array[i]);
+        fprintf(file, "%s\n", to_string);
+        //make sure to free!
+        free(to_string);
     }
 }
