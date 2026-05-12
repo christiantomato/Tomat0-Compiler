@@ -34,13 +34,13 @@ int main(int argc, char *argv[]) {
      * SYNTACTIC ANALYSIS
      */
 
-    //intialize the parser and symbol table
+    //intialize the parser
     Parser* my_parser = init_parser(tokens_list);
 
     //parse everything and return the program representation, containing ast root and scopes list.
     Program* program_representation = parser_parse(my_parser);
 
-    //write ast representation from root node and print all scope symbol tables
+    //write ast representation from root node and print all scope symbol tables to files
     FILE* symbol_tables_file = fopen("output/tables_output.txt", "w");
     FILE* ast_file = fopen("output/ast_output.txt", "w");
     print_ast(ast_file, program_representation->root, 0);
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
     fclose(ast_file);
     fclose(symbol_tables_file);
 
-    //we can free the tokens and parser now
+    //finally, free the tokens and parser now
     free_list(tokens_list, free_token_wrapper);
     free_parser(my_parser);
 
