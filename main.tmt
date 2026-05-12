@@ -1,15 +1,5 @@
-~ global variables
-string greeting = "hi"
+int x = 5
 
-~ define a function
-func calculate(int x, int y) yields int {
-    harvest x * y + 2
-}
-
-~ entry point
-sprout {
-    ~ little example
-    int result = calculate(-1, 1)
-    sout(result)
-    harvest tomato
+func test(int x) yields int {
+    harvest x
 }
