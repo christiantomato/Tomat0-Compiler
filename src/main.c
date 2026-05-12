@@ -2,7 +2,7 @@
  * @file main.c
  * @brief Goes through the compilation pipeline. 
  * 
- * Lexical Analysis -> Syntactic Analysis -> Code Generation
+ * Lexical Analysis -> Syntactic Analysis + Semantic Analysis -> Code Generation.
  */
 
 #include "include/main.h"
@@ -34,19 +34,21 @@ int main(int argc, char *argv[]) {
      * SYNTACTIC ANALYSIS
      */
 
-    //intialize the parser and symbol table
+    //intialize the parser
     Parser* my_parser = init_parser(tokens_list);
-    SymbolTable* my_symbol_table = init_symbol_table();
 
-    //parse everything and return the root node
-    ASTNode* ast_root = parser_parse(my_parser, my_symbol_table);
+    //parse everything and return the program representation, containing ast root and scopes list.
+    Program* program_representation = parser_parse(my_parser);
 
-    //write ast representation from root node now
+    //write ast representation from root node and print all scope symbol tables to files
+    FILE* symbol_tables_file = fopen("output/tables_output.txt", "w");
     FILE* ast_file = fopen("output/ast_output.txt", "w");
-    print_ast(ast_file, ast_root, 0);
+    print_ast(ast_file, program_representation->root, 0);
+    print_list(symbol_tables_file, program_representation->scopes, scope_to_str);
     fclose(ast_file);
+    fclose(symbol_tables_file);
 
-    //we can free the tokens and parser now
+    //finally, free the tokens and parser now
     free_list(tokens_list, free_token_wrapper);
     free_parser(my_parser);
 
@@ -54,18 +56,7 @@ int main(int argc, char *argv[]) {
      * CODE GENERATION
      */
 
-    //generate the assembly code
-    FILE* assembly_file = fopen("output/generated_asm.s", "w");
-    generate_assembly(assembly_file, ast_root, my_symbol_table);
-    //close the file
-    fclose(assembly_file);
-
-    //make an executable
-    system("gcc output/generated_asm.s -o tomat0executable");
-    //move compiled tomat0 file to output directory
-    system("mv tomat0executable output");
-    //execute
-    system("./output/tomat0executable");
+    //start here
     
     return 0;
 }

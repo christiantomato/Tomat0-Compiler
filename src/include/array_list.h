@@ -6,11 +6,11 @@
  * Commonly used for storing tokens and AST nodes.
  */
 
-#include <stdbool.h>
-#include <stdio.h>
-
 #ifndef ARRAY_LIST_H
 #define ARRAY_LIST_H
+
+#include <stdbool.h>
+#include <stdio.h>
 
 /**
  * @struct List
@@ -74,10 +74,9 @@ bool is_max_capacity(List* list);
  *
  * @param list Pointer to the list.
  * @param free_func Function used to free each element.
- * @return 0 for success, 1 otherwise.
  */
 
-int free_list(List* list, void (*free_func)(void*));
+void free_list(List* list, void (*free_func)(void*));
 
 /**
  * @brief Prints the list to a file.

@@ -7,11 +7,11 @@
  * acting as the first step in breaking up our contents into meaningful units that can be more easily parsed. 
  */
 
-#include "token.h"
-#include "array_list.h"
-
 #ifndef LEXER_H
 #define LEXER_H
+
+#include "token.h"
+#include "array_list.h"
 
 /**
  * @struct Lexer
@@ -46,9 +46,8 @@ List* tokenize_all(Lexer* lexer);
  * @brief Frees all allocated memory by the lexer.
  * 
  * @param lexer Pointer to the lexer. 
- * @return 0 for success, 1 otherwise.
  */
 
-int free_lexer(Lexer* lexer);
+void free_lexer(Lexer* lexer);
 
 #endif

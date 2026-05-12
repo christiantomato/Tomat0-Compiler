@@ -6,14 +6,20 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include "token.h"
-#include "lexer.h"
 #include "array_list.h"
 #include "file_reader.h"
+#include "types.h"
+
+#include "token.h"
+#include "lexer.h"
+
 #include "ast_node.h"
 #include "parser.h"
-#include "symbol_table.h"
+#include "symbol.h"
+#include "hash_table.h"
+#include "scope.h"
+#include "program.h"
+
 #include "register_manager.h"
-#include "asm_generation.h"
 
 #endif

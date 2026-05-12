@@ -6,10 +6,10 @@ manages the registers in use during assembly code generation
 bool registers[16]: represents the state of the registers x0-x15 (false if in use, true if free)
 */
 
-#include <stdbool.h>
-
 #ifndef REGISTER_MANAGER_H
 #define REGISTER_MANAGER_H
+
+#include <stdbool.h>
 
 typedef struct register_manager_struct {
     bool registers[16];

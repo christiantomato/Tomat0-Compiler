@@ -28,13 +28,24 @@ char* token_type_as_str(Token* token) {
     switch(token->type) {
         case TOKEN_KEYWORD_INT: return "TOKEN_KEYWORD_INT"; break;
         case TOKEN_KEYWORD_STRING: return "TOKEN_KEYWORD_STRING"; break;
-        case TOKEN_KEYWORD_SOUT: return "TOKEN_KEYWORD_SOUT"; break;
+        case TOKEN_KEYWORD_BOOL: return "TOKEN_KEYWORD_BOOL"; break;
+        case TOKEN_KEYWORD_FUNC: return "TOKEN_KEYWORD_FUNC"; break;
+        case TOKEN_KEYWORD_PRINT: return "TOKEN_KEYWORD_PRINT"; break;
         case TOKEN_KEYWORD_IF: return "TOKEN_KEYWORD_IF"; break;
         case TOKEN_KEYWORD_WHILE: return "TOKEN_KEYWORD_WHILE"; break;
+        case TOKEN_KEYWORD_TRUE: return "TOKEN_KEYWORD_TRUE"; break;
+        case TOKEN_KEYWORD_FALSE: return "TOKEN_KEYWORD_FALSE"; break;
+        case TOKEN_KEYWORD_IS: return "TOKEN_KEYWORD_IS"; break;
+        case TOKEN_KEYWORD_YIELDS: return "TOKEN_KEYWORD_YIELDS"; break;
+        case TOKEN_KEYWORD_HARVEST: return "TOKEN_KEYWORD_HARVEST"; break;
+        case TOKEN_KEYWORD_SPROUT: return "TOKEN_KEYWORD_SPROUT"; break;
+        case TOKEN_KEYWORD_TOMATO: return "TOKEN_KEYWORD_TOMATO"; break;
+        case TOKEN_KEYWORD_THROW: return "TOKEN_KEYWORD_THROW"; break;
         case TOKEN_ID: return "TOKEN_ID"; break;
+        case TOKEN_NUM: return "TOKEN_NUM"; break;
         case TOKEN_STRING: return "TOKEN_STRING"; break;
         case TOKEN_NEWLINE: return "TOKEN_NEWLINE"; break;
-        case TOKEN_NUM: return "TOKEN_NUM"; break;
+        case TOKEN_TILDA: return "TOKEN_TILDA"; break;
         case TOKEN_EQUALS: return "TOKEN_EQUALS"; break;
         case TOKEN_SEMI: return "TOKEN_SEMI"; break;
         case TOKEN_COMMA: return "TOKEN_COMMA"; break;
@@ -43,6 +54,8 @@ char* token_type_as_str(Token* token) {
         case TOKEN_UNDERSCORE: return "TOKEN_UNDERSCORE"; break;
         case TOKEN_LPAREN: return "TOKEN_LPAREN"; break;
         case TOKEN_RPAREN: return "TOKEN_RPAREN"; break;
+        case TOKEN_LCURLY: return "TOKEN_LCURLY"; break;
+        case TOKEN_RCURLY: return "TOKEN_RCURLY"; break;
         case TOKEN_LCHEVRON: return "TOKEN_LCHEVRON"; break;
         case TOKEN_RCHEVRON: return "TOKEN_RCHEVRON"; break;
         case TOKEN_FSLASH: return "TOKEN_FSLASH"; break;
@@ -79,16 +92,11 @@ char* token_to_str(void* token) {
  * Frees all allocated memory of a token struct.
  */
 
-int free_token(Token* token) {
-    //ensure the token isn't garbage
-    if(token == NULL) {
-        return 1;
-    }
+void free_token(Token* token) {
     //free the pointer to the value of the token
     free(token->value);
     //free the token itself
     free(token);
-    return 0;
 }
 
 /*
