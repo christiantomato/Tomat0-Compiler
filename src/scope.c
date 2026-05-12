@@ -82,6 +82,30 @@ Scope* exit_scope(Scope* current_scope) {
 }
 
 /*
+ * ToString, which just calls the hash to str. 
+ */
+
+char* scope_to_str(void* scope) {
+    Scope* the_scope = (Scope*) scope;
+    //string to return
+    char* scope_str;
+
+    //figure out length needed and allocate space for it
+    int length = snprintf(NULL, 0, 
+        "SCOPES SYMBOL TABLE:\n%s",  
+        hash_to_str(the_scope->symbol_table));
+
+        scope_str = malloc(length + 1);
+
+        //write to string
+        snprintf(scope_str, length + 1, 
+        "SCOPES SYMBOL TABLE:\n%s",  
+        hash_to_str(the_scope->symbol_table));
+
+    return scope_str;
+}
+
+/*
  * Frees allocated memory by scope.
  */
 
