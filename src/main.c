@@ -40,10 +40,13 @@ int main(int argc, char *argv[]) {
     //parse everything and return the program representation, containing ast root and scopes list.
     Program* program_representation = parser_parse(my_parser);
 
-    //write ast representation from root node now
+    //write ast representation from root node and print all scope symbol tables
+    FILE* symbol_tables_file = fopen("output/tables_output.txt", "w");
     FILE* ast_file = fopen("output/ast_output.txt", "w");
     print_ast(ast_file, program_representation->root, 0);
+    print_list(symbol_tables_file, program_representation->scopes, scope_to_str);
     fclose(ast_file);
+    fclose(symbol_tables_file);
 
     //we can free the tokens and parser now
     free_list(tokens_list, free_token_wrapper);
