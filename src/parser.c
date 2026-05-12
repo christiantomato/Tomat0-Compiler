@@ -460,9 +460,8 @@ static ASTNode* parse_function_declaration(Parser* parser) {
     //add symbol to the current scope (which is global)
     add_symbol(parser->current_scope, func_symbol);
 
-    //save the old scope and enter the function scope
-    Scope* global_scope = parser->current_scope;
-    Scope* func_scope = enter_scope(global_scope);
+    //enter the function scope
+    Scope* func_scope = enter_scope(parser->current_scope);
     list_add(parser->scopes, func_scope);
     parser->current_scope = func_scope;
 
@@ -537,7 +536,7 @@ static ASTNode* parse_function_declaration(Parser* parser) {
         func_dec_node->specialization.func_dec.code_block = parse_block(parser);
 
         //return to old scope (global)
-        parser->current_scope = global_scope;
+        parser->current_scope = exit_scope(parser->current_scope);
         return func_dec_node;
     }
     else {
@@ -768,10 +767,16 @@ static ASTNode* parse_line(Parser* parser) {
         case TOKEN_KEYWORD_SPROUT: {
             //advance past 
             parser_advance(parser);
+            //enter the main scope
+            Scope* main_scope = enter_scope(parser->current_scope);
+            list_add(parser->scopes, main_scope);
+            parser->current_scope = main_scope;
             //parse the main function block statement
             ASTNode* main = parse_block(parser);
+            parser->current_scope = exit_scope(parser->current_scope);
             //set this block node to the entry point
             main->type = AST_ENTRY_POINT;
+            //at this point, parsing should be done...
             return main;
         }
         default: 
