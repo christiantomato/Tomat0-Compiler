@@ -73,8 +73,8 @@ static void store_variable(Symbol* variable, CodeGenContext* context) {
         //create label or whatever
     }
     else if(variable->data.var_sym.storage == STORAGE_LOCAL) {
-        //get the offset and make it unsigned, asm instruction will choose direction.
-        unsigned int offset = variable->data.var_sym.offset;
+        //get the offset
+        int offset = variable->data.var_sym.offset;
         //store to its stack frame
         fprintf(context->output, "\tstr x%d, [fp, #%d]\n\n", context->result_reg, offset);
         //free used register
@@ -115,8 +115,12 @@ static void setup_stack_frame(Scope* subroutine_scope, CodeGenContext* context) 
     fprintf(context->output, "\tstp fp, lr, [sp, #-16]!\n");
     fprintf(context->output, "\tmov fp, sp\n");
 
-    //allocate space needed for locals
-    int locals_space = subroutine_scope->current_offset;
+    //allocate space needed for locals, negate since its currently negative
+    int locals_space = -subroutine_scope->current_offset;
+    //round to 16 byte multiples since stack likes being 16 byte aligned.
+    if (locals_space % 16 != 0) {
+        locals_space += 16 - (locals_space % 16);
+    }
     fprintf(context->output, "\tsub sp, sp, #%d\n\n", locals_space);
 }
 
@@ -193,6 +197,11 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             //just move the number to the register
             context->result_reg = allocate_general_register(context->register_manager);
             fprintf(context->output, "\tmov x%d, #%d\n", context->result_reg, node->specialization.num.value);
+            break;
+        }
+        case AST_RUNTIME_END: {
+            //put 0 in return register x0
+            fprintf(context->output, "\tmov x0, #0\n");
             break;
         }
     }
