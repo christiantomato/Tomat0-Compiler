@@ -109,7 +109,6 @@ void free_register(RegisterManager* manager, int register_num) {
  */
 
 void free_reg_manager(RegisterManager* manager) {
-    free(manager->param);
-    free(manager->general);
-    free(manager->callee);
+    //free manager itself.
+    free(manager);
 }
