@@ -17,7 +17,7 @@
 static void setup(CodeGenContext* context) {
     //emit .data section upfront
     fprintf(context->output, ".data\n");
-    fprintf(context->output, "fmt_int: .asciz \"%%d\\n\"\n");
+    fprintf(context->output, "fmt_int: .asciz \"%%lld\\n\"\n");
     fprintf(context->output, "fmt_str: .asciz \"%%s\\n\"\n");
     fprintf(context->output, "\n");
 }
@@ -32,8 +32,7 @@ static void print_int(CodeGenContext* context) {
     //move result into x1 (printf's value arg)
     fprintf(context->output, "\tmov x1, x%d\n", context->result_reg);
     //load format string address into x0 (printf's address arg)
-    fprintf(context->output, "\tadrp x0, fmt_int@PAGE\n");
-    fprintf(context->output, "\tadd x0, x0, fmt_int@PAGEOFF\n");
+    fprintf(context->output, "\tadr x0, fmt_int\n");
     //call printf
     fprintf(context->output, "\tbl _printf\n\n");
     //free the result register
