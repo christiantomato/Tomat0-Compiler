@@ -9,6 +9,16 @@
 #include "include/codegen_context.h"
 
 /**
+ * @brief Allocates space for the local variable on the stack frame.
+ * 
+ * @param variable Pointer to the variable symbol. 
+ */
+
+static void allocate_local_variable(Symbol* variable) {
+
+}
+
+/**
  * @brief Sets up our entry point. 
  * 
  * @param context Pointer to the code gen context.
@@ -92,10 +102,19 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             break;
         }
         case AST_VARIABLE_DECLARATION: {
-
+            //get the variable
+            Symbol* variable = lookup_symbol_in_scope(node->scope, node->specialization.var_dec.variable_name);
+            //generate the assembly for the assignment
+            node_to_asm(node->specialization.var_dec.assignment, context);
+            //get whatever the result was
+            
             break;
         }
         case AST_PRINT_STATEMENT: {
+
+            break;
+        }
+        case AST_NUMBER: {
 
             break;
         }

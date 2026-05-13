@@ -103,3 +103,13 @@ void free_register(RegisterManager* manager, int register_num) {
         manager->callee[register_num - 19] = true;
     }
 }
+
+/*
+ * Free allocated memory. 
+ */
+
+void free_reg_manager(RegisterManager* manager) {
+    free(manager->param);
+    free(manager->general);
+    free(manager->callee);
+}
