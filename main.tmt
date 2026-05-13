@@ -1,5 +1,3 @@
-int x = 5
-
-func test(int x) yields int {
-    harvest x
+sprout {
+    print(1)
 }
