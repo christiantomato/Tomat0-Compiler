@@ -56,7 +56,14 @@ int main(int argc, char *argv[]) {
      * CODE GENERATION
      */
 
-    //start here
+    //create the assembly file we will write to
+    FILE* assembly_file = fopen("output/generated_asm.s", "w");
+    //generate the assembly
+    generate_assembly(assembly_file, program_representation);
+    
+
+    //free the program
+    free_program(program_representation);
     
     return 0;
 }
