@@ -43,7 +43,7 @@ typedef enum {
 typedef struct {
     DataType type; /**< The data type. */
     VariableStorage storage; /**< The method of storage for the variable. */
-    int offset; /**< The stack frame relative offset. */
+    unsigned int offset; /**< The stack frame relative offset. (code gen decides positive/negative) */
 } VariableSymbol;
 
 /**
