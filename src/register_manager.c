@@ -1,41 +1,47 @@
+/**
+ * @file register_manager.c
+ * @brief Implements definition of our register manager.
+ */
+
 #include "include/register_manager.h"
 #include <stdlib.h>
 
-
 /*
-Initialize Register Manager Function
-
-intializes the register manager
-
-return: pointer to the register manager structure
-*/
+ * Initalize the manager.
+ */
 
 RegisterManager* init_register_manager() {
-    //allocate for tracker
+    //allocate manager
     RegisterManager* manager = malloc(sizeof(RegisterManager));
-    //set up boolean array keep track of which registers are free (currently all, x0-x15 we can use)
-    for(int i = 0; i < 16; i++) {
-        manager->registers[i] = true;
+
+    //initally set all registers as free
+
+    //param register
+    for(int i = 0; i < 8; i++) {
+        manager->param[i] = true;
     }
+    //general
+    for(int i = 0; i < 7; i++) {
+        manager->general[i] = true;
+    }
+    //callee
+    for(int i = 0; i < 10; i++) {
+        manager->callee[i] = true;
+    }
+
     return manager;
 }
 
 /*
-Allocate Register Function
+ * Allocate a parameter register.
+ */
 
-allocates the next available register for use
-
-RegisterManager* manager: the register manager
-
-return: the number of the register that is allocated
-*/
-
-int allocate_register(RegisterManager* manager) {
-    //check which register is free
-    for(int i = 0; i < 16; i++) {
-        if(manager->registers[i]) {
+int allocate_param_register(RegisterManager* manager) {
+    //check which param register is free
+    for(int i = 0; i < 8; i++) {
+        if(manager->param[i]) {
             //set as allocated and return
-            manager->registers[i] = false;
+            manager->param[i] = false;
             return i;
         }
     }
@@ -44,39 +50,56 @@ int allocate_register(RegisterManager* manager) {
 }
 
 /*
-Allocate Safe Register
+ * Allocate a parameter register.
+ */
 
-allocates the next available register from x8-x15, as the lower ones might be used for arguments
-
-RegisterManager* manager: the register manager
-int old_register: the old register which was being used, which now must be freed for an argument
-
-return: the value of the new register
-*/
-
-int allocate_safe_register(RegisterManager* manager, int old_register) {
-    for(int i = 8; i < 16; i++) {
-        if(manager->registers[i]) {
+int allocate_general_register(RegisterManager* manager) {
+    //check which general register is free
+    for(int i = 0; i < 7; i++) {
+        if(manager->general[i]) {
             //set as allocated and return
-            manager->registers[i] = false;
-            //free the old register
-            free_register(manager, old_register);
-            return i;
+            manager->general[i] = false;
+            //make sure to return actual num
+            return i + 9;
         }
     }
-    //otherwise bad
+    //otherwise no registers free
     return -1;
 }
 
 /*
-Free Register Function
+ * Allocate a parameter register.
+ */
 
-frees the register once it no longer needs to be used
+int allocate_callee_register(RegisterManager* manager) {
+    //check which callee register is free
+    for(int i = 0; i < 10; i++) {
+        if(manager->callee[i]) {
+            //set as allocated and return
+            manager->callee[i] = false;
+            //make sure to return actual number
+            return i + 19;
+        }
+    }
+    //otherwise no registers free
+    return -1;
+}
 
-RegisterManager* manager: the register manager
-int register_num: the register to be freed
-*/
+/*
+ * Free the specified register.
+ */
 
 void free_register(RegisterManager* manager, int register_num) {
-    manager->registers[register_num] = true;
+    if(register_num <= 7) {
+        //param register
+        manager->param[register_num] = true;
+    }
+    else if(register_num >= 9 && register_num <= 15) {
+        //general register
+        manager->general[register_num - 9] = true;
+    }
+    else if(register_num >= 19 && register_num <= 28) {
+        //callee register
+        manager->callee[register_num - 19] = true;
+    }
 }
