@@ -47,6 +47,21 @@ static void setup_stack_frame(Scope* subroutine_scope, CodeGenContext* context) 
 }
 
 /**
+ * @brief Collapses the stack frame for the activation record
+ * 
+ * @param subroutine_scope Pointer to the subroutines scope.
+ * @param context Pointer to the code gen context.
+ */
+
+static void collapse_stack_frame(Scope* subroutine_scope, CodeGenContext* context) {
+    //move stack pointer back to frame pointer and restore fp and lr
+    fprintf(context->output, "\tmov sp, fp\n");
+    fprintf(context->output, "\tldp fp, lr, [sp], #16\n");
+    //return the address
+    fprintf(context->output, "\tret\n");
+}
+
+/**
  * @brief Turns in ast node to assembly code.
  * 
  * @param node Pointer to the node.
@@ -60,16 +75,28 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
     //generate assembly based on the node type
     switch(node->type) {
         case AST_GLOBAL: {
-            //go through children
+            //generate assembly for children statements
             for(int i = 0; i < node->specialization.block.statements->num_items; i++) {
                 node_to_asm(node->specialization.block.statements->array[i], context);
             }
             break;
         }
-
         case AST_ENTRY_POINT: {
             setup_entry_point(context);
             setup_stack_frame(node->scope, context);
+            //generate for children statements
+            for(int i = 0; i < node->specialization.block.statements->num_items; i++) {
+                node_to_asm(node->specialization.block.statements->array[i], context);
+            }
+            collapse_stack_frame(node->scope, context);
+            break;
+        }
+        case AST_VARIABLE_DECLARATION: {
+
+            break;
+        }
+        case AST_PRINT_STATEMENT: {
+
             break;
         }
     }
