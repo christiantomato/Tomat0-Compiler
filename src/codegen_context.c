@@ -18,6 +18,7 @@ CodeGenContext* init_context(FILE* output_file) {
     context->output = output_file;
     context->register_manager = init_register_manager();
     context->generate_text = false;
+    context->result_reg = 0;
 
     return context;
 }
@@ -27,5 +28,5 @@ CodeGenContext* init_context(FILE* output_file) {
  */
 
 void free_context(CodeGenContext* context) {
-
+    free_reg_manager(context->register_manager);
 }
