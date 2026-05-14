@@ -1,9 +1,6 @@
 sprout {
-    int x = 1
-    int y = 2
-    int z = 3
-    print(z)
+    int x = 2
+    int y = x * 2
     print(y)
-    print(x)
     harvest tomato
 }
