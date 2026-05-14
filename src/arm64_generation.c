@@ -34,12 +34,12 @@ static void print_int(CodeGenContext* context) {
     fprintf(context->output, "\tadrp x0, fmt_int@PAGE\n");
     //add some offset thing
     fprintf(context->output, "\tadd x0, x0, fmt_int@PAGEOFF\n");
-    //move result into x1 (printf's value arg)
-    fprintf(context->output, "\tmov x1, x%d\n", context->result_reg);
-    //for some reason i have to push the param to the stack or else it doesn't work idk (pre index since FD + dont write back)
-    fprintf(context->output, "\tstr x1, [sp, #-8]\n");
+    //push the int arg to the stack (keep 16 byte aligned)
+    fprintf(context->output, "\tstr x%d, [sp, #-16]!\n", context->result_reg);
     //call printf
-    fprintf(context->output, "\tbl _printf\n\n");
+    fprintf(context->output, "\tbl _printf\n");
+    //restore sp
+    fprintf(context->output, "\tadd sp, sp, #16\n\n");
     //free the result register
     free_register(context->register_manager, context->result_reg);
 }
