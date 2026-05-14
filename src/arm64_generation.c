@@ -229,6 +229,24 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             collapse_stack_frame(node->scope, context);
             break;
         }
+        case AST_BLOCK: {
+            //TODO: code gen for this case
+
+
+
+            break;
+        }
+        case AST_FUNCTION_DECLARATION: {
+            //TODO: code gen for this case
+
+
+            break;
+        }
+        case AST_FUNCTION_CALL: {
+            //TODO: code gen for this case
+
+            break;
+        }
         case AST_VARIABLE_DECLARATION: {
             //get the variable
             Symbol* variable = lookup_symbol_in_scope(node->scope, node->specialization.var_dec.variable_name);
@@ -253,6 +271,11 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             print_int(context);
             break;
         }
+        case AST_RETURN_STATEMENT: {
+            //TODO: code gen for this case
+
+            break;
+        }
         case AST_BINARY_OPERATION: {
             //get result registers for left and right
             node_to_asm(node->specialization.binary_op.left, context);
@@ -271,6 +294,11 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             negate_value(value_reg, context); 
             break;
         }
+        case AST_PARAMETER: {
+            //TODO: code gen for this case
+
+            break;
+        }
         case AST_VARIABLE: {
             //get the variable
             Symbol* variable = lookup_symbol(node->scope, node->specialization.var.variable_name);
@@ -283,6 +311,16 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             context->result_reg = allocate_general_register(context->register_manager);
             fprintf(context->output, "\t//move number to register.\n");
             fprintf(context->output, "\tmov x%d, #%d\n\n", context->result_reg, node->specialization.num.value);
+            break;
+        }
+        case AST_STRING: {
+            //TODO: code gen for this case
+
+            break;
+        }
+        case AST_THROW: {
+            //TODO: code gen for this case
+
             break;
         }
         case AST_RUNTIME_END: {
