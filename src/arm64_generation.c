@@ -29,14 +29,15 @@ static void setup(CodeGenContext* context) {
  */
 
 static void print_int(CodeGenContext* context) {
-    //move result into x1 (printf's value arg)
-    fprintf(context->output, "\tmov x1, x%d\n", context->result_reg);
+    fprintf(context->output, "\t//print integer.\n");
     //load format string address into x0 (printf's address arg) using this weird page off thing since its too far away from text section
     fprintf(context->output, "\tadrp x0, fmt_int@PAGE\n");
     //add some offset thing
     fprintf(context->output, "\tadd x0, x0, fmt_int@PAGEOFF\n");
-    //for some reason i have to push the param to the stack or else it doesn't work idk
-    fprintf(context->output, "\tstr x1, [sp]\n");
+    //move result into x1 (printf's value arg)
+    fprintf(context->output, "\tmov x1, x%d\n", context->result_reg);
+    //for some reason i have to push the param to the stack or else it doesn't work idk (pre index since FD + dont write back)
+    fprintf(context->output, "\tstr x1, [sp, #-8]\n");
     //call printf
     fprintf(context->output, "\tbl _printf\n\n");
     //free the result register
@@ -59,6 +60,7 @@ static void load_variable(Symbol* variable, CodeGenContext* context) {
         //allocate a register to put the variable value
         context->result_reg = allocate_general_register(context->register_manager);
         //load the value into the register from its stack frame
+        fprintf(context->output, "\t//load variable from stack.\n");
         fprintf(context->output, "\tldr x%d, [fp, #%d]\n\n", context->result_reg, variable->data.var_sym.offset);
     }
 }
@@ -79,6 +81,7 @@ static void store_variable(Symbol* variable, CodeGenContext* context) {
         //get the offset
         int offset = variable->data.var_sym.offset;
         //store to its stack frame
+        fprintf(context->output, "\t//store variable to stack.\n");
         fprintf(context->output, "\tstr x%d, [fp, #%d]\n\n", context->result_reg, offset);
         //free used register
         free_register(context->register_manager, context->result_reg);
@@ -114,6 +117,7 @@ static void setup_entry_point(CodeGenContext* context) {
  */
 
 static void setup_stack_frame(Scope* subroutine_scope, CodeGenContext* context) {
+    fprintf(context->output, "\t//setup stack frame.\n");
     //store frame pointer and link register to stack
     fprintf(context->output, "\tstp fp, lr, [sp, #-16]!\n");
     fprintf(context->output, "\tmov fp, sp\n");
@@ -135,6 +139,7 @@ static void setup_stack_frame(Scope* subroutine_scope, CodeGenContext* context) 
  */
 
 static void collapse_stack_frame(Scope* subroutine_scope, CodeGenContext* context) {
+    fprintf(context->output, "\t//collapse the stack frame.\n");
     //move stack pointer back to frame pointer and restore fp and lr
     fprintf(context->output, "\tmov sp, fp\n");
     fprintf(context->output, "\tldp fp, lr, [sp], #16\n");
@@ -199,11 +204,13 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
         case AST_NUMBER: {
             //just move the number to the register
             context->result_reg = allocate_general_register(context->register_manager);
-            fprintf(context->output, "\tmov x%d, #%d\n", context->result_reg, node->specialization.num.value);
+            fprintf(context->output, "\t//move number to register.\n");
+            fprintf(context->output, "\tmov x%d, #%d\n\n", context->result_reg, node->specialization.num.value);
             break;
         }
         case AST_RUNTIME_END: {
             //put 0 in return register x0
+            fprintf(context->output, "\t//put status code 0 in ret register.\n");
             fprintf(context->output, "\tmov x0, #0\n");
             break;
         }
