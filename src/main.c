@@ -56,7 +56,22 @@ int main(int argc, char *argv[]) {
      * CODE GENERATION
      */
 
-    //start here
+    //create the assembly file we will write to
+    FILE* assembly_file = fopen("output/generated_asm.s", "w");
+    //generate the assembly
+    generate_assembly(assembly_file, program_representation);
+    //close the file
+    fclose(assembly_file);
+
+    //make an executable
+    system("gcc output/generated_asm.s -o tomat0executable");
+    //move compiled Tomat0 file to output directory
+    system("mv tomat0executable output");
+    //execute
+    system("./output/tomat0executable");
+
+    //free the program
+    free_program(program_representation);
     
     return 0;
 }

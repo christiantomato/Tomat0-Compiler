@@ -1,27 +1,84 @@
-/*
-Register Manager Structure
-
-manages the registers in use during assembly code generation
-
-bool registers[16]: represents the state of the registers x0-x15 (false if in use, true if free)
-*/
+/**
+ * @file register_manager.h
+ * @brief For managing the state of the registers.
+ * 
+ * List of the register uses: 
+ * x0: return register
+ * x0-x7: passing parameters
+ * x8: system call numbers
+ * x9-x15: general purpose
+ * x19-x28: callee-saved registers
+ * x29: frame pointer
+ * x30: link register
+ * sp: stack pointer
+ */
 
 #ifndef REGISTER_MANAGER_H
 #define REGISTER_MANAGER_H
 
 #include <stdbool.h>
 
-typedef struct register_manager_struct {
-    bool registers[16];
+/**
+ * @struct RegisterManager
+ * @brief Describes the state of each register that we will be using.
+ */
+
+typedef struct {
+    bool param[8]; /**< The parameter register. */
+    bool general[7]; /**< The general purpose registers. */
+    bool callee[10]; /**< Callee-saved registers. */
 } RegisterManager;
 
-//initializes the manager
+/**
+ * @brief Initializes the manager.
+ * 
+ * @return Pointer to the register manager.
+ */
+
 RegisterManager* init_register_manager();
-//returns the number of the register that was allocated
-int allocate_register(RegisterManager* manager);
-//returns a register from x8-x15 so old register isn't clobbered by function arguments
-int allocate_safe_register(RegisterManager* manager, int old_register);
-//frees the specified register
+
+/**
+ * @brief Allocates a parameter register.
+ * 
+ * @param manager Pointer to the register manager.
+ * @return Register number of the next available register.
+ */
+
+int allocate_param_register(RegisterManager* manager);
+
+/**
+ * @brief Allocates a general register.
+ * 
+ * @param manager Pointer to the register manager.
+ * @return Register number of the next available register.
+ */
+
+int allocate_general_register(RegisterManager* manager);
+
+/**
+ * @brief Allocates a callee register.
+ * 
+ * @param manager Pointer to the register manager.
+ * @return Register number of the next available register.
+ */
+
+int allocate_callee_register(RegisterManager* manager);
+
+/**
+ * @brief Frees a register for use.
+ * 
+ * @param manager Pointer to the register manager.
+ * @param register_num Register we want to free up.
+ */
+
 void free_register(RegisterManager* manager, int register_num);
+
+/**
+ * @brief Frees allocated memory by the register manager.
+ * 
+ * @param manager Pointer to the register manager.
+ */
+
+void free_reg_manager(RegisterManager* manager);
 
 #endif

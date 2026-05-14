@@ -218,21 +218,26 @@ void free_node(ASTNode* node) {
         case AST_GLOBAL: 
             //free all the statements inside the global scope
             free_list(node->specialization.block.statements, free_node_wrapper);
+            break;
         case AST_ENTRY_POINT:
             //free all main entry instructions
             free_list(node->specialization.block.statements, free_node_wrapper);
+            break;
         case AST_BLOCK:
             //free all statements
             free_list(node->specialization.block.statements, free_node_wrapper);
+            break;
         case AST_FUNCTION_DECLARATION:
             //free name, ast params, and code block
             free(node->specialization.func_dec.function_name);
             free_list(node->specialization.func_dec.parameters, free_node_wrapper);
             free_node(node->specialization.func_dec.code_block);
+            break;
         case AST_FUNCTION_CALL:
             //free name and param inputs
             free(node->specialization.func_call.function_name);
             free_list(node->specialization.func_call.parameter_inputs, free_node_wrapper);
+            break;
         case AST_VARIABLE_DECLARATION:
             //free name and assignment
             free(node->specialization.var_dec.variable_name);
@@ -255,12 +260,14 @@ void free_node(ASTNode* node) {
             break;
         case AST_RETURN_STATEMENT: 
             free_node(node->specialization.return_statement.operand);
+            break;
         case AST_NEGATION:
             free_node(node->specialization.negation.operand);
             break;
         case AST_PARAMETER:
             //free name
             free(node->specialization.param.parameter_name);
+            break;
         case AST_VARIABLE:
             //free name
             free(node->specialization.var.variable_name);

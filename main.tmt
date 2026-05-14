@@ -1,5 +1,12 @@
-int x = 5
+~ entry point
+sprout {
 
-func test(int x) yields int {
-    harvest x
+    ~ I made my mom trace this and she understood so it must be readable lol
+    int x = 5
+    int y = 10 + x
+    x = y - x
+    print(x * x)
+
+    ~ success
+    harvest tomato
 }

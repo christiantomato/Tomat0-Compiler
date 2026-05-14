@@ -4,8 +4,8 @@ headers = $(wildcard src/*.h) #all the .h files in src
 
 flags = -fsanitize=address #asan for memory debugging
 
-#make executable dependent on all sources and headers, skip object file creation and link in one step
-$(exec): $(sources) $(headers)
+#make executable dependent on all sources and headers and main tomat0 file, skip object file creation and link in one step
+$(exec): $(sources) $(headers) main.tmt
 	gcc $(sources) $(flags) -o $(exec)
   
 #make it accessible globally on system, usage: sudo make install

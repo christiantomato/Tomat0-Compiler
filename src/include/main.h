@@ -21,5 +21,6 @@
 #include "program.h"
 
 #include "register_manager.h"
+#include "arm64_generation.h"
 
 #endif
