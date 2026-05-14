@@ -17,7 +17,7 @@
 static void setup(CodeGenContext* context) {
     //emit .data section upfront
     fprintf(context->output, ".data\n");
-    fprintf(context->output, "fmt_int: .asciz \"%%lld\\n\"\n");
+    fprintf(context->output, "fmt_int: .asciz \"%%d\\n\"\n");
     fprintf(context->output, "fmt_str: .asciz \"%%s\\n\"\n");
     fprintf(context->output, "\n");
 }
@@ -31,8 +31,12 @@ static void setup(CodeGenContext* context) {
 static void print_int(CodeGenContext* context) {
     //move result into x1 (printf's value arg)
     fprintf(context->output, "\tmov x1, x%d\n", context->result_reg);
-    //load format string address into x0 (printf's address arg)
-    fprintf(context->output, "\tadr x0, fmt_int\n");
+    //load format string address into x0 (printf's address arg) using this weird page off thing since its too far away from text section
+    fprintf(context->output, "\tadrp x0, fmt_int@PAGE\n");
+    //add some offset thing
+    fprintf(context->output, "\tadd x0, x0, fmt_int@PAGEOFF\n");
+    //for some reason i have to push the param to the stack or else it doesn't work idk
+    fprintf(context->output, "\tstr x1, [sp]\n");
     //call printf
     fprintf(context->output, "\tbl _printf\n\n");
     //free the result register
