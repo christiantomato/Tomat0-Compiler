@@ -20,6 +20,7 @@
 #include "scope.h"
 #include "program.h"
 
+#include "codegen_context.h"
 #include "register_manager.h"
 #include "arm64_generation.h"
 
