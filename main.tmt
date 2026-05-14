@@ -1,7 +1,12 @@
+~ entry point
 sprout {
-    int x = 5 
-    int y = 3
-    x = x - y
-    print(x)
+
+    ~ I made my mom trace this and she understood so it must be readable lol
+    int x = 5
+    int y = 10 + x
+    x = y - x
+    print(x * x)
+
+    ~ success
     harvest tomato
 }
