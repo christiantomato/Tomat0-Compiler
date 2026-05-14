@@ -239,8 +239,12 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             break;
         }
         case AST_VARIABLE_ASSIGNMENT: {
-
-
+            //get the variable
+            Symbol* variable = lookup_symbol(node->scope, node->specialization.var_assign.variable_name);
+            //evaluate assignment result
+            node_to_asm(node->specialization.var_assign.assignment, context);
+            //store result
+            store_variable(variable, context);
             break;
         }
         case AST_PRINT_STATEMENT: {
