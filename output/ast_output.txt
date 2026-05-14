@@ -1,0 +1,42 @@
+NODE: AST_GLOBAL
+	NODE: AST_ENTRY_POINT
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = x
+		assignment = 
+			NODE: AST_NUMBER
+			value = 5
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = y
+		assignment = 
+			NODE: AST_BINARY_OPERATION
+			left = 
+				NODE: AST_NUMBER
+				value = 10
+			right = 
+				NODE: AST_VARIABLE
+				variable_name = x
+			operator = +
+		NODE: AST_VARIABLE_ASSIGNMENT
+		name = x
+		assignment = 
+			NODE: AST_BINARY_OPERATION
+			left = 
+				NODE: AST_VARIABLE
+				variable_name = y
+			right = 
+				NODE: AST_VARIABLE
+				variable_name = x
+			operator = -
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_BINARY_OPERATION
+			left = 
+				NODE: AST_VARIABLE
+				variable_name = x
+			right = 
+				NODE: AST_VARIABLE
+				variable_name = x
+			operator = *
+		NODE: AST_RUNTIME_END

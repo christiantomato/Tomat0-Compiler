@@ -1,7 +1,6 @@
-#ignore outputs
-output/
+#ignore executable
 *.out
 
-#ignore all documentation
-docs/
+#ignore doxyfile and latex
+docs/latex
 Doxyfile
