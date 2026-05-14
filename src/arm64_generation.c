@@ -45,6 +45,42 @@ static void print_int(CodeGenContext* context) {
 }
 
 /**
+ * @brief Computes a binary operation.
+ * 
+ * @param left_reg The left register number.
+ * @param right_reg The right register number.
+ * @param operator The operator.
+ * @param context Pointer to the code gen context.
+ */
+
+static void generate_binary_op(int left_reg, int right_reg, char operator, CodeGenContext* context) {
+    fprintf(context->output, "\t//binary operation.\n");
+    //allocate a register for result
+    context->result_reg = allocate_general_register(context->register_manager);
+
+    //switch on operator
+    switch(operator) {
+        case '+':
+            fprintf(context->output, "\tadd x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
+            break;
+        case '-':
+            fprintf(context->output, "\tsub x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
+            break;
+        case '*':
+            fprintf(context->output, "\tmul x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
+            break;
+        case '/':
+            fprintf(context->output, "\tdiv x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
+            break;
+    }
+
+    //free left and right registers
+    free_register(context->register_manager, left_reg);
+    free_register(context->register_manager, right_reg);
+}
+
+
+/**
  * @brief Loads a variable (global or local).
  * 
  * @param variable Pointer to the variable.
@@ -192,6 +228,16 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             //evaluate the statement
             node_to_asm(node->specialization.print_statement.operand, context);
             print_int(context);
+            break;
+        }
+        case AST_BINARY_OPERATION: {
+            //get result registers for left and right
+            node_to_asm(node->specialization.binary_op.left, context);
+            int left_reg = context->result_reg;
+            node_to_asm(node->specialization.binary_op.right, context);
+            int right_reg = context->result_reg;
+            //generate assembly
+            generate_binary_op(left_reg, right_reg, *node->specialization.binary_op.operator, context);
             break;
         }
         case AST_VARIABLE: {
