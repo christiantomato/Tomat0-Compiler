@@ -45,6 +45,20 @@ static void print_int(CodeGenContext* context) {
 }
 
 /**
+ * @brief Negates a value.
+ * 
+ * @param value_reg Register with value to negate.
+ * @param context Pointer to the code gen context.
+ */
+
+static void negate_value(int value_reg, CodeGenContext* context) {
+    fprintf(context->output, "\t//negate value.\n");
+    //allocate for result
+    context->result_reg = allocate_general_register(context->register_manager);
+    fprintf(context->output, "\tneg x%d, x%d\n\n", context->result_reg, value_reg);
+}
+
+/**
  * @brief Computes a binary operation.
  * 
  * @param left_reg The left register number.
@@ -224,6 +238,11 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             store_variable(variable, context);
             break;
         }
+        case AST_VARIABLE_ASSIGNMENT: {
+
+
+            break;
+        }
         case AST_PRINT_STATEMENT: {
             //evaluate the statement
             node_to_asm(node->specialization.print_statement.operand, context);
@@ -238,6 +257,14 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             int right_reg = context->result_reg;
             //generate assembly
             generate_binary_op(left_reg, right_reg, *node->specialization.binary_op.operator, context);
+            break;
+        }
+        case AST_NEGATION: {
+            //get result for operand
+            node_to_asm(node->specialization.negation.operand, context);
+            int value_reg = context->result_reg;
+            //generate negate assembly
+            negate_value(value_reg, context); 
             break;
         }
         case AST_VARIABLE: {
