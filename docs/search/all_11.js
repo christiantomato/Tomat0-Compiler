@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['todo_0',['TODO',['../md__r_e_a_d_m_e.html#autotoc_md4',1,'']]],
+  ['todo_0',['TODO',['../md__r_e_a_d_m_e.html#autotoc_md2',1,'']]],
   ['token_1',['Token',['../struct_token.html',1,'']]],
   ['token_2ec_2',['token.c',['../token_8c.html',1,'']]],
   ['token_2eh_3',['token.h',['../token_8h.html',1,'']]],
@@ -52,12 +52,11 @@ var searchData=
   ['tokenize_5fstring_49',['tokenize_string',['../lexer_8c.html#aeab15b67cc27c6674be5026b40cae891',1,'lexer.c']]],
   ['tokens_50',['tokens',['../struct_parser.html#a63bafb871bdaf58c1d25ec3f35e8dca7',1,'Parser']]],
   ['tokentype_51',['TokenType',['../token_8h.html#aa520fbf142ba1e7e659590c07da31921',1,'token.h']]],
-  ['tomat0_20compiler_20documentation_52',['Tomat0 Compiler Documentation',['../index.html',1,'']]],
-  ['tomat0_20compiler_20readme_53',['Tomat0 Compiler README',['../md__r_e_a_d_m_e.html',1,'']]],
-  ['type_54',['type',['../structast__node__struct.html#a7590939e59c6448f78799e2e4ce90e25',1,'ast_node_struct::type'],['../struct_variable_symbol.html#a3a45b4530e7d166bb8fe162b963d0009',1,'VariableSymbol::type'],['../struct_token.html#a67919af9f3a80dc0b28a0ab1e6d5bf8a',1,'Token::type']]],
-  ['type_5fbool_55',['TYPE_BOOL',['../types_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6a3e0f738756c5205d71c69d955603f46c',1,'types.h']]],
-  ['type_5fint_56',['TYPE_INT',['../types_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6a4fcd4421533bb21c827865bdbac4fef9',1,'types.h']]],
-  ['type_5fstring_57',['TYPE_STRING',['../types_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6addb4be6b1cc25112defabef75f73427a',1,'types.h']]],
-  ['types_2ec_58',['types.c',['../types_8c.html',1,'']]],
-  ['types_2eh_59',['types.h',['../types_8h.html',1,'']]]
+  ['tomat0_20compiler_20readme_52',['Tomat0 Compiler README',['../md__r_e_a_d_m_e.html',1,'']]],
+  ['type_53',['type',['../structast__node__struct.html#a7590939e59c6448f78799e2e4ce90e25',1,'ast_node_struct::type'],['../struct_variable_symbol.html#a3a45b4530e7d166bb8fe162b963d0009',1,'VariableSymbol::type'],['../struct_token.html#a67919af9f3a80dc0b28a0ab1e6d5bf8a',1,'Token::type']]],
+  ['type_5fbool_54',['TYPE_BOOL',['../types_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6a3e0f738756c5205d71c69d955603f46c',1,'types.h']]],
+  ['type_5fint_55',['TYPE_INT',['../types_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6a4fcd4421533bb21c827865bdbac4fef9',1,'types.h']]],
+  ['type_5fstring_56',['TYPE_STRING',['../types_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6addb4be6b1cc25112defabef75f73427a',1,'types.h']]],
+  ['types_2ec_57',['types.c',['../types_8c.html',1,'']]],
+  ['types_2eh_58',['types.h',['../types_8h.html',1,'']]]
 ];

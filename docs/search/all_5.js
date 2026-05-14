@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['file_5freader_2ec_0',['file_reader.c',['../file__reader_8c.html',1,'']]],
+  ['file_5freader_2eh_1',['file_reader.h',['../file__reader_8h.html',1,'']]],
+  ['free_5fcontext_2',['free_context',['../codegen__context_8c.html#a5ce1ae12fed0eb503ab2b75f8bdc33fe',1,'free_context(CodeGenContext *context):&#160;codegen_context.c'],['../codegen__context_8h.html#a5ce1ae12fed0eb503ab2b75f8bdc33fe',1,'free_context(CodeGenContext *context):&#160;codegen_context.c']]],
+  ['free_5fhash_5ftable_3',['free_hash_table',['../hash__table_8c.html#a2537edb646045b3189b9e01f2f532cb7',1,'free_hash_table(HashTable *table):&#160;hash_table.c'],['../hash__table_8h.html#a2537edb646045b3189b9e01f2f532cb7',1,'free_hash_table(HashTable *table):&#160;hash_table.c']]],
+  ['free_5flexer_4',['free_lexer',['../lexer_8h.html#a9e726da8169f4cdb5984a223fe7a48e7',1,'free_lexer(Lexer *lexer):&#160;lexer.c'],['../lexer_8c.html#a9e726da8169f4cdb5984a223fe7a48e7',1,'free_lexer(Lexer *lexer):&#160;lexer.c']]],
+  ['free_5flist_5',['free_list',['../array__list_8c.html#a96390115638a8cd8e866386aa4088763',1,'free_list(List *list, void(*free_func)(void *)):&#160;array_list.c'],['../array__list_8h.html#a96390115638a8cd8e866386aa4088763',1,'free_list(List *list, void(*free_func)(void *)):&#160;array_list.c']]],
+  ['free_5fnode_6',['free_node',['../ast__node_8c.html#a8fac4f3c28509062009360447bda0af4',1,'free_node(ASTNode *node):&#160;ast_node.c'],['../ast__node_8h.html#a8fac4f3c28509062009360447bda0af4',1,'free_node(ASTNode *node):&#160;ast_node.c']]],
+  ['free_5fnode_5fwrapper_7',['free_node_wrapper',['../ast__node_8c.html#a954aeb3cf000f2009cc3f9fe7394fe8f',1,'free_node_wrapper(void *node):&#160;ast_node.c'],['../ast__node_8h.html#a954aeb3cf000f2009cc3f9fe7394fe8f',1,'free_node_wrapper(void *node):&#160;ast_node.c']]],
+  ['free_5fparser_8',['free_parser',['../parser_8h.html#a5f1115e8474107eec03cbdb0e09d8c10',1,'free_parser(Parser *parser):&#160;parser.c'],['../parser_8c.html#a5f1115e8474107eec03cbdb0e09d8c10',1,'free_parser(Parser *parser):&#160;parser.c']]],
+  ['free_5fprogram_9',['free_program',['../program_8h.html#ae6b1161ab9e5f6eeaed863a50822f89e',1,'free_program(Program *program):&#160;program.c'],['../program_8c.html#ae6b1161ab9e5f6eeaed863a50822f89e',1,'free_program(Program *program):&#160;program.c']]],
+  ['free_5freg_5fmanager_10',['free_reg_manager',['../register__manager_8h.html#ad2ebd1e4f7657db2527b5f7ba8507493',1,'free_reg_manager(RegisterManager *manager):&#160;register_manager.c'],['../register__manager_8c.html#ad2ebd1e4f7657db2527b5f7ba8507493',1,'free_reg_manager(RegisterManager *manager):&#160;register_manager.c']]],
+  ['free_5fregister_11',['free_register',['../register__manager_8h.html#a840f84cdeac56a9b74196937ee1e8dfd',1,'free_register(RegisterManager *manager, int register_num):&#160;register_manager.c'],['../register__manager_8c.html#a840f84cdeac56a9b74196937ee1e8dfd',1,'free_register(RegisterManager *manager, int register_num):&#160;register_manager.c']]],
+  ['free_5fscope_12',['free_scope',['../scope_8h.html#a1398dde38a7f21312e2780def18a36c8',1,'free_scope(Scope *scope):&#160;scope.c'],['../scope_8c.html#a1398dde38a7f21312e2780def18a36c8',1,'free_scope(Scope *scope):&#160;scope.c']]],
+  ['free_5fscope_5fwrapper_13',['free_scope_wrapper',['../scope_8h.html#a4ecf97dba4a3383c6ee81bf5e7010f5a',1,'free_scope_wrapper(void *scope):&#160;scope.c'],['../scope_8c.html#a4ecf97dba4a3383c6ee81bf5e7010f5a',1,'free_scope_wrapper(void *scope):&#160;scope.c']]],
+  ['free_5fsymbol_14',['free_symbol',['../symbol_8h.html#a51ce30240261dda827dbb0275fbf4c58',1,'free_symbol(Symbol *symbol):&#160;symbol.c'],['../symbol_8c.html#a51ce30240261dda827dbb0275fbf4c58',1,'free_symbol(Symbol *symbol):&#160;symbol.c']]],
+  ['free_5ftoken_15',['free_token',['../token_8h.html#af2c0c132479d97aae25fcce9d6a749eb',1,'free_token(Token *token):&#160;token.c'],['../token_8c.html#af2c0c132479d97aae25fcce9d6a749eb',1,'free_token(Token *token):&#160;token.c']]],
+  ['free_5ftoken_5fwrapper_16',['free_token_wrapper',['../token_8h.html#a34eb56b080aa69465d14b44055248b9c',1,'free_token_wrapper(void *token):&#160;token.c'],['../token_8c.html#a34eb56b080aa69465d14b44055248b9c',1,'free_token_wrapper(void *token):&#160;token.c']]],
+  ['func_5fcall_17',['func_call',['../union_a_s_t_specialization.html#ab1adbc71532c75f9e42dfb40735d6a72',1,'ASTSpecialization']]],
+  ['func_5fdec_18',['func_dec',['../union_a_s_t_specialization.html#a385010739c2ecbd5eb4be152eb4d02b0',1,'ASTSpecialization']]],
+  ['func_5fsym_19',['func_sym',['../union_symbol_data.html#a407591458406f4abde9a30e85e16a742',1,'SymbolData']]],
+  ['function_5fname_20',['function_name',['../struct_function_declaration.html#a7c6116d8a41aaf7d15f634d6d61adbd4',1,'FunctionDeclaration::function_name'],['../struct_function_call.html#a4c1b569357782fc8b1556211ebdb10b3',1,'FunctionCall::function_name']]],
+  ['functioncall_21',['FunctionCall',['../struct_function_call.html',1,'']]],
+  ['functiondeclaration_22',['FunctionDeclaration',['../struct_function_declaration.html',1,'']]],
+  ['functionsymbol_23',['FunctionSymbol',['../struct_function_symbol.html',1,'']]]
+];
