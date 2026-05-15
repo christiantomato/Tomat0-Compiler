@@ -13,27 +13,14 @@
 /**
  * @enum SymbolType
  * @brief Enum for the different types of symbols we can encounter. 
- * 
- * These include: 
- * - variables
- * - functions
  */
 
 typedef enum {
-    SYMBOL_VARIABLE,
-    SYMBOL_FUNCTION,
+    SYMBOL_VARIABLE, /**< Integers and booleans. */
+    SYMBOL_FUNCTION, /**< Functions. */
+    SYMBOL_STRING, /**< Strings, which are immutable. */
+    SYMBOL_PARAMETER /**< Function parameters. */
  } SymbolKind;
-
-/**
- * @enum VariableStorage
- * @brief Enum for the different types of variable storage.
- */
-
-typedef enum {
-    STORAGE_GLOBAL,
-    STORAGE_LOCAL,
-    STORAGE_PARAMETER
-} VariableStorage;
 
 /**
  * @struct VariableSymbol
@@ -42,13 +29,12 @@ typedef enum {
 
 typedef struct {
     DataType type; /**< The data type. */
-    VariableStorage storage; /**< The method of storage for the variable. */
-    int offset; /**< The stack frame relative offset (positive for params, negative for locals, not used for static variables). */
+    int offset; /**< The stack frame relative offset. */
 } VariableSymbol;
 
 /**
  * @struct FunctionSymbol
- * @brief Encpdes necessary data needed for a function. 
+ * @brief Encodes necessary data needed for a function. 
  */
 
 typedef struct {
@@ -57,13 +43,34 @@ typedef struct {
 } FunctionSymbol;
 
 /**
+ * @struct StringSymbol
+ * @brief Encodes necessary data needed for a string.
+ */
+
+typedef struct {
+    char* label; /**< The .data label. */
+} StringSymbol;
+
+/**
+ * @struct ParameterSymbol
+ * @brief Encodes necessary data needed for a parameter.
+ */
+
+typedef struct {
+    DataType type; /**< The parameter data type. */
+    int reg; /**< The register it will be passed through in (x0-x7) */
+} ParameterSymbol;
+
+/**
  * @union SymbolData
  * @brief A union so we can store specific data for each type.
  */
 
 typedef union {
-    VariableSymbol var_sym;
-    FunctionSymbol func_sym;
+    VariableSymbol var_data;
+    FunctionSymbol func_data;
+    StringSymbol str_data;
+    ParameterSymbol param_data;
 } SymbolData;
 
 /**
@@ -112,5 +119,13 @@ char* symbol_to_str(void* symbol);
  */
 
 void free_symbol(Symbol* symbol);
+
+/**
+ * @brief Wrapper for free function.
+ * 
+ * @param symbol Pointer to the symbol. 
+ */
+
+void free_symbol_wrapper(void* symbol);
 
 #endif
