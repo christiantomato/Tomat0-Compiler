@@ -7,6 +7,7 @@
 #define CODEGEN_CONTEXT_H
 
 #include "register_manager.h"
+#include "array_list.h"
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -18,8 +19,8 @@
 typedef struct {
     FILE* output; /**< The assembly output file. */
     RegisterManager* register_manager; /**< Responsible for managing register use. */
-    bool generate_text; /**< Flag to determine when to move from .data to .text. */ 
     int result_reg; /**< Stores the register number of the most recently computed value. */
+    List* string_literals; /**< Pointer to the string literals in the program. */
 } CodeGenContext;
 
 /**
