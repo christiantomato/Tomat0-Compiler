@@ -26,6 +26,7 @@ typedef struct {
     unsigned int index; /**< Index position for the tokens list. */
     ASTNode* root; /**< Reference to the root node of the ast. */
     Scope* current_scope; /**< Reference to the current scope we are in. */
+    List* strings; /**< Reference to all strings that are created in the program. */
     List* scopes; /**< Reference to all scopes that are created in the program. */
 } Parser;
 

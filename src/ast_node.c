@@ -199,6 +199,8 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
         case AST_STRING:
             print_indent(file, indent);
             fprintf(file, "value = '%s'\n", root->specialization.string.value);
+            print_indent(file, indent);
+            fprintf(file, "id = %d\n", root->specialization.string.id);
             break;
         default:
             //will just print out ast type name.

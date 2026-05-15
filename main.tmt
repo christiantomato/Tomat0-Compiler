@@ -1,11 +1,15 @@
+~ strings test
+
 ~ entry point
 sprout {
+    ~ create some strings
+    string mean = "u suck"
+    string happy = "i like u"
 
-    ~ I made my mom trace this and she understood so it must be readable lol
-    int x = 5
-    int y = 10 + x
-    x = y - x
-    print(x * x)
+    ~ print them and a raw literal too
+    print(mean)
+    print(happy)
+    print("hello world")
 
     ~ success
     harvest tomato

@@ -16,6 +16,7 @@
 typedef struct {
     ASTNode* root; /**< The root node of the ast. */
     List* scopes; /**< Complete list of every active scope (so we can free after code generation). */
+    List* strings; /**< Complete list of every defined string literal. */
 } Program;
 
 /**
@@ -25,10 +26,11 @@ typedef struct {
  * 
  * @param root Pointer to the root ast node.
  * @param scopes Pointer to the list of scopes. 
+ * @param strings Pointer to the list of strings. 
  * @return Pointer to the program struct. 
  */
 
-Program* init_program(ASTNode* root, List* scopes);
+Program* init_program(ASTNode* root, List* scopes, List* strings);
 
 /**
  * @brief Frees allocated memory for the program representation. 

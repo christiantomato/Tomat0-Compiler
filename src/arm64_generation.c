@@ -18,8 +18,17 @@ static void setup(CodeGenContext* context) {
     //emit .data section upfront
     fprintf(context->output, ".data\n");
     fprintf(context->output, "fmt_int: .asciz \"%%d\\n\"\n");
-    fprintf(context->output, "fmt_str: .asciz \"%%s\\n\"\n");
+
+    //emit string literals
+    for(int i = 0; i < context->string_literals->num_items; i++) {
+        fprintf(context->output, "str%d: .asciz \"%s\\n\"\n", i, (char*) context->string_literals->array[i]);
+    }
     fprintf(context->output, "\n");
+    
+    //start the .text section after all data is emitted
+    fprintf(context->output, ".text\n");
+    //specify the entry point
+    fprintf(context->output, ".global _main\n\n");
 }
 
 /**
@@ -41,6 +50,20 @@ static void print_int(CodeGenContext* context) {
     //restore sp
     fprintf(context->output, "\tadd sp, sp, #16\n\n");
     //free the result register
+    free_register(context->register_manager, context->result_reg);
+}
+
+/**
+ * @brief Prints out a string.
+ * 
+ * @param context Pointer to the code gen context.
+ */
+
+static void print_string(CodeGenContext* context) {
+    fprintf(context->output, "\t//print string.\n");
+    //put the string address in x0 and call
+    fprintf(context->output, "\tmov x0, x%d\n", context->result_reg);
+    fprintf(context->output, "\tbl _printf\n\n");
     free_register(context->register_manager, context->result_reg);
 }
 
@@ -95,66 +118,45 @@ static void generate_binary_op(int left_reg, int right_reg, char operator, CodeG
 
 
 /**
- * @brief Loads a variable (global or local).
+ * @brief Loads a variable (string or regular).
  * 
  * @param variable Pointer to the variable.
  * @param context Pointer to the code gen context. 
  */
 
 static void load_variable(Symbol* variable, CodeGenContext* context) {
-     //determine the storage type
-    if(variable->data.var_sym.storage == STORAGE_GLOBAL) {
-        //load from label or whatever
-    }
-    else if(variable->data.var_sym.storage == STORAGE_LOCAL) {
+     //determine where to load from
+    if(variable->kind == SYMBOL_VARIABLE) {
         //allocate a register to put the variable value
         context->result_reg = allocate_general_register(context->register_manager);
         //load the value into the register from its stack frame
         fprintf(context->output, "\t//load variable from stack.\n");
-        fprintf(context->output, "\tldr x%d, [fp, #%d]\n\n", context->result_reg, variable->data.var_sym.offset);
+        fprintf(context->output, "\tldr x%d, [fp, #%d]\n\n", context->result_reg, variable->data.var_data.offset);
+    }
+    else if(variable->kind == SYMBOL_STRING) {
+        //load from label.
+        context->result_reg = allocate_general_register(context->register_manager);
+        fprintf(context->output, "\t//load string address from label.\n");
+        fprintf(context->output, "\tadrp x%d, %s@PAGE\n", context->result_reg, variable->data.str_data.label);
+        fprintf(context->output, "\tadd x%d, x%d, %s@PAGEOFF\n\n", context->result_reg, context->result_reg, variable->data.str_data.label);
     }
 }
 
 /**
- * @brief Stores a variable (global or local).
+ * @brief Stores a variable.
  * 
  * @param variable Pointer to the variable.
  * @param context Pointer to the code gen context.
  */
 
 static void store_variable(Symbol* variable, CodeGenContext* context) {
-    //determine the storage type
-    if(variable->data.var_sym.storage == STORAGE_GLOBAL) {
-        //create label or whatever
-    }
-    else if(variable->data.var_sym.storage == STORAGE_LOCAL) {
-        //get the offset
-        int offset = variable->data.var_sym.offset;
-        //store to its stack frame
-        fprintf(context->output, "\t//store variable to stack.\n");
-        fprintf(context->output, "\tstr x%d, [fp, #%d]\n\n", context->result_reg, offset);
-        //free used register
-        free_register(context->register_manager, context->result_reg);
-    }
-}
-
-/**
- * @brief Sets up our entry point. 
- * 
- * @param context Pointer to the code gen context.
- */
-
-static void setup_entry_point(CodeGenContext* context) {
-    //check if we have created the .text section yet
-    if(!context->generate_text) {
-        fprintf(context->output, ".text\n");
-        context->generate_text = true;
-    }
-
-    //specify the entry point
-    fprintf(context->output, ".global _main\n\n");
-    //add the main label
-    fprintf(context->output, "_main:\n");
+    //get the offset
+    int offset = variable->data.var_data.offset;
+    //store to its stack frame
+    fprintf(context->output, "\t//store variable to stack.\n");
+    fprintf(context->output, "\tstr x%d, [fp, #%d]\n\n", context->result_reg, offset);
+    //free used register
+    free_register(context->register_manager, context->result_reg);
 }
 
 /**
@@ -220,7 +222,8 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             break;
         }
         case AST_ENTRY_POINT: {
-            setup_entry_point(context);
+            //emit main label
+            fprintf(context->output, "_main:\n");
             setup_stack_frame(node->scope, context);
             //generate for children statements
             for(int i = 0; i < node->specialization.block.statements->num_items; i++) {
@@ -250,6 +253,8 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
         case AST_VARIABLE_DECLARATION: {
             //get the variable
             Symbol* variable = lookup_symbol_in_scope(node->scope, node->specialization.var_dec.variable_name);
+            //skip strings
+            if(variable-> kind == SYMBOL_STRING) break;
             //generate the assembly for the assignment 
             node_to_asm(node->specialization.var_dec.assignment, context);
             //store result
@@ -259,6 +264,8 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
         case AST_VARIABLE_ASSIGNMENT: {
             //get the variable
             Symbol* variable = lookup_symbol(node->scope, node->specialization.var_assign.variable_name);
+            //skip strings (they are immutable)
+            if(variable-> kind == SYMBOL_STRING) break;
             //evaluate assignment result
             node_to_asm(node->specialization.var_assign.assignment, context);
             //store result
@@ -268,7 +275,9 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
         case AST_PRINT_STATEMENT: {
             //evaluate the statement
             node_to_asm(node->specialization.print_statement.operand, context);
-            print_int(context);
+            //print based on type
+            if(node->specialization.print_statement.type == TYPE_INT) print_int(context);
+            else if(node->specialization.print_statement.type == TYPE_STRING) print_string(context);
             break;
         }
         case AST_RETURN_STATEMENT: {
@@ -314,8 +323,15 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             break;
         }
         case AST_STRING: {
-            //TODO: code gen for this case
-
+            //allocate register for string address
+            context->result_reg = allocate_general_register(context->register_manager);
+            //figure out what the label is from string id
+            char label[8];
+            snprintf(label, sizeof(label), "str%d", node->specialization.string.id);
+            //load
+            fprintf(context->output, "\t//load string address from label.\n");
+            fprintf(context->output, "\tadrp x%d, %s@PAGE\n", context->result_reg, label);
+            fprintf(context->output, "\tadd x%d, x%d, %s@PAGEOFF\n\n", context->result_reg, context->result_reg, label);
             break;
         }
         case AST_THROW: {
@@ -341,6 +357,8 @@ void generate_assembly(FILE* file, Program* program) {
     ASTNode* root = program->root;
     //create the code generation context struct
     CodeGenContext* context = init_context(file);
+    //give context the strings
+    context->string_literals = program->strings;
     
     //walk the tree and generate.
     node_to_asm(root, context);

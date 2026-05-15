@@ -134,6 +134,7 @@ typedef struct {
 
 typedef struct {
     struct ast_node_struct* operand; /**< The node operand. */
+    DataType type; /**< The operand type (for prints and returns) */
 } UnaryOperation;
 
 //TERMINAL NODES: 
@@ -173,6 +174,7 @@ typedef struct {
 
 typedef struct {
     char* value; /**< The string. */
+    int id; /**< The string id. */
 } StringLiteral;
 
 /**
