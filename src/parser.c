@@ -39,9 +39,12 @@ Parser* init_parser(List* tokens) {
     global_scope->name = strdup("global");
     parser->root = init_node(AST_GLOBAL, global_scope);
     parser->current_scope = global_scope;
+
     //init scopes list and add global scope
     parser->scopes = init_list(5);
     list_add(parser->scopes, global_scope);
+    //init strings list
+    parser->strings = init_list(5);
     
     return parser;
 }
@@ -144,10 +147,11 @@ static DataType resolve_factor_type(Parser* parser, ASTNode* factor) {
         case AST_VARIABLE: {
             //check the data type
             Symbol* variable = lookup_symbol(parser->current_scope, factor->specialization.var.variable_name);
-            return variable->data.var_data.type;
+            if(variable->kind == SYMBOL_VARIABLE) return variable->data.var_data.type;
+            else if(variable->kind == SYMBOL_STRING) return TYPE_STRING;
         }
         case AST_NEGATION: 
-            //assume integer
+            //assume integer, for now..
             return TYPE_INT;
         case AST_NUMBER:
             return TYPE_INT;
@@ -303,6 +307,10 @@ static ASTNode* parse_factor(Parser* parser) {
         ASTNode* string_node = init_node(AST_STRING, parser->current_scope);
         //assign the string (make sure to duplicate)
         string_node->specialization.string.value = strdup(parser->current_token->value);
+        //assign id
+        string_node->specialization.string.id = string_literals;
+        //add to strings list
+        list_add(parser->strings, strdup(parser->current_token->value));
         //advance past
         parser_advance(parser);
         //return
@@ -702,8 +710,10 @@ static ASTNode* parse_print_statement(Parser* parser) {
         return NULL;
     }
 
-    //evaluate expression in parens
-    print_node->specialization.print_statement.operand = parse_expression(parser);
+    //evaluate FACTOR in parens (expressions not allowed)
+    print_node->specialization.print_statement.operand = parse_factor(parser);
+    //resolve type for print statement
+    print_node->specialization.print_statement.type = resolve_factor_type(parser, print_node->specialization.print_statement.operand);
 
     //ensure closing paren
     if(parser->current_token->type == TOKEN_RPAREN) {
@@ -734,8 +744,9 @@ static ASTNode* parse_return_statement(Parser* parser) {
     //move past the keyword (harvest)
     parser_advance(parser);
 
-    //evaluate expression to return
-    return_node->specialization.return_statement.operand = parse_expression(parser);
+    //evaluate FACTOR to return
+    return_node->specialization.return_statement.operand = parse_factor(parser);
+    return_node->specialization.return_statement.type = resolve_factor_type(parser, return_node->specialization.return_statement.operand);
 
     //done return statement
     return return_node;
@@ -852,7 +863,7 @@ Program* parser_parse(Parser* parser) {
         list_add(parser->root->specialization.block.statements, line_node);
     }
     //return the program struct
-    return init_program(parser->root, parser->scopes);
+    return init_program(parser->root, parser->scopes, parser->strings);
 }
 
 /*
