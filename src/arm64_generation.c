@@ -84,7 +84,7 @@ static void generate_binary_op(int left_reg, int right_reg, char operator, CodeG
             fprintf(context->output, "\tmul x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
             break;
         case '/':
-            fprintf(context->output, "\tdiv x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
+            fprintf(context->output, "\tsdiv x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
             break;
     }
 
