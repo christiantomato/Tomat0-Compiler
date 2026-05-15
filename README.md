@@ -37,11 +37,11 @@ ARM64 Assembly Generation
   - [x] compute binary and unary operations
   - [x] generate entry point stack frame
   - [x] store, load, and use integer variables
-  - [ ] strings
+  - [x] strings
   - [ ] subroutines
   - [ ] loops and conditionals
 
 ### TODO
-- generate asm for strings
 - generate asm for subroutines
+- add support for boolean expressions
 
