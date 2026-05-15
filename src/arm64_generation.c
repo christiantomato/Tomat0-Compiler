@@ -95,47 +95,41 @@ static void generate_binary_op(int left_reg, int right_reg, char operator, CodeG
 
 
 /**
- * @brief Loads a variable (global or local).
+ * @brief Loads a variable (string or regular).
  * 
  * @param variable Pointer to the variable.
  * @param context Pointer to the code gen context. 
  */
 
 static void load_variable(Symbol* variable, CodeGenContext* context) {
-     //determine the storage type
-    if(variable->data.var_sym.storage == STORAGE_GLOBAL) {
-        //load from label or whatever
-    }
-    else if(variable->data.var_sym.storage == STORAGE_LOCAL) {
+     //determine where to load from
+    if(variable->kind == SYMBOL_VARIABLE) {
         //allocate a register to put the variable value
         context->result_reg = allocate_general_register(context->register_manager);
         //load the value into the register from its stack frame
         fprintf(context->output, "\t//load variable from stack.\n");
-        fprintf(context->output, "\tldr x%d, [fp, #%d]\n\n", context->result_reg, variable->data.var_sym.offset);
+        fprintf(context->output, "\tldr x%d, [fp, #%d]\n\n", context->result_reg, variable->data.var_data.offset);
+    }
+    else if(variable->kind == SYMBOL_STRING) {
+        //load from label.
     }
 }
 
 /**
- * @brief Stores a variable (global or local).
+ * @brief Stores a variable.
  * 
  * @param variable Pointer to the variable.
  * @param context Pointer to the code gen context.
  */
 
 static void store_variable(Symbol* variable, CodeGenContext* context) {
-    //determine the storage type
-    if(variable->data.var_sym.storage == STORAGE_GLOBAL) {
-        //create label or whatever
-    }
-    else if(variable->data.var_sym.storage == STORAGE_LOCAL) {
-        //get the offset
-        int offset = variable->data.var_sym.offset;
-        //store to its stack frame
-        fprintf(context->output, "\t//store variable to stack.\n");
-        fprintf(context->output, "\tstr x%d, [fp, #%d]\n\n", context->result_reg, offset);
-        //free used register
-        free_register(context->register_manager, context->result_reg);
-    }
+    //get the offset
+    int offset = variable->data.var_data.offset;
+    //store to its stack frame
+    fprintf(context->output, "\t//store variable to stack.\n");
+    fprintf(context->output, "\tstr x%d, [fp, #%d]\n\n", context->result_reg, offset);
+    //free used register
+    free_register(context->register_manager, context->result_reg);
 }
 
 /**
