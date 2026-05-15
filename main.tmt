@@ -1,15 +1,26 @@
-~ strings test
+~ running some tests
 
 ~ entry point
 sprout {
-    ~ create some strings
-    string mean = "u suck"
-    string happy = "i like u"
+    ~ create lots of variables to work with
+    int x = 1
+    int y = 2
+    int z = 3
+    string mad = ">:("
+    string happy = ":D"
+    string sad = ":("
 
-    ~ print them and a raw literal too
-    print(mean)
+    ~ do some complicated algebraic expression with the int variables
+    int result = x * 2 - y + (33/z) + 1
+
+    ~ print out emotions
+    print(mad)
     print(happy)
-    print("hello world")
+    print(sad)
+
+    ~ print out raw string literal and the result
+    print("the result was:")
+    print(result)
 
     ~ success
     harvest tomato

@@ -1,30 +1,99 @@
 NODE: AST_GLOBAL
 	NODE: AST_ENTRY_POINT
 		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = x
+		assignment = 
+			NODE: AST_NUMBER
+			value = 1
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = y
+		assignment = 
+			NODE: AST_NUMBER
+			value = 2
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = z
+		assignment = 
+			NODE: AST_NUMBER
+			value = 3
+		NODE: AST_VARIABLE_DECLARATION
 		data_type = TYPE_STRING
-		variable_name = mean
+		variable_name = mad
 		assignment = 
 			NODE: AST_STRING
-			value = 'u suck'
+			value = '>:('
 			id = 1
 		NODE: AST_VARIABLE_DECLARATION
 		data_type = TYPE_STRING
 		variable_name = happy
 		assignment = 
 			NODE: AST_STRING
-			value = 'i like u'
+			value = ':D'
 			id = 2
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_STRING
+		variable_name = sad
+		assignment = 
+			NODE: AST_STRING
+			value = ':('
+			id = 3
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = result
+		assignment = 
+			NODE: AST_BINARY_OPERATION
+			left = 
+				NODE: AST_BINARY_OPERATION
+				left = 
+					NODE: AST_BINARY_OPERATION
+					left = 
+						NODE: AST_BINARY_OPERATION
+						left = 
+							NODE: AST_VARIABLE
+							variable_name = x
+						right = 
+							NODE: AST_NUMBER
+							value = 2
+						operator = *
+					right = 
+						NODE: AST_VARIABLE
+						variable_name = y
+					operator = -
+				right = 
+					NODE: AST_BINARY_OPERATION
+					left = 
+						NODE: AST_NUMBER
+						value = 33
+					right = 
+						NODE: AST_VARIABLE
+						variable_name = z
+					operator = /
+				operator = +
+			right = 
+				NODE: AST_NUMBER
+				value = 1
+			operator = +
 		NODE: AST_PRINT_STATEMENT
 		output = 
 			NODE: AST_VARIABLE
-			variable_name = mean
+			variable_name = mad
 		NODE: AST_PRINT_STATEMENT
 		output = 
 			NODE: AST_VARIABLE
 			variable_name = happy
 		NODE: AST_PRINT_STATEMENT
 		output = 
+			NODE: AST_VARIABLE
+			variable_name = sad
+		NODE: AST_PRINT_STATEMENT
+		output = 
 			NODE: AST_STRING
-			value = 'hello world'
-			id = 2
+			value = 'the result was:'
+			id = 3
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_VARIABLE
+			variable_name = result
 		NODE: AST_RUNTIME_END
