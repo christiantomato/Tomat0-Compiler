@@ -1,6 +1,8 @@
 .data
 fmt_int: .asciz "%d\n"
-fmt_str: .asciz "%s\n"
+str0: .asciz "u suck\n"
+str1: .asciz "i like u\n"
+str2: .asciz "hello world\n"
 
 .text
 .global _main
@@ -11,11 +13,29 @@ _main:
 	mov fp, sp
 	sub sp, sp, #0
 
-	//store variable to stack.
-	str x0, [fp, #24608]
+	//load string address from label.
+	adrp x9, str0@PAGE
+	add x9, x9, str0@PAGEOFF
 
-	//store variable to stack.
-	str x0, [fp, #24608]
+	//print string.
+	mov x0, x9
+	bl _printf
+
+	//load string address from label.
+	adrp x9, str1@PAGE
+	add x9, x9, str1@PAGEOFF
+
+	//print string.
+	mov x0, x9
+	bl _printf
+
+	//load string address from label.
+	adrp x9, str2@PAGE
+	add x9, x9, str2@PAGEOFF
+
+	//print string.
+	mov x0, x9
+	bl _printf
 
 	//put status code 0 in ret register.
 	mov x0, #0

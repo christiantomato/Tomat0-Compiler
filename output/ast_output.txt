@@ -2,14 +2,29 @@ NODE: AST_GLOBAL
 	NODE: AST_ENTRY_POINT
 		NODE: AST_VARIABLE_DECLARATION
 		data_type = TYPE_STRING
-		variable_name = str
+		variable_name = mean
 		assignment = 
 			NODE: AST_STRING
-			value = 'hi'
+			value = 'u suck'
+			id = 1
 		NODE: AST_VARIABLE_DECLARATION
 		data_type = TYPE_STRING
-		variable_name = other
+		variable_name = happy
 		assignment = 
 			NODE: AST_STRING
-			value = 'hello'
+			value = 'i like u'
+			id = 2
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_VARIABLE
+			variable_name = mean
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_VARIABLE
+			variable_name = happy
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = 'hello world'
+			id = 2
 		NODE: AST_RUNTIME_END
