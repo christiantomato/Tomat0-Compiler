@@ -1,31 +1,96 @@
-TOMAT0 Syntax
+TOMAT0 SYNTAX
 
+A guide on syntax rules with examples.
 
+### Data Types and Variable Declarations
+There are currently 3 supported types:
+- **int** (integers)
+- **string** (strings)
+- **bool** (booleans)
 
-1. No Delimeters
+To declare a variable, you must state type and give an assignment.
 
-No multiplie line statements are allowed, therefore no delimeters have to be used
+ex.
+```
+int x = 1
+string greeting = "hello"
+bool empty = false
+```
 
-Example:
+### No Delimeters
 
-int x = 5
-string y = "hello"
-sout(x)
-sout(y)
+Multiple line statements are not allowed. A result of this is that no delimeters (such as a semicolon in java or c) have to be used.
 
-2. Keyword: sout
+ex. 
+```
+~ java, c, etc.
+int x = 1; 
 
-Used for printing to the terminal.
-Example:
+~ tomat0
+int x = 1 
+```
 
-sout(myVariable)
+### Comments
 
-3. Right Chevron Comments
+You can write single line comments using the squiggly worm **~** called tilda
 
-Example:
+ex.
+```
+~ this is a comment
+int x = 1
+```
 
->this is a comment
->print out the value 
-sout(value)
+### Print Statements
 
+You can print any of the supported data types to the terminal using the keyword **print**. You can pass in an expression for integers and booleans, but not strings. 
+
+ex.
+```
+print("hello world") 
+print(x + 2 * 3) 
+print(3 > 10 & 3 < x)
+```
+
+### Main Function
+
+The entry point is specified using the keyword **sprout** followed by a curly brace block. It must be concluded with the key phrase **harvest tomato** to signal the runtime end. 
+
+ex.
+```
+~ entry point
+sprout {
+   int x = 1
+   print(x + 1)
+
+   ~ runtime end
+   harvest tomato
+} 
+```
+
+### Conditional Statements
+//TODO
+
+### Global Scope
+//TODO
+
+### Function Declarations and Calls
+//TODO
+
+# Complete Keywords List
+The following words are reserved and cannot be used for identifier names.
+- **int**: Data type.
+- **string**: Data type.
+- **bool**: Data type.
+- **func**: Function declaration keyword.
+- **print**: Print statement keyword.
+- **if**: If statement keyword.
+- **while**: While loop keyword.
+- **true**: Keyword for true boolean value.
+- **false**: Keyword for false boolean value.
+- **is**: Denotes equality. 
+- **yields**: Return type keyword.
+- **harvest**: Return keyword.
+- **sprout**: Entry point keyword.
+- **tomato**: Keyword used in runtime stops.
+- **throw**: Keyword for immediate runtime kill. 
 

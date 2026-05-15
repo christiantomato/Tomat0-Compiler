@@ -1,2 +1,8 @@
->complex arithmetic expression
-sout(9*9-(24/8)+(1*(5-3*3)) + 1)
+~ compute some complex arithmetic expression
+
+sprout {
+    int x = 2
+    int y = 3
+    int result = (2 + -3) * (10/5+2-1) * 10
+    print(result)
+}
