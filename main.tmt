@@ -1,11 +1,9 @@
 ~ entry point
 sprout {
 
-    ~ I made my mom trace this and she understood so it must be readable lol
-    int x = 5
-    int y = 10 + x
-    x = y - x
-    print(x * x)
+    ~ create strings
+    string str = "hi"
+    string other = "hello"
 
     ~ success
     harvest tomato
