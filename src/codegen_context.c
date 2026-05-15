@@ -17,7 +17,6 @@ CodeGenContext* init_context(FILE* output_file) {
     //set members
     context->output = output_file;
     context->register_manager = init_register_manager();
-    context->generate_text = false;
     context->result_reg = 0;
 
     return context;
