@@ -7,7 +7,7 @@ Compiler for my own language, Tomat0. Tomat0 focuses on increasing readibility a
 You must have an ARM64 CPU. x86-64 assembly is not generated. 
 
 ### Instructions
-1. Clone Repo 
+1. Clone eepo 
 2. Write Tomat0 source code in main.tmt (see notes/syntax.txt or wiki for syntax rules).
 3. Compile the compiler using make:
 ```
