@@ -98,8 +98,8 @@ char* symbol_to_str(void* symbol) {
 
         //write to string
         snprintf(symbol_str, length + 1, 
-            "SYMBOL NAME: %s, KIND: %s, TYPE: %s",  
-            the_symbol->name, symbol_kind_as_str(the_symbol), data_type_as_str(the_symbol->data.param_data.type));
+            "SYMBOL NAME: %s, KIND: %s, TYPE: %s, REGISTER: %d",  
+            the_symbol->name, symbol_kind_as_str(the_symbol), data_type_as_str(the_symbol->data.param_data.type), the_symbol->data.param_data.reg);
     }
 
     return symbol_str;
