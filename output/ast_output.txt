@@ -1,99 +1,72 @@
 NODE: AST_GLOBAL
-	NODE: AST_ENTRY_POINT
-		NODE: AST_VARIABLE_DECLARATION
-		data_type = TYPE_INT
-		variable_name = x
-		assignment = 
-			NODE: AST_NUMBER
-			value = 1
-		NODE: AST_VARIABLE_DECLARATION
-		data_type = TYPE_INT
-		variable_name = y
-		assignment = 
-			NODE: AST_NUMBER
-			value = 2
-		NODE: AST_VARIABLE_DECLARATION
-		data_type = TYPE_INT
-		variable_name = z
-		assignment = 
-			NODE: AST_NUMBER
-			value = 3
-		NODE: AST_VARIABLE_DECLARATION
-		data_type = TYPE_STRING
-		variable_name = mad
-		assignment = 
-			NODE: AST_STRING
-			value = '>:('
-			id = 1
-		NODE: AST_VARIABLE_DECLARATION
-		data_type = TYPE_STRING
-		variable_name = happy
-		assignment = 
-			NODE: AST_STRING
-			value = ':D'
-			id = 2
-		NODE: AST_VARIABLE_DECLARATION
-		data_type = TYPE_STRING
-		variable_name = sad
-		assignment = 
-			NODE: AST_STRING
-			value = ':('
-			id = 3
-		NODE: AST_VARIABLE_DECLARATION
-		data_type = TYPE_INT
-		variable_name = result
-		assignment = 
-			NODE: AST_BINARY_OPERATION
-			left = 
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = add
+	parameters = 
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = y
+	return_type = TYPE_INT
+	code_block: 
+		NODE: AST_BLOCK
+			NODE: AST_VARIABLE_DECLARATION
+			data_type = TYPE_INT
+			variable_name = add
+			assignment = 
 				NODE: AST_BINARY_OPERATION
 				left = 
-					NODE: AST_BINARY_OPERATION
-					left = 
-						NODE: AST_BINARY_OPERATION
-						left = 
-							NODE: AST_VARIABLE
-							variable_name = x
-						right = 
-							NODE: AST_NUMBER
-							value = 2
-						operator = *
-					right = 
-						NODE: AST_VARIABLE
-						variable_name = y
-					operator = -
+					NODE: AST_VARIABLE
+					variable_name = x
 				right = 
-					NODE: AST_BINARY_OPERATION
-					left = 
-						NODE: AST_NUMBER
-						value = 33
-					right = 
-						NODE: AST_VARIABLE
-						variable_name = z
-					operator = /
+					NODE: AST_VARIABLE
+					variable_name = y
 				operator = +
-			right = 
-				NODE: AST_NUMBER
-				value = 1
-			operator = +
-		NODE: AST_PRINT_STATEMENT
-		output = 
-			NODE: AST_VARIABLE
-			variable_name = mad
-		NODE: AST_PRINT_STATEMENT
-		output = 
-			NODE: AST_VARIABLE
-			variable_name = happy
-		NODE: AST_PRINT_STATEMENT
-		output = 
-			NODE: AST_VARIABLE
-			variable_name = sad
+			NODE: AST_RETURN_STATEMENT
+			return = 
+				NODE: AST_VARIABLE
+				variable_name = add
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = double
+	parameters = 
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x
+	return_type = TYPE_INT
+	code_block: 
+		NODE: AST_BLOCK
+			NODE: AST_VARIABLE_ASSIGNMENT
+			name = x
+			assignment = 
+				NODE: AST_BINARY_OPERATION
+				left = 
+					NODE: AST_VARIABLE
+					variable_name = x
+				right = 
+					NODE: AST_NUMBER
+					value = 2
+				operator = *
+			NODE: AST_RETURN_STATEMENT
+			return = 
+				NODE: AST_VARIABLE
+				variable_name = x
+	NODE: AST_ENTRY_POINT
 		NODE: AST_PRINT_STATEMENT
 		output = 
 			NODE: AST_STRING
-			value = 'the result was:'
-			id = 3
+			value = 'the answer is:'
+			id = 0
 		NODE: AST_PRINT_STATEMENT
 		output = 
-			NODE: AST_VARIABLE
-			variable_name = result
+			NODE: AST_FUNCTION_CALL
+			function_name = double
+			parameter_values = 
+				NODE: AST_FUNCTION_CALL
+				function_name = add
+				parameter_values = 
+					NODE: AST_NUMBER
+					value = 1
+					NODE: AST_NUMBER
+					value = 2
 		NODE: AST_RUNTIME_END
