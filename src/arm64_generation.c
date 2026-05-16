@@ -38,19 +38,26 @@ static void setup(CodeGenContext* context) {
  */
 
 static void print_int(CodeGenContext* context) {
+    //save result to new register in case its a return value in x0.
+    int safe_reg = allocate_general_register(context->register_manager);
+    fprintf(context->output, "\t//ensure int to print doesn't get clobbered.\n");
+    fprintf(context->output, "\tmov x%d, x%d\n", safe_reg, context->result_reg);
+    //free result register
+    free_register(context->register_manager, context->result_reg);
+
     fprintf(context->output, "\t//print integer.\n");
     //load format string address into x0 (printf's address arg) using this weird page off thing since its too far away from text section
     fprintf(context->output, "\tadrp x0, fmt_int@PAGE\n");
     //add some offset thing
     fprintf(context->output, "\tadd x0, x0, fmt_int@PAGEOFF\n");
     //push the int arg to the stack (keep 16 byte aligned)
-    fprintf(context->output, "\tstr x%d, [sp, #-16]!\n", context->result_reg);
+    fprintf(context->output, "\tstr x%d, [sp, #-16]!\n", safe_reg);
     //call printf
     fprintf(context->output, "\tbl _printf\n");
     //restore sp
     fprintf(context->output, "\tadd sp, sp, #16\n\n");
-    //free the result register
-    free_register(context->register_manager, context->result_reg);
+    //free safe reg
+    free_register(context->register_manager, safe_reg);
 }
 
 /**
@@ -196,7 +203,7 @@ static void collapse_stack_frame(Scope* subroutine_scope, CodeGenContext* contex
     fprintf(context->output, "\tmov sp, fp\n");
     fprintf(context->output, "\tldp fp, lr, [sp], #16\n");
     //return the address
-    fprintf(context->output, "\tret\n");
+    fprintf(context->output, "\tret\n\n");
 }
 
 /**
@@ -233,21 +240,40 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             break;
         }
         case AST_BLOCK: {
-            //TODO: code gen for this case
-
-
-
+            //loop through statements and generate assembly
+            for(int i = 0; i < node->specialization.block.statements->num_items; i++) {
+                node_to_asm(node->specialization.block.statements->array[i], context);
+            }
             break;
         }
         case AST_FUNCTION_DECLARATION: {
-            //TODO: code gen for this case
-
-
+            //emit label
+            fprintf(context->output, "_%s:\n", node->specialization.func_dec.function_name);
+            //setup stack frame with function scope
+            setup_stack_frame(node->specialization.func_dec.code_block->scope, context);
+            //generate code
+            node_to_asm(node->specialization.func_dec.code_block, context);
             break;
         }
         case AST_FUNCTION_CALL: {
-            //TODO: code gen for this case
-
+            //evaluate and move each argument into param registers
+            for(int i = 0; i < node->specialization.func_call.parameter_inputs->num_items; i++) {
+                node_to_asm(node->specialization.func_call.parameter_inputs->array[i], context);
+                //allocate a param register
+                int param_reg = allocate_param_register(context->register_manager);
+                fprintf(context->output, "\t//pass parameter.\n");
+                fprintf(context->output, "\tmov x%d, x%d\n\n", param_reg, context->result_reg);
+                free_register(context->register_manager, context->result_reg);
+            }
+            //branch with link
+            fprintf(context->output, "\t//call function.\n");
+            fprintf(context->output, "\tbl _%s\n\n", node->specialization.func_call.function_name);
+            //free all param registers after call
+            for(int i = 0; i < node->specialization.func_call.parameter_inputs->num_items; i++) {
+                free_register(context->register_manager, i);
+            }
+            //result comes back to x0
+            context->result_reg = 0;
             break;
         }
         case AST_VARIABLE_DECLARATION: {
@@ -265,11 +291,20 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             //get the variable
             Symbol* variable = lookup_symbol(node->scope, node->specialization.var_assign.variable_name);
             //skip strings (they are immutable)
-            if(variable-> kind == SYMBOL_STRING) break;
+            if(variable->kind == SYMBOL_STRING) break;
             //evaluate assignment result
             node_to_asm(node->specialization.var_assign.assignment, context);
-            //store result
-            store_variable(variable, context);
+            //check for param
+            if(variable->kind == SYMBOL_PARAMETER) {
+                //move result to param reg
+                fprintf(context->output, "\t//moving to param reg.\n");
+                fprintf(context->output, "\tmov x%d, x%d\n\n", variable->data.param_data.reg, context->result_reg);
+                free_register(context->register_manager, context->result_reg);
+            }
+            else {
+                //store result
+                store_variable(variable, context);
+            }
             break;
         }
         case AST_PRINT_STATEMENT: {
@@ -281,8 +316,15 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             break;
         }
         case AST_RETURN_STATEMENT: {
-            //TODO: code gen for this case
-
+            //evaluate the statement
+            node_to_asm(node->specialization.return_statement.operand, context);
+            //move result to x0
+            fprintf(context->output, "\t//return into x0.\n");
+            fprintf(context->output, "\tmov x0, x%d\n\n", context->result_reg);
+            //free old reg
+            free_register(context->register_manager, context->result_reg);
+            //collapse the stack frame
+            collapse_stack_frame(node->scope, context);
             break;
         }
         case AST_BINARY_OPERATION: {
@@ -304,15 +346,21 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             break;
         }
         case AST_PARAMETER: {
-            //TODO: code gen for this case
-
+            //nothing to do 
             break;
         }
         case AST_VARIABLE: {
             //get the variable
             Symbol* variable = lookup_symbol(node->scope, node->specialization.var.variable_name);
-            //load it
-            load_variable(variable, context);
+            //check for params
+            if(variable->kind == SYMBOL_PARAMETER) {
+                //value is in param reg
+                context->result_reg = variable->data.param_data.reg;
+            }
+            else {
+                //load it
+                load_variable(variable, context);
+            }
             break;
         }
         case AST_NUMBER: {
