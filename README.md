@@ -38,10 +38,10 @@ ARM64 Assembly Generation
   - [x] generate entry point stack frame
   - [x] store, load, and use integer variables
   - [x] strings
-  - [ ] subroutines
+  - [x] subroutines
   - [ ] loops and conditionals
 
 ### TODO
-- generate asm for subroutines
+- subroutines bug fixes
 - add support for boolean expressions
 
