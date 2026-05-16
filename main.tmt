@@ -1,27 +1,20 @@
-~ running some tests
+~ function tests
 
-~ entry point
+func add(int x, int y) yields int {
+    int add = x + y
+    harvest add
+}
+
+func double(int x) yields int {
+    x = x * 2
+    harvest x
+}
+
 sprout {
-    ~ create lots of variables to work with
-    int x = 1
-    int y = 2
-    int z = 3
-    string mad = ">:("
-    string happy = ":D"
-    string sad = ":("
+    ~ call nested function
+    print("the answer is:")
+    print(double(add(1, 2)))
 
-    ~ do some complicated algebraic expression with the int variables
-    int result = x * 2 - y + (33/z) + 1
-
-    ~ print out emotions
-    print(mad)
-    print(happy)
-    print(sad)
-
-    ~ print out raw string literal and the result
-    print("the result was:")
-    print(result)
-
-    ~ success
+    ~ end program.
     harvest tomato
 }
