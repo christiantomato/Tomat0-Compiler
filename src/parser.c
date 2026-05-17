@@ -148,6 +148,7 @@ static DataType resolve_factor_type(Parser* parser, ASTNode* factor) {
             //check the data type
             Symbol* variable = lookup_symbol(parser->current_scope, factor->specialization.var.variable_name);
             if(variable->kind == SYMBOL_VARIABLE) return variable->data.var_data.type;
+            else if(variable->kind == SYMBOL_PARAMETER) return variable->data.param_data.type;
             else if(variable->kind == SYMBOL_STRING) return TYPE_STRING;
         }
         case AST_NEGATION: 
