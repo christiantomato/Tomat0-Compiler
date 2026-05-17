@@ -171,11 +171,15 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
             print_indent(file, indent);
             fprintf(file, "output = \n");
             print_ast(file, root->specialization.print_statement.operand, indent + 1);
+            print_indent(file, indent);
+            fprintf(file, "print type = %s\n", data_type_as_str(root->specialization.print_statement.type));
             break;
         case AST_RETURN_STATEMENT:
             print_indent(file, indent);
             fprintf(file, "return = \n");
             print_ast(file, root->specialization.print_statement.operand, indent + 1);
+            print_indent(file, indent);
+            fprintf(file, "return type = %s\n", data_type_as_str(root->specialization.return_statement.type));
             break;
         case AST_NEGATION:
             print_indent(file, indent);

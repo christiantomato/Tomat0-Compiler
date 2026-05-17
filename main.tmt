@@ -1,19 +1,20 @@
-~ function tests
+~ lets write a large program
 
-func add(int x, int y) yields int {
-    int add = x + y
-    harvest add
+func complex(int a, int b, int c, int d) yields int {
+    int intermediate = a + d * b + c - 1
+    harvest intermediate
 }
 
-func double(int x) yields int {
-    x = x * 2
-    harvest x
+func composition(string message, int x, int y, int z) yields int {
+    print(message)
+    int result = complex(x, y, z, 10)
+    harvest -result
 }
 
 sprout {
-    ~ call nested function
-    print("the answer is:")
-    print(double(add(1, 2)))
+    ~ time to figure out what that value is going to be
+    int ret = composition("hi :3", 1, 2, 3)
+    print(ret)
 
     ~ end program.
     harvest tomato

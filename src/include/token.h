@@ -61,6 +61,7 @@ typedef enum {
     TOKEN_HYPHEN,
     TOKEN_ASTERISK,
     TOKEN_QUESTION,
+    TOKEN_EXCLAMATION,
     TOKEN_EOF
 } TokenType;
 

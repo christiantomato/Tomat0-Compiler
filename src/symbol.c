@@ -91,15 +91,15 @@ char* symbol_to_str(void* symbol) {
     else if(the_symbol->kind == SYMBOL_PARAMETER) {
         //figure out length needed and allocate space for it
         int length = snprintf(NULL, 0, 
-            "SYMBOL NAME: %s, KIND: %s, TYPE: %s, REGISTER: %d",  
-            the_symbol->name, symbol_kind_as_str(the_symbol), data_type_as_str(the_symbol->data.param_data.type), the_symbol->data.param_data.reg);
+            "SYMBOL NAME: %s, KIND: %s, TYPE: %s, REGISTER: %d, OFFSET, %d",  
+            the_symbol->name, symbol_kind_as_str(the_symbol), data_type_as_str(the_symbol->data.param_data.type), the_symbol->data.param_data.reg, the_symbol->data.param_data.offset);
 
         symbol_str = malloc(length + 1);
 
         //write to string
         snprintf(symbol_str, length + 1, 
-            "SYMBOL NAME: %s, KIND: %s, TYPE: %s, REGISTER: %d",  
-            the_symbol->name, symbol_kind_as_str(the_symbol), data_type_as_str(the_symbol->data.param_data.type), the_symbol->data.param_data.reg);
+            "SYMBOL NAME: %s, KIND: %s, TYPE: %s, REGISTER: %d, OFFSET, %d",  
+            the_symbol->name, symbol_kind_as_str(the_symbol), data_type_as_str(the_symbol->data.param_data.type), the_symbol->data.param_data.reg, the_symbol->data.param_data.offset);
     }
 
     return symbol_str;

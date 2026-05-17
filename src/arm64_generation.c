@@ -132,20 +132,27 @@ static void generate_binary_op(int left_reg, int right_reg, char operator, CodeG
  */
 
 static void load_variable(Symbol* variable, CodeGenContext* context) {
-     //determine where to load from
-    if(variable->kind == SYMBOL_VARIABLE) {
-        //allocate a register to put the variable value
-        context->result_reg = allocate_general_register(context->register_manager);
-        //load the value into the register from its stack frame
-        fprintf(context->output, "\t//load variable from stack.\n");
-        fprintf(context->output, "\tldr x%d, [fp, #%d]\n\n", context->result_reg, variable->data.var_data.offset);
-    }
-    else if(variable->kind == SYMBOL_STRING) {
+    //figure out where to load from
+    if(variable->kind == SYMBOL_STRING) {
         //load from label.
         context->result_reg = allocate_general_register(context->register_manager);
         fprintf(context->output, "\t//load string address from label.\n");
         fprintf(context->output, "\tadrp x%d, %s@PAGE\n", context->result_reg, variable->data.str_data.label);
         fprintf(context->output, "\tadd x%d, x%d, %s@PAGEOFF\n\n", context->result_reg, context->result_reg, variable->data.str_data.label);
+    }
+    else {
+        //get the offset
+        int offset;
+        //check if param or variable
+        if(variable->kind == SYMBOL_PARAMETER) offset = variable->data.param_data.offset;
+        else if(variable->kind == SYMBOL_VARIABLE) offset = variable->data.var_data.offset;
+        else return;
+
+        //allocate a register to put the variable value
+        context->result_reg = allocate_general_register(context->register_manager);
+        //load the value into the register from its stack frame
+        fprintf(context->output, "\t//load variable from stack.\n");
+        fprintf(context->output, "\tldr x%d, [fp, #%d]\n\n", context->result_reg, offset);
     }
 }
 
@@ -158,7 +165,10 @@ static void load_variable(Symbol* variable, CodeGenContext* context) {
 
 static void store_variable(Symbol* variable, CodeGenContext* context) {
     //get the offset
-    int offset = variable->data.var_data.offset;
+    int offset;
+    //check if param or variable
+    if(variable->kind == SYMBOL_PARAMETER) offset = variable->data.param_data.offset;
+    else if(variable->kind == SYMBOL_VARIABLE) offset = variable->data.var_data.offset;
     //store to its stack frame
     fprintf(context->output, "\t//store variable to stack.\n");
     fprintf(context->output, "\tstr x%d, [fp, #%d]\n\n", context->result_reg, offset);
@@ -167,9 +177,25 @@ static void store_variable(Symbol* variable, CodeGenContext* context) {
 }
 
 /**
+ * @brief Spills parameters to stack. 
+ * 
+ * @param params List of parameters to spill.
+ * @param context Pointer to the code gen context. 
+ */
+
+static void spill_params(List* params, CodeGenContext* context) {
+    for(int i = 0; i < params->num_items; i++) {
+        //store param value to stack
+        Symbol* param_sym = (Symbol*) params->array[i];
+        fprintf(context->output, "\t//spill param to stack.\n");
+        fprintf(context->output, "\tstr x%d, [fp, #%d]\n\n", param_sym->data.param_data.reg, param_sym->data.param_data.offset);
+    }
+}
+
+/**
  * @brief Sets up a stack frame for the activation record.
  * 
- * For function calls and the entry point. 
+ * For function declarations and the entry point. 
  * 
  * @param subroutine_scope Pointer to the subroutines scope.
  * @param context Pointer to the code gen context.
@@ -251,6 +277,10 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             fprintf(context->output, "_%s:\n", node->specialization.func_dec.function_name);
             //setup stack frame with function scope
             setup_stack_frame(node->specialization.func_dec.code_block->scope, context);
+            //get the function symbol
+            Symbol* func_symbol = lookup_symbol_in_scope(node->scope, node->specialization.func_dec.function_name);
+            //spill parameters to stack
+            spill_params(func_symbol->data.func_data.parameters, context);
             //generate code
             node_to_asm(node->specialization.func_dec.code_block, context);
             break;
@@ -268,8 +298,8 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             //branch with link
             fprintf(context->output, "\t//call function.\n");
             fprintf(context->output, "\tbl _%s\n\n", node->specialization.func_call.function_name);
-            //free all param registers after call
-            for(int i = 0; i < node->specialization.func_call.parameter_inputs->num_items; i++) {
+            //free all param registers after call (not x0 tho since its being used for return)
+            for(int i = 1; i < node->specialization.func_call.parameter_inputs->num_items; i++) {
                 free_register(context->register_manager, i);
             }
             //result comes back to x0
@@ -294,17 +324,8 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             if(variable->kind == SYMBOL_STRING) break;
             //evaluate assignment result
             node_to_asm(node->specialization.var_assign.assignment, context);
-            //check for param
-            if(variable->kind == SYMBOL_PARAMETER) {
-                //move result to param reg
-                fprintf(context->output, "\t//moving to param reg.\n");
-                fprintf(context->output, "\tmov x%d, x%d\n\n", variable->data.param_data.reg, context->result_reg);
-                free_register(context->register_manager, context->result_reg);
-            }
-            else {
-                //store result
-                store_variable(variable, context);
-            }
+            //store result
+            store_variable(variable, context);
             break;
         }
         case AST_PRINT_STATEMENT: {
@@ -352,15 +373,8 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
         case AST_VARIABLE: {
             //get the variable
             Symbol* variable = lookup_symbol(node->scope, node->specialization.var.variable_name);
-            //check for params
-            if(variable->kind == SYMBOL_PARAMETER) {
-                //value is in param reg
-                context->result_reg = variable->data.param_data.reg;
-            }
-            else {
-                //load it
-                load_variable(variable, context);
-            }
+            //load it
+            load_variable(variable, context);
             break;
         }
         case AST_NUMBER: {
