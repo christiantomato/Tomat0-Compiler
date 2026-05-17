@@ -1,6 +1,6 @@
 NODE: AST_GLOBAL
 	NODE: AST_FUNCTION_DECLARATION
-	function_name = add
+	function_name = complex
 	parameters = 
 		NODE: AST_PARAMETER
 		parameter_type = TYPE_INT
@@ -8,66 +8,115 @@ NODE: AST_GLOBAL
 		NODE: AST_PARAMETER
 		parameter_type = TYPE_INT
 		parameter_name = b
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = c
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = d
 	return_type = TYPE_INT
 	code_block: 
 		NODE: AST_BLOCK
 			NODE: AST_VARIABLE_DECLARATION
 			data_type = TYPE_INT
-			variable_name = result
+			variable_name = intermediate
 			assignment = 
 				NODE: AST_BINARY_OPERATION
 				left = 
-					NODE: AST_VARIABLE
-					variable_name = a
-				right = 
-					NODE: AST_VARIABLE
-					variable_name = b
-				operator = +
-			NODE: AST_RETURN_STATEMENT
-			return = 
-				NODE: AST_VARIABLE
-				variable_name = result
-	NODE: AST_FUNCTION_DECLARATION
-	function_name = compose
-	parameters = 
-		NODE: AST_PARAMETER
-		parameter_type = TYPE_INT
-		parameter_name = a
-		NODE: AST_PARAMETER
-		parameter_type = TYPE_INT
-		parameter_name = b
-	return_type = TYPE_INT
-	code_block: 
-		NODE: AST_BLOCK
-			NODE: AST_VARIABLE_DECLARATION
-			data_type = TYPE_INT
-			variable_name = result
-			assignment = 
-				NODE: AST_BINARY_OPERATION
-				left = 
-					NODE: AST_FUNCTION_CALL
-					function_name = add
-					parameter_values = 
+					NODE: AST_BINARY_OPERATION
+					left = 
+						NODE: AST_BINARY_OPERATION
+						left = 
+							NODE: AST_VARIABLE
+							variable_name = a
+						right = 
+							NODE: AST_BINARY_OPERATION
+							left = 
+								NODE: AST_VARIABLE
+								variable_name = d
+							right = 
+								NODE: AST_VARIABLE
+								variable_name = b
+							operator = *
+						operator = +
+					right = 
 						NODE: AST_VARIABLE
-						variable_name = a
-						NODE: AST_VARIABLE
-						variable_name = b
+						variable_name = c
+					operator = +
 				right = 
 					NODE: AST_NUMBER
 					value = 1
-				operator = +
+				operator = -
 			NODE: AST_RETURN_STATEMENT
 			return = 
 				NODE: AST_VARIABLE
-				variable_name = result
+				variable_name = intermediate
+			return type = TYPE_INT
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = composition
+	parameters = 
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_STRING
+		parameter_name = message
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = y
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = z
+	return_type = TYPE_INT
+	code_block: 
+		NODE: AST_BLOCK
+			NODE: AST_PRINT_STATEMENT
+			output = 
+				NODE: AST_VARIABLE
+				variable_name = message
+			print type = TYPE_STRING
+			NODE: AST_VARIABLE_DECLARATION
+			data_type = TYPE_INT
+			variable_name = result
+			assignment = 
+				NODE: AST_FUNCTION_CALL
+				function_name = complex
+				parameter_values = 
+					NODE: AST_VARIABLE
+					variable_name = x
+					NODE: AST_VARIABLE
+					variable_name = y
+					NODE: AST_VARIABLE
+					variable_name = z
+					NODE: AST_NUMBER
+					value = 10
+			NODE: AST_RETURN_STATEMENT
+			return = 
+				NODE: AST_NEGATION
+				negate = 
+					NODE: AST_VARIABLE
+					variable_name = result
+			return type = TYPE_INT
 	NODE: AST_ENTRY_POINT
-		NODE: AST_PRINT_STATEMENT
-		output = 
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = ret
+		assignment = 
 			NODE: AST_FUNCTION_CALL
-			function_name = compose
+			function_name = composition
 			parameter_values = 
+				NODE: AST_STRING
+				value = 'hi :3'
+				id = 0
 				NODE: AST_NUMBER
 				value = 1
 				NODE: AST_NUMBER
 				value = 2
+				NODE: AST_NUMBER
+				value = 3
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_VARIABLE
+			variable_name = ret
+		print type = TYPE_INT
 		NODE: AST_RUNTIME_END

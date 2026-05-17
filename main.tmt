@@ -1,18 +1,20 @@
-~ OUR CURRENT CASE TO FIX!! SPILL PARAMETERS!!
+~ lets write a large program
 
-func add(int a, int b) yields int {
-    int result = a + b 
-    harvest result
+func complex(int a, int b, int c, int d) yields int {
+    int intermediate = a + d * b + c - 1
+    harvest intermediate
 }
 
-func compose(int a, int b) yields int {
-    int result = add(a, b) + 1
-    harvest result
+func composition(string message, int x, int y, int z) yields int {
+    print(message)
+    int result = complex(x, y, z, 10)
+    harvest -result
 }
 
 sprout {
-    ~ call function
-    print(compose(1, 2))
+    ~ time to figure out what that value is going to be
+    int ret = composition("hi :3", 1, 2, 3)
+    print(ret)
 
     ~ end program.
     harvest tomato
