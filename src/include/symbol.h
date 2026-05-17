@@ -18,7 +18,7 @@
 typedef enum {
     SYMBOL_VARIABLE, /**< Integers and booleans. */
     SYMBOL_FUNCTION, /**< Functions. */
-    SYMBOL_STRING, /**< Strings, which are immutable. */
+    SYMBOL_STRING, /**< Strings, which are immutable and stored in .data. */
     SYMBOL_PARAMETER /**< Function parameters. */
  } SymbolKind;
 
@@ -59,6 +59,7 @@ typedef struct {
 typedef struct {
     DataType type; /**< The parameter data type. */
     int reg; /**< The register it will be passed through in (x0-x7) */
+    int offset; /**< The stack frame relative offset when spilling to stack. */
 } ParameterSymbol;
 
 /**

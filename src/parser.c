@@ -498,9 +498,12 @@ static ASTNode* parse_function_declaration(Parser* parser) {
 
             //create the symbol and add it to the scope
             Symbol* param_symbol = init_symbol(param_node->specialization.param.parameter_name, SYMBOL_PARAMETER);
-            //get the data type
+            //set type, register, and offset
             param_symbol->data.param_data.type = param_node->specialization.param.parameter_type;
             param_symbol->data.param_data.reg = param_index++;
+            parser->current_scope->current_offset -= 8;
+            param_symbol->data.param_data.offset = parser->current_scope->current_offset;
+            
             //add to symbol table
             add_symbol(parser->current_scope, param_symbol);
             //add the symbol to the func symbol param list
