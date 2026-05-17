@@ -4,69 +4,70 @@ NODE: AST_GLOBAL
 	parameters = 
 		NODE: AST_PARAMETER
 		parameter_type = TYPE_INT
-		parameter_name = x
+		parameter_name = a
 		NODE: AST_PARAMETER
 		parameter_type = TYPE_INT
-		parameter_name = y
+		parameter_name = b
 	return_type = TYPE_INT
 	code_block: 
 		NODE: AST_BLOCK
 			NODE: AST_VARIABLE_DECLARATION
 			data_type = TYPE_INT
-			variable_name = add
+			variable_name = result
 			assignment = 
 				NODE: AST_BINARY_OPERATION
 				left = 
 					NODE: AST_VARIABLE
-					variable_name = x
+					variable_name = a
 				right = 
 					NODE: AST_VARIABLE
-					variable_name = y
+					variable_name = b
 				operator = +
 			NODE: AST_RETURN_STATEMENT
 			return = 
 				NODE: AST_VARIABLE
-				variable_name = add
+				variable_name = result
 	NODE: AST_FUNCTION_DECLARATION
-	function_name = double
+	function_name = compose
 	parameters = 
 		NODE: AST_PARAMETER
 		parameter_type = TYPE_INT
-		parameter_name = x
+		parameter_name = a
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = b
 	return_type = TYPE_INT
 	code_block: 
 		NODE: AST_BLOCK
-			NODE: AST_VARIABLE_ASSIGNMENT
-			name = x
+			NODE: AST_VARIABLE_DECLARATION
+			data_type = TYPE_INT
+			variable_name = result
 			assignment = 
 				NODE: AST_BINARY_OPERATION
 				left = 
-					NODE: AST_VARIABLE
-					variable_name = x
+					NODE: AST_FUNCTION_CALL
+					function_name = add
+					parameter_values = 
+						NODE: AST_VARIABLE
+						variable_name = a
+						NODE: AST_VARIABLE
+						variable_name = b
 				right = 
 					NODE: AST_NUMBER
-					value = 2
-				operator = *
+					value = 1
+				operator = +
 			NODE: AST_RETURN_STATEMENT
 			return = 
 				NODE: AST_VARIABLE
-				variable_name = x
+				variable_name = result
 	NODE: AST_ENTRY_POINT
 		NODE: AST_PRINT_STATEMENT
 		output = 
-			NODE: AST_STRING
-			value = 'the answer is:'
-			id = 0
-		NODE: AST_PRINT_STATEMENT
-		output = 
 			NODE: AST_FUNCTION_CALL
-			function_name = double
+			function_name = compose
 			parameter_values = 
-				NODE: AST_FUNCTION_CALL
-				function_name = add
-				parameter_values = 
-					NODE: AST_NUMBER
-					value = 1
-					NODE: AST_NUMBER
-					value = 2
+				NODE: AST_NUMBER
+				value = 1
+				NODE: AST_NUMBER
+				value = 2
 		NODE: AST_RUNTIME_END

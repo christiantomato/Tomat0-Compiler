@@ -1,19 +1,18 @@
-~ function tests
+~ OUR CURRENT CASE TO FIX!! SPILL PARAMETERS!!
 
-func add(int x, int y) yields int {
-    int add = x + y
-    harvest add
+func add(int a, int b) yields int {
+    int result = a + b 
+    harvest result
 }
 
-func double(int x) yields int {
-    x = x * 2
-    harvest x
+func compose(int a, int b) yields int {
+    int result = add(a, b) + 1
+    harvest result
 }
 
 sprout {
-    ~ call nested function
-    print("the answer is:")
-    print(double(add(1, 2)))
+    ~ call function
+    print(compose(1, 2))
 
     ~ end program.
     harvest tomato
