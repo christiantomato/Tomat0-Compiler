@@ -64,6 +64,7 @@ char* node_type_as_str(ASTNode* node) {
         case AST_STRING: return "AST_STRING"; break;
         case AST_THROW: return "AST_THROW"; break;
         case AST_RUNTIME_END: return "AST_RUNTIME_END";
+        default: return "AST_UNKNOWN";
     }
 }
 
