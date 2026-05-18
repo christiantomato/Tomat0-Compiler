@@ -42,6 +42,5 @@ ARM64 Assembly Generation
   - [ ] loops and conditionals
 
 ### TODO
-- subroutines bug fixes
 - add support for boolean expressions
 
