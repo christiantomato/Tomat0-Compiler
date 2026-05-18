@@ -154,7 +154,7 @@ static Token* tokenize_ID(Lexer* lexer) {
     char* id_value = malloc(sizeof(char));
     id_value[0] = '\0';
     //build the string as long as our identifier is alphabetical 
-    while(isalpha(lexer->curr)) {
+    while(isalnum(lexer->curr)) {
         char* temp = lexer_char_as_str(lexer);
         id_value = realloc(id_value, (strlen(id_value) + 2) * sizeof(char));
         strcat(id_value, temp);

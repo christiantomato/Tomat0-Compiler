@@ -1,20 +1,69 @@
-~ lets write a large program
+~ sample program to showcase everything implemented so far.
 
-func complex(int a, int b, int c, int d) yields int {
-    int intermediate = a + d * b + c - 1
-    harvest intermediate
+~ "void" function which prints a message 3 times.
+func printThree(string msg) yields int {
+    print(msg)
+    print(msg)
+    print(msg)
+    harvest 0
 }
 
-func composition(string message, int x, int y, int z) yields int {
-    print(message)
-    int result = complex(x, y, z, 10)
-    harvest -result
+~ doubles an integer.
+func double(int x) yields int {
+    x = x * 2
+    harvest x
+}
+
+~ squares an integer.
+func square(int x) yields int {
+    x = x * x
+    harvest x
+}
+
+~ computes the dot product of 2D vectors. 
+func dot(int x1, int y1, int x2, int y2) yields int {
+    int result = x1 * x2 + y1 * y2
+    harvest result
+}
+
+~ computes the slope of 2 points
+func slope(int x1, int y1, int x2, int y2) yields int {
+    int result = (y2 - y1) / (x2 - x1)
+    harvest result
+}
+
+~ a complex function which calls other subroutines
+func complex() yields int {
+    harvest 0
 }
 
 sprout {
-    ~ time to figure out what that value is going to be
-    int ret = composition("hi :3", 1, 2, 3)
-    print(ret)
+    ~ create some variables to work with
+
+    ~ vector 1
+    int xComp0 = 3
+    int yComp0 = 4
+    ~ vector 2
+    int xComp1 = -4
+    int yComp1 = 3
+    
+    ~ lets do some computations
+
+    ~ double 3
+    print("doubling xComp0")
+    print(double(xComp0))
+    ~ square 3
+    print("squaring xComp0")
+    print(square(xComp0))
+    ~ dot the vectors (should be 0)
+    print("dotting vectors...")
+    print(dot(xComp0, yComp0, xComp1, yComp1))
+    ~ idk compute some slope
+    print("computing slope...")
+    print(slope(2, 2, 0, 0))
+
+    ~ ok lets have fun
+    printThree("lol :P")
 
     ~ end program.
     harvest tomato

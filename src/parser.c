@@ -72,11 +72,7 @@ static void parser_advance(Parser* parser) {
 
 static void parser_sync(Parser* parser) {
     printf("syncing parser...\n");
-    while(
-        parser->current_token->type != TOKEN_NEWLINE &&
-        parser->current_token->type != TOKEN_RCURLY &&
-        parser->current_token->type != TOKEN_EOF
-    ) {
+    while(parser->current_token->type != TOKEN_NEWLINE && parser->current_token->type != TOKEN_EOF) {
         //skip through
         parser_advance(parser);
     }
@@ -164,6 +160,8 @@ static DataType resolve_factor_type(Parser* parser, ASTNode* factor) {
 
 //forward declare parse expression, as parse factor recursively calls it
 static ASTNode* parse_expression(Parser* parser);
+//forward declare parse_function_call, as it can be a factor
+static ASTNode* parse_function_call(Parser* parser);
 
 /**
  * @brief Parses a factor. 
@@ -213,63 +211,7 @@ static ASTNode* parse_factor(Parser* parser) {
     if(parser->current_token->type == TOKEN_ID) {
         //function call
         if(parser_peek1(parser)->type == TOKEN_LPAREN) {
-            //SEMANTIC ANALYSIS: ensure the function exists
-            Symbol* func_symbol = lookup_symbol(parser->current_scope, parser->current_token->value);
-            if(func_symbol == NULL) {
-                //function doesn't exist
-                printf("SEMANTIC ERROR: Function has not been declared.\n");
-                return NULL;
-            }
-
-            //create the AST_FUNCTION_CALL
-            ASTNode* func_call_node = init_node(AST_FUNCTION_CALL, parser->current_scope);
-
-            //get function name
-            func_call_node->specialization.func_call.function_name = strdup(parser->current_token->value);
-
-            //advance past name and opening bracket
-            parser_advance(parser); parser_advance(parser);
-
-            //keep an index for func params
-            int param_index = 0;
-
-            //parse parameters
-            while(parser->current_token->type != TOKEN_RPAREN) {
-                //parse the parameter, which we will restrict to being a factor for simplicity
-                ASTNode* param_node;
-                param_node = parse_factor(parser);
-
-                //check if types match
-                DataType param_type = resolve_factor_type(parser, param_node);
-                Symbol* param_symbol = (Symbol*) func_symbol->data.func_data.parameters->array[param_index];
-                DataType expected_type = param_symbol->data.param_data.type;
-
-                if(param_type != expected_type) {
-                    printf("SEMANTIC ERROR: Parameter type does not match function definition.\n");
-                    return NULL;
-                }
-
-                //skip past comma if there is one
-                if(parser->current_token->type == TOKEN_COMMA) {
-                    parser_advance(parser);
-                }
-
-                //add it to the param list
-                list_add(func_call_node->specialization.func_call.parameter_inputs, param_node);
-
-                //increase param counter
-                param_index++;
-            }
-
-            //check if it was the correct amount of arguments
-            if(param_index != func_symbol->data.func_data.parameters->num_items) {
-                printf("SEMANTIC ERROR: Incorrect amount of arguments.\n");
-            }
-
-            //advance past closing
-            parser_advance(parser);
-
-            return func_call_node;
+            return parse_function_call(parser);
         }
         //variable call
         else {
@@ -309,7 +251,7 @@ static ASTNode* parse_factor(Parser* parser) {
         //assign the string (make sure to duplicate)
         string_node->specialization.string.value = strdup(parser->current_token->value);
         //assign id
-        string_node->specialization.string.id = string_literals;
+        string_node->specialization.string.id = string_literals++;
         //add to strings list
         list_add(parser->strings, strdup(parser->current_token->value));
         //advance past
@@ -439,6 +381,73 @@ static ASTNode* parse_parameter(Parser* parser) {
     parser_advance(parser);
 
     return param_node;
+}
+
+/**
+ * @brief Parses a function call.
+ * 
+ * @param parser Pointer to the parser.
+ * @return Pointer to the function call node.
+ */
+
+static ASTNode* parse_function_call(Parser* parser) {
+    //SEMANTIC ANALYSIS: ensure the function exists
+    Symbol* func_symbol = lookup_symbol(parser->current_scope, parser->current_token->value);
+    if(func_symbol == NULL) {
+        //function doesn't exist
+        printf("SEMANTIC ERROR: Function has not been declared.\n");
+        return NULL;
+    }
+
+    //create the AST_FUNCTION_CALL
+    ASTNode* func_call_node = init_node(AST_FUNCTION_CALL, parser->current_scope);
+
+    //get function name
+    func_call_node->specialization.func_call.function_name = strdup(parser->current_token->value);
+
+    //advance past name and opening bracket
+    parser_advance(parser); parser_advance(parser);
+
+    //keep an index for func params
+    int param_index = 0;
+
+    //parse parameters
+    while(parser->current_token->type != TOKEN_RPAREN) {
+        //parse the parameter, which we will restrict to being a factor for simplicity
+        ASTNode* param_node;
+        param_node = parse_factor(parser);
+
+        //check if types match
+        DataType param_type = resolve_factor_type(parser, param_node);
+        Symbol* param_symbol = (Symbol*) func_symbol->data.func_data.parameters->array[param_index];
+        DataType expected_type = param_symbol->data.param_data.type;
+
+        if(param_type != expected_type) {
+            printf("SEMANTIC ERROR: Parameter type does not match function definition.\n");
+            return NULL;
+        }
+
+        //skip past comma if there is one
+        if(parser->current_token->type == TOKEN_COMMA) {
+            parser_advance(parser);
+        }
+
+        //add it to the param list
+        list_add(func_call_node->specialization.func_call.parameter_inputs, param_node);
+
+        //increase param counter
+        param_index++;
+    }
+
+    //check if it was the correct amount of arguments
+    if(param_index != func_symbol->data.func_data.parameters->num_items) {
+        printf("SEMANTIC ERROR: Incorrect amount of arguments.\n");
+    }
+
+    //advance past closing
+    parser_advance(parser);
+
+    return func_call_node;
 }
 
 //forward declare parse block
@@ -771,8 +780,11 @@ static ASTNode* parse_line(Parser* parser) {
         case TOKEN_KEYWORD_FUNC: return parse_function_declaration(parser);
         case TOKEN_KEYWORD_INT: return parse_variable_declaration(parser); 
         case TOKEN_KEYWORD_STRING: return parse_variable_declaration(parser);
-        case TOKEN_ID: return parse_variable_assignment(parser);
-        case TOKEN_KEYWORD_PRINT: return parse_print_statement(parser); 
+        case TOKEN_KEYWORD_PRINT: return parse_print_statement(parser);
+        case TOKEN_ID: 
+            //check for function calls
+            if(parser_peek1(parser)->type == TOKEN_LPAREN) return parse_function_call(parser); 
+            else return parse_variable_assignment(parser); 
         case TOKEN_KEYWORD_HARVEST: 
             //check if it is a return statement or runtime end
             if(parser_peek1(parser)->type == TOKEN_KEYWORD_TOMATO) {
