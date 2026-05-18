@@ -1,122 +1,287 @@
 NODE: AST_GLOBAL
 	NODE: AST_FUNCTION_DECLARATION
-	function_name = complex
-	parameters = 
-		NODE: AST_PARAMETER
-		parameter_type = TYPE_INT
-		parameter_name = a
-		NODE: AST_PARAMETER
-		parameter_type = TYPE_INT
-		parameter_name = b
-		NODE: AST_PARAMETER
-		parameter_type = TYPE_INT
-		parameter_name = c
-		NODE: AST_PARAMETER
-		parameter_type = TYPE_INT
-		parameter_name = d
-	return_type = TYPE_INT
-	code_block: 
-		NODE: AST_BLOCK
-			NODE: AST_VARIABLE_DECLARATION
-			data_type = TYPE_INT
-			variable_name = intermediate
-			assignment = 
-				NODE: AST_BINARY_OPERATION
-				left = 
-					NODE: AST_BINARY_OPERATION
-					left = 
-						NODE: AST_BINARY_OPERATION
-						left = 
-							NODE: AST_VARIABLE
-							variable_name = a
-						right = 
-							NODE: AST_BINARY_OPERATION
-							left = 
-								NODE: AST_VARIABLE
-								variable_name = d
-							right = 
-								NODE: AST_VARIABLE
-								variable_name = b
-							operator = *
-						operator = +
-					right = 
-						NODE: AST_VARIABLE
-						variable_name = c
-					operator = +
-				right = 
-					NODE: AST_NUMBER
-					value = 1
-				operator = -
-			NODE: AST_RETURN_STATEMENT
-			return = 
-				NODE: AST_VARIABLE
-				variable_name = intermediate
-			return type = TYPE_INT
-	NODE: AST_FUNCTION_DECLARATION
-	function_name = composition
+	function_name = printThree
 	parameters = 
 		NODE: AST_PARAMETER
 		parameter_type = TYPE_STRING
-		parameter_name = message
-		NODE: AST_PARAMETER
-		parameter_type = TYPE_INT
-		parameter_name = x
-		NODE: AST_PARAMETER
-		parameter_type = TYPE_INT
-		parameter_name = y
-		NODE: AST_PARAMETER
-		parameter_type = TYPE_INT
-		parameter_name = z
+		parameter_name = msg
 	return_type = TYPE_INT
 	code_block: 
 		NODE: AST_BLOCK
 			NODE: AST_PRINT_STATEMENT
 			output = 
 				NODE: AST_VARIABLE
-				variable_name = message
+				variable_name = msg
 			print type = TYPE_STRING
+			NODE: AST_PRINT_STATEMENT
+			output = 
+				NODE: AST_VARIABLE
+				variable_name = msg
+			print type = TYPE_STRING
+			NODE: AST_PRINT_STATEMENT
+			output = 
+				NODE: AST_VARIABLE
+				variable_name = msg
+			print type = TYPE_STRING
+			NODE: AST_RETURN_STATEMENT
+			return = 
+				NODE: AST_NUMBER
+				value = 0
+			return type = TYPE_INT
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = double
+	parameters = 
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x
+	return_type = TYPE_INT
+	code_block: 
+		NODE: AST_BLOCK
+			NODE: AST_VARIABLE_ASSIGNMENT
+			name = x
+			assignment = 
+				NODE: AST_BINARY_OPERATION
+				left = 
+					NODE: AST_VARIABLE
+					variable_name = x
+				right = 
+					NODE: AST_NUMBER
+					value = 2
+				operator = *
+			NODE: AST_RETURN_STATEMENT
+			return = 
+				NODE: AST_VARIABLE
+				variable_name = x
+			return type = TYPE_INT
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = square
+	parameters = 
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x
+	return_type = TYPE_INT
+	code_block: 
+		NODE: AST_BLOCK
+			NODE: AST_VARIABLE_ASSIGNMENT
+			name = x
+			assignment = 
+				NODE: AST_BINARY_OPERATION
+				left = 
+					NODE: AST_VARIABLE
+					variable_name = x
+				right = 
+					NODE: AST_VARIABLE
+					variable_name = x
+				operator = *
+			NODE: AST_RETURN_STATEMENT
+			return = 
+				NODE: AST_VARIABLE
+				variable_name = x
+			return type = TYPE_INT
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = dot
+	parameters = 
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x1
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = y1
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x2
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = y2
+	return_type = TYPE_INT
+	code_block: 
+		NODE: AST_BLOCK
 			NODE: AST_VARIABLE_DECLARATION
 			data_type = TYPE_INT
 			variable_name = result
 			assignment = 
-				NODE: AST_FUNCTION_CALL
-				function_name = complex
-				parameter_values = 
-					NODE: AST_VARIABLE
-					variable_name = x
-					NODE: AST_VARIABLE
-					variable_name = y
-					NODE: AST_VARIABLE
-					variable_name = z
-					NODE: AST_NUMBER
-					value = 10
+				NODE: AST_BINARY_OPERATION
+				left = 
+					NODE: AST_BINARY_OPERATION
+					left = 
+						NODE: AST_VARIABLE
+						variable_name = x1
+					right = 
+						NODE: AST_VARIABLE
+						variable_name = x2
+					operator = *
+				right = 
+					NODE: AST_BINARY_OPERATION
+					left = 
+						NODE: AST_VARIABLE
+						variable_name = y1
+					right = 
+						NODE: AST_VARIABLE
+						variable_name = y2
+					operator = *
+				operator = +
 			NODE: AST_RETURN_STATEMENT
 			return = 
-				NODE: AST_NEGATION
-				negate = 
-					NODE: AST_VARIABLE
-					variable_name = result
+				NODE: AST_VARIABLE
+				variable_name = result
+			return type = TYPE_INT
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = slope
+	parameters = 
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x1
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = y1
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x2
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = y2
+	return_type = TYPE_INT
+	code_block: 
+		NODE: AST_BLOCK
+			NODE: AST_VARIABLE_DECLARATION
+			data_type = TYPE_INT
+			variable_name = result
+			assignment = 
+				NODE: AST_BINARY_OPERATION
+				left = 
+					NODE: AST_BINARY_OPERATION
+					left = 
+						NODE: AST_VARIABLE
+						variable_name = y2
+					right = 
+						NODE: AST_VARIABLE
+						variable_name = y1
+					operator = -
+				right = 
+					NODE: AST_BINARY_OPERATION
+					left = 
+						NODE: AST_VARIABLE
+						variable_name = x2
+					right = 
+						NODE: AST_VARIABLE
+						variable_name = x1
+					operator = -
+				operator = /
+			NODE: AST_RETURN_STATEMENT
+			return = 
+				NODE: AST_VARIABLE
+				variable_name = result
+			return type = TYPE_INT
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = complex
+	parameters = 
+	return_type = TYPE_INT
+	code_block: 
+		NODE: AST_BLOCK
+			NODE: AST_RETURN_STATEMENT
+			return = 
+				NODE: AST_NUMBER
+				value = 0
 			return type = TYPE_INT
 	NODE: AST_ENTRY_POINT
 		NODE: AST_VARIABLE_DECLARATION
 		data_type = TYPE_INT
-		variable_name = ret
+		variable_name = xComp0
 		assignment = 
-			NODE: AST_FUNCTION_CALL
-			function_name = composition
-			parameter_values = 
-				NODE: AST_STRING
-				value = 'hi :3'
-				id = 0
+			NODE: AST_NUMBER
+			value = 3
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = yComp0
+		assignment = 
+			NODE: AST_NUMBER
+			value = 4
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = xComp1
+		assignment = 
+			NODE: AST_NEGATION
+			negate = 
 				NODE: AST_NUMBER
-				value = 1
+				value = 4
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = yComp1
+		assignment = 
+			NODE: AST_NUMBER
+			value = 3
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = 'doubling xComp0'
+			id = 0
+		print type = TYPE_STRING
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_FUNCTION_CALL
+			function_name = double
+			parameter_values = 
+				NODE: AST_VARIABLE
+				variable_name = xComp0
+		print type = TYPE_INT
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = 'squaring xComp0'
+			id = 1
+		print type = TYPE_STRING
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_FUNCTION_CALL
+			function_name = square
+			parameter_values = 
+				NODE: AST_VARIABLE
+				variable_name = xComp0
+		print type = TYPE_INT
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = 'dotting vectors...'
+			id = 2
+		print type = TYPE_STRING
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_FUNCTION_CALL
+			function_name = dot
+			parameter_values = 
+				NODE: AST_VARIABLE
+				variable_name = xComp0
+				NODE: AST_VARIABLE
+				variable_name = yComp0
+				NODE: AST_VARIABLE
+				variable_name = xComp1
+				NODE: AST_VARIABLE
+				variable_name = yComp1
+		print type = TYPE_INT
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = 'computing slope...'
+			id = 3
+		print type = TYPE_STRING
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_FUNCTION_CALL
+			function_name = slope
+			parameter_values = 
 				NODE: AST_NUMBER
 				value = 2
 				NODE: AST_NUMBER
-				value = 3
-		NODE: AST_PRINT_STATEMENT
-		output = 
-			NODE: AST_VARIABLE
-			variable_name = ret
+				value = 2
+				NODE: AST_NUMBER
+				value = 0
+				NODE: AST_NUMBER
+				value = 0
 		print type = TYPE_INT
+		NODE: AST_FUNCTION_CALL
+		function_name = printThree
+		parameter_values = 
+			NODE: AST_STRING
+			value = 'lol :P'
+			id = 4
 		NODE: AST_RUNTIME_END
