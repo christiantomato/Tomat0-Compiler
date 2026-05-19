@@ -391,8 +391,51 @@ static ASTNode* parse_block(Parser* parser);
  * @param parser Point to the parser
  * @return Pointer to the if statement node. 
  */
-static ASTNode* parse_if_statement(Parser* parser) {
 
+static ASTNode* parse_if_statement(Parser* parser) {
+    //keeps track of if statements in program
+    static int if_statements = 0;
+
+    //the node we will return 
+    ASTNode* if_node = init_node(AST_IF_STATEMENT, parser->current_scope);
+
+    //move past keyword 
+    parser_advance(parser);
+
+    //expect l paren
+    if(parser->current_token->type == TOKEN_LPAREN) parser_advance(parser);
+    else {
+        //problem
+        printf("SYNTAX ERROR: Expected opening bracket on if statement.\n");
+        parser_sync(parser);
+        return NULL;
+    }
+
+    //parse condition
+    if_node->specialization.if_statement.condition = parse_boolean_expression(parser);
+
+    //advance past closing paren
+    if(parser->current_token->type == TOKEN_RPAREN) parser_advance(parser);
+    else {
+        //problem
+        printf("SYNTAX ERROR: Expected closing bracket on if statement.\n");
+        parser_sync(parser);
+        return NULL;
+    }
+
+    //enter a new scope
+    Scope* if_scope = enter_scope(parser->current_scope);
+    char if_scope_name[8];
+    snprintf(if_scope_name, sizeof(if_scope_name), "if%d", if_statements++);
+    list_add(parser->scopes, if_scope);
+    parser->current_scope = if_scope;
+
+    //parse while block
+    if_node->specialization.if_statement.code_block = parse_block(parser);
+
+    //exit scope and return
+    parser->current_scope = exit_scope(parser->current_scope);
+    return if_node;
 }
 
 /**
@@ -403,7 +446,49 @@ static ASTNode* parse_if_statement(Parser* parser) {
  */
 
 static ASTNode* parse_while_loop(Parser* parser) {
+    //keeps track of while loops in program
+    static int while_loops = 0;
 
+    //the node we will return 
+    ASTNode* while_node = init_node(AST_WHILE_LOOP, parser->current_scope);
+
+    //move past keyword 
+    parser_advance(parser);
+
+    //expect l paren
+    if(parser->current_token->type == TOKEN_LPAREN) parser_advance(parser);
+    else {
+        //problem
+        printf("SYNTAX ERROR: Expected opening bracket on while loop.\n");
+        parser_sync(parser);
+        return NULL;
+    }
+
+    //parse condition
+    while_node->specialization.while_loop.condition = parse_boolean_expression(parser);
+
+    //advance past closing paren
+    if(parser->current_token->type == TOKEN_RPAREN) parser_advance(parser);
+    else {
+        //problem
+        printf("SYNTAX ERROR: Expected closing bracket on while loop.\n");
+        parser_sync(parser);
+        return NULL;
+    }
+
+    //enter a new scope
+    Scope* while_scope = enter_scope(parser->current_scope);
+    char while_scope_name[8];
+    snprintf(while_scope_name, sizeof(while_scope_name), "while%d", while_loops++);
+    list_add(parser->scopes, while_scope);
+    parser->current_scope = while_scope;
+
+    //parse while block
+    while_node->specialization.while_loop.code_block = parse_block(parser);
+
+    //exit scope and return
+    parser->current_scope = exit_scope(parser->current_scope);
+    return while_node;
 }
 
 /**
@@ -471,8 +556,16 @@ static ASTNode* parse_function_call(Parser* parser) {
     //get function name
     func_call_node->specialization.func_call.function_name = strdup(parser->current_token->value);
 
-    //advance past name and opening bracket
-    parser_advance(parser); parser_advance(parser);
+    //advance past name and expect l paren
+    parser_advance(parser);
+
+    if(parser->current_token->type == TOKEN_LPAREN) parser_advance(parser);
+    else {
+        //problem
+        printf("SYNTAX ERROR: Expected opening bracket on function call.\n");
+        parser_sync(parser);
+        return NULL;
+    }
 
     //keep an index for func params
     int param_index = 0;
@@ -779,9 +872,7 @@ static ASTNode* parse_print_statement(Parser* parser) {
     parser_advance(parser);
 
     //expect an LPAREN
-    if(parser->current_token->type == TOKEN_LPAREN) {
-        parser_advance(parser);
-    }
+    if(parser->current_token->type == TOKEN_LPAREN) parser_advance(parser);
     else {
         //problem 
         printf("SYNTAX ERROR: Expected LPAREN.\n");
