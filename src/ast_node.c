@@ -52,6 +52,8 @@ char* node_type_as_str(ASTNode* node) {
         case AST_BLOCK: return "AST_BLOCK"; break;
         case AST_FUNCTION_DECLARATION: return "AST_FUNCTION_DECLARATION"; break;
         case AST_FUNCTION_CALL: return "AST_FUNCTION_CALL"; break;
+        case AST_IF_STATEMENT: return "AST_IF_STATEMENT"; break;
+        case AST_WHILE_LOOP: return "AST_WHILE_LOOP"; break;
         case AST_VARIABLE_DECLARATION: return "AST_VARIABLE_DECLARATION"; break;
         case AST_VARIABLE_ASSIGNMENT: return "AST_VARIABLE_ASSIGNMENT"; break;
         case AST_BINARY_OPERATION: return "AST_BINARY_OPERATION"; break;
@@ -127,7 +129,7 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
             print_indent(file, indent);
             fprintf(file, "return_type = %s\n", data_type_as_str(root->specialization.func_dec.return_type));
             print_indent(file, indent);
-            fprintf(file, "code_block: \n");
+            fprintf(file, "code_block = \n");
             //print out whole code block
             print_ast(file, root->specialization.func_dec.code_block, indent + 1);
             break;
@@ -140,6 +142,20 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
             for(int i = 0; i < root->specialization.func_call.parameter_inputs->num_items; i++) {
                 print_ast(file, root->specialization.func_call.parameter_inputs->array[i], indent + 1);
             }
+            break;
+        case AST_IF_STATEMENT:
+            print_indent(file, indent);
+            fprintf(file, "condition = \n");
+            print_ast(file, root->specialization.if_statement.condition, indent + 1);
+            fprintf(file, "code_block = \n");
+            print_ast(file, root->specialization.if_statement.code_block, indent + 1);
+            break;
+        case AST_WHILE_LOOP:
+            print_indent(file, indent);
+            fprintf(file, "condition = \n");
+            print_ast(file, root->specialization.while_loop.condition, indent + 1);
+            fprintf(file, "code_block = \n");
+            print_ast(file, root->specialization.while_loop.code_block, indent + 1);
             break;
         case AST_VARIABLE_DECLARATION:
             print_indent(file, indent);
@@ -173,14 +189,14 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
             fprintf(file, "output = \n");
             print_ast(file, root->specialization.print_statement.operand, indent + 1);
             print_indent(file, indent);
-            fprintf(file, "print type = %s\n", data_type_as_str(root->specialization.print_statement.type));
+            fprintf(file, "print_type = %s\n", data_type_as_str(root->specialization.print_statement.type));
             break;
         case AST_RETURN_STATEMENT:
             print_indent(file, indent);
             fprintf(file, "return = \n");
             print_ast(file, root->specialization.print_statement.operand, indent + 1);
             print_indent(file, indent);
-            fprintf(file, "return type = %s\n", data_type_as_str(root->specialization.return_statement.type));
+            fprintf(file, "return_type = %s\n", data_type_as_str(root->specialization.return_statement.type));
             break;
         case AST_NEGATION:
             print_indent(file, indent);
@@ -244,6 +260,14 @@ void free_node(ASTNode* node) {
             //free name and param inputs
             free(node->specialization.func_call.function_name);
             free_list(node->specialization.func_call.parameter_inputs, free_node_wrapper);
+            break;
+        case AST_IF_STATEMENT:
+            free_node(node->specialization.if_statement.condition);
+            free_node(node->specialization.if_statement.code_block);
+            break;
+        case AST_WHILE_LOOP:
+            free_node(node->specialization.if_statement.condition);
+            free_node(node->specialization.if_statement.code_block);
             break;
         case AST_VARIABLE_DECLARATION:
             //free name and assignment

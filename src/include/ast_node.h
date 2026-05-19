@@ -28,6 +28,8 @@ typedef enum {
     AST_BLOCK,
     AST_FUNCTION_DECLARATION,
     AST_FUNCTION_CALL,
+    AST_IF_STATEMENT,
+    AST_WHILE_LOOP,
     AST_VARIABLE_DECLARATION,
     AST_VARIABLE_ASSIGNMENT,
     AST_BINARY_OPERATION,
@@ -50,6 +52,8 @@ struct ast_node_struct;
 /**
  * @struct Block
  * @brief Represents a code block of instructions.
+ * 
+ * Structure used by global, entry point, functions, ifs and whiles. 
  */
 
 typedef struct {
@@ -72,13 +76,23 @@ typedef struct {
  * @struct FunctionCall
  * @brief Represents a function call.
  * 
- * Passed in parameters can be literals, variables, or expressions.
+ * Passed in parameters must be factors.
  */
 
 typedef struct {
     char* function_name; /**< The function that is being called. */
     List* parameter_inputs; /**< List of AST nodes that are passed in for the parameters. */
 } FunctionCall;
+
+/**
+ * @struct Conditional
+ * @brief Represents a conditional statement (if or while)
+ */
+
+typedef struct {
+    struct ast_node_struct* condition;
+    struct ast_node_struct* code_block;
+} Conditional;
 
 /**
  * @struct VariableDeclaration
@@ -107,11 +121,19 @@ typedef struct {
  * @struct BinaryOperation
  * @brief Represents a binary operation instruction between 2 nodes. 
  * 
- * Current supported operators include: 
+ * Current supported operators include:
+ * Algebra: 
  * - Addition: +
  * - Subtraction: -
  * - Multiplication: *
  * - Division: / 
+ * Boolean Algebra:
+ * - Conjunction: and
+ * - Disjunction: or
+ * Relational Operators:
+ * - Equality: equals
+ * - Less Than: <
+ * - Greater Than: >
  */
 
 typedef struct {
@@ -120,21 +142,22 @@ typedef struct {
     char* operator; /**< The operator. */
 } BinaryOperation;
 
-//The following 3 nodes have the same definition, but represent different things.
-
 /**
  * @struct UnaryOperation
  * @brief Represents a unary operation. 
  * 
+ * Nodes passed into returns or prints must be factor nodes so we can ensure proper data type. 
+ * 
  * Current operations include:
- * - Negation: -(node)
+ * - Arithmetic Negation: -(numerical expression)
+ * - Logical Negation: not (boolean expression)
  * - Return Statements: return(node)
  * - Print Statenments: print(node)
  */
 
 typedef struct {
     struct ast_node_struct* operand; /**< The node operand. */
-    DataType type; /**< The operand type (for prints and returns) */
+    DataType type; /**< The operand type (necessary for prints and returns, and for specifying arithemtic or logical negation) */
 } UnaryOperation;
 
 //TERMINAL NODES: 
@@ -160,7 +183,9 @@ typedef struct {
 
 /**
  * @struct NumberLiteral
- * @brief Represents a number.  
+ * @brief Represents a number. 
+ * 
+ * Also used to encode booleans.  
  */
 
 typedef struct {
@@ -186,6 +211,8 @@ typedef union {
     Block block;
     FunctionDeclaration func_dec;
     FunctionCall func_call;
+    Conditional if_statement;
+    Conditional while_loop;
     VariableDeclaration var_dec;
     VariableAssignment var_assign;
     BinaryOperation binary_op;
