@@ -148,8 +148,7 @@ static DataType resolve_factor_type(Parser* parser, ASTNode* factor) {
             else if(variable->kind == SYMBOL_STRING) return TYPE_STRING;
         }
         case AST_NEGATION: 
-            //assume integer, for now..
-            return TYPE_INT;
+            return factor->specialization.negation.type;
         case AST_NUMBER:
             return TYPE_INT;
         case AST_STRING:
@@ -191,11 +190,13 @@ static ASTNode* parse_factor(Parser* parser) {
         }
         else {
             //problem
+            printf("SYNTAX ERROR: Expected closing paren for expression.\n");
+            parser_sync(parser);
             return NULL;
         }
     }
 
-    //check for negation
+    //check for arithmetic negation
     if(parser->current_token->type == TOKEN_HYPHEN) {
         //advance to the factor
         parser_advance(parser);
@@ -203,7 +204,21 @@ static ASTNode* parse_factor(Parser* parser) {
         ASTNode* negation_node = init_node(AST_NEGATION, parser->current_scope);
         //assign
         negation_node->specialization.negation.operand = parse_factor(parser);
+        negation_node->specialization.negation.type = TYPE_INT;
         //return the node
+        return negation_node;
+    }
+
+    //check for a logical negation
+    if(parser->current_token->type == TOKEN_KEYWORD_NOT) {
+        //advance to the factor
+        parser_advance(parser);
+        //create the negation node
+        ASTNode* negation_node = init_node(AST_NEGATION, parser->current_scope);
+        //assign
+        negation_node->specialization.negation.operand = parse_factor(parser);
+        negation_node->specialization.negation.type = TYPE_BOOL;
+        //return
         return negation_node;
     }
 
@@ -232,11 +247,23 @@ static ASTNode* parse_factor(Parser* parser) {
         }
     }
 
+    //check for a boolean literal
+    if(parser->current_token->type == TOKEN_KEYWORD_TRUE || parser->current_token->type == TOKEN_KEYWORD_FALSE) {
+        //represent as a number literal
+        ASTNode* bool_value_node = init_node(AST_NUMBER, parser->current_scope);
+        //true = 1, false = 0
+        if(parser->current_token->type == TOKEN_KEYWORD_TRUE) bool_value_node->specialization.num.value = 1;
+        else bool_value_node->specialization.num.value = 0;
+        //advance past
+        parser_advance(parser);
+        return bool_value_node;
+    }
+
     //check for an integer literal
     if(parser->current_token->type == TOKEN_NUM) {
         //create the AST_NUMBER
         ASTNode* integer_node = init_node(AST_NUMBER, parser->current_scope);
-        //assign
+        //assign and convert char to int
         integer_node->specialization.num.value = atoi(parser->current_token->value);
         //advance past the number
         parser_advance(parser);
@@ -250,7 +277,7 @@ static ASTNode* parse_factor(Parser* parser) {
         ASTNode* string_node = init_node(AST_STRING, parser->current_scope);
         //assign the string (make sure to duplicate)
         string_node->specialization.string.value = strdup(parser->current_token->value);
-        //assign id
+        //assign id and increment
         string_node->specialization.string.id = string_literals++;
         //add to strings list
         list_add(parser->strings, strdup(parser->current_token->value));
@@ -261,6 +288,8 @@ static ASTNode* parse_factor(Parser* parser) {
     }
 
     //nothing expected, problem
+    printf("SYNTAX ERROR: Didn't find factor.\n");
+    parser_sync(parser);
     return NULL;
 }
 
@@ -340,11 +369,48 @@ static ASTNode* parse_expression(Parser* parser) {
     return left;
 }
 
+static ASTNode* parse_comparison(Parser* parser) {
+
+}
+static ASTNode* parse_equality(Parser* parser) {
+
+}
+static ASTNode* parse_boolean_term(Parser* parser) {
+
+}
+static ASTNode* parse_boolean_expression(Parser* parser) {
+
+}
+
+//forward declare parse block
+static ASTNode* parse_block(Parser* parser);
+
+/**
+ * @brief Parses an if statement.
+ * 
+ * @param parser Point to the parser
+ * @return Pointer to the if statement node. 
+ */
+static ASTNode* parse_if_statement(Parser* parser) {
+
+}
+
+/**
+ * @brief Parses a while loop.
+ * 
+ * @param parser Pointer to the parser.
+ * @return Pointer to the while loop node.
+ */
+
+static ASTNode* parse_while_loop(Parser* parser) {
+
+}
+
 /**
  * @brief Parses a parameter during a function declaration.
  * 
  * @param parser Pointer to the parser.
- * @
+ * @return Pointer to the parameter node.
  */
 
 static ASTNode* parse_parameter(Parser* parser) {
@@ -450,9 +516,6 @@ static ASTNode* parse_function_call(Parser* parser) {
     return func_call_node;
 }
 
-//forward declare parse block
-static ASTNode* parse_block(Parser* parser);
-
 /**
  * @brief Parses a function declaration. 
  * 
@@ -529,33 +592,36 @@ static ASTNode* parse_function_declaration(Parser* parser) {
         //advance past the closing
         parser_advance(parser);
 
-        //expect the keyword yields
+        //expect the keyword yields, if none specified then void
         if(parser->current_token->type == TOKEN_KEYWORD_YIELDS) {
+            parser_advance(parser);
+            //expect return type
+            if(parser->current_token->type == TOKEN_KEYWORD_INT) {
+                func_dec_node->specialization.func_dec.return_type = TYPE_INT;
+                func_symbol->data.func_data.return_type = TYPE_INT;
+            }
+            else if(parser->current_token->type == TOKEN_KEYWORD_STRING) {
+                func_dec_node->specialization.func_dec.return_type = TYPE_STRING;
+                func_symbol->data.func_data.return_type = TYPE_STRING;
+            }
+            else if(parser->current_token->type == TOKEN_KEYWORD_BOOL) {
+                func_dec_node->specialization.func_dec.return_type = TYPE_BOOL;
+                func_symbol->data.func_data.return_type = TYPE_BOOL;
+            }
+            else {
+                printf("SYNTAX ERROR: Unrecognized return type for %s.\n", function_name);
+                parser_sync(parser);
+                return NULL;
+            }
+
+            //advance past type
             parser_advance(parser);
         }
         else {
-            printf("SYNTAX ERROR: Expected keyword yields.\n");
-            parser_sync(parser);
-            return NULL;
+            //must be void
+            func_dec_node->specialization.func_dec.return_type = TYPE_VOID;
+            func_symbol->data.func_data.return_type = TYPE_VOID;
         }
-
-        //expect return type
-        if(parser->current_token->type == TOKEN_KEYWORD_INT) {
-            func_dec_node->specialization.func_dec.return_type = TYPE_INT;
-            func_symbol->data.func_data.return_type = TYPE_INT;
-        }
-        else if(parser->current_token->type == TOKEN_KEYWORD_STRING) {
-            func_dec_node->specialization.func_dec.return_type = TYPE_STRING;
-            func_symbol->data.func_data.return_type = TYPE_STRING;
-        }
-        else {
-            printf("SYNTAX ERROR: Unrecognized return type.\n");
-            parser_sync(parser);
-            return NULL;
-        }
-
-        //advance past type
-        parser_advance(parser);
 
         //finally parse the code block and return
         func_dec_node->specialization.func_dec.code_block = parse_block(parser);
@@ -780,6 +846,8 @@ static ASTNode* parse_line(Parser* parser) {
         case TOKEN_KEYWORD_FUNC: return parse_function_declaration(parser);
         case TOKEN_KEYWORD_INT: return parse_variable_declaration(parser); 
         case TOKEN_KEYWORD_STRING: return parse_variable_declaration(parser);
+        case TOKEN_KEYWORD_IF: return parse_if_statement(parser);
+        case TOKEN_KEYWORD_WHILE: return parse_while_loop(parser);
         case TOKEN_KEYWORD_PRINT: return parse_print_statement(parser);
         case TOKEN_ID: 
             //check for function calls

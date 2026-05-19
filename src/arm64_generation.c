@@ -283,6 +283,8 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             spill_params(func_symbol->data.func_data.parameters, context);
             //generate code
             node_to_asm(node->specialization.func_dec.code_block, context);
+            //check if its void so we can collapse
+            if(func_symbol->data.func_data.return_type == TYPE_VOID) collapse_stack_frame(node->scope, context);
             break;
         }
         case AST_FUNCTION_CALL: {
@@ -302,7 +304,7 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             for(int i = 1; i < node->specialization.func_call.parameter_inputs->num_items; i++) {
                 free_register(context->register_manager, i);
             }
-            //result comes back to x0
+            //result comes back to x0 (if there is a return)
             context->result_reg = 0;
             break;
         }
