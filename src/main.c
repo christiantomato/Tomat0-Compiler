@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
     //move compiled Tomat0 file to output directory
     system("mv tomat0executable output");
     //execute
-    system("./output/tomat0executable");
+    //system("./output/tomat0executable");
 
     //free the program
     free_program(program_representation);
