@@ -14,6 +14,7 @@ char* data_type_as_str(DataType type) {
         case TYPE_INT: return "TYPE_INT";
         case TYPE_STRING: return "TYPE_STRING";
         case TYPE_BOOL: return "TYPE_BOOL";
+        case TYPE_VOID: return "TYPE_VOID";
         default: return "TYPE_UNKNOWN";
     }
 }
