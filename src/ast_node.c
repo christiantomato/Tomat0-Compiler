@@ -176,13 +176,14 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
             break;
         case AST_BINARY_OPERATION:
             print_indent(file, indent);
+            fprintf(file, "operator = %s\n", root->specialization.binary_op.operator);
+            print_indent(file, indent);
             fprintf(file, "left = \n");
             print_ast(file, root->specialization.binary_op.left, indent + 1);
             print_indent(file, indent);
             fprintf(file, "right = \n");
             print_ast(file, root->specialization.binary_op.right, indent + 1);
-            print_indent(file, indent);
-            fprintf(file, "operator = %s\n", root->specialization.binary_op.operator);
+            
             break;
         case AST_PRINT_STATEMENT:
             print_indent(file, indent);
