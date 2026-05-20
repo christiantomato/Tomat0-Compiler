@@ -374,7 +374,7 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             //evaluate the statement
             node_to_asm(node->specialization.print_statement.operand, context);
             //print based on type
-            if(node->specialization.print_statement.type == TYPE_INT) print_int(context);
+            if(node->specialization.print_statement.type == TYPE_INT || node->specialization.print_statement.type == TYPE_BOOL) print_int(context);
             else if(node->specialization.print_statement.type == TYPE_STRING) print_string(context);
             break;
         }
