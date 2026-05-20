@@ -574,6 +574,13 @@ static ASTNode* parse_if_statement(Parser* parser) {
     snprintf(if_scope_name, sizeof(if_scope_name), "if%d", if_statements++);
     if_scope->name = strdup(if_scope_name);
     list_add(parser->scopes, if_scope);
+
+    //if and else scopes don't create a new stack frame. Save the old offset and pass it through to the scopes.
+    int offset_entering_ifelse = parser->current_scope->current_offset;
+    //set the offset for the if scope
+    if_scope->current_offset = offset_entering_ifelse;
+
+    //set current scope as if scope
     parser->current_scope = if_scope;
 
     //parse if block
@@ -588,7 +595,7 @@ static ASTNode* parse_if_statement(Parser* parser) {
         //advance past
         parser_advance(parser);
 
-        //enter the else scope and parse block
+        //enter the else scope
         Scope* else_scope = enter_scope(parser->current_scope);
         char else_scope_name[16];
         snprintf(else_scope_name, sizeof(else_scope_name), "elseforif%d", if_statements - 1);
@@ -596,10 +603,22 @@ static ASTNode* parse_if_statement(Parser* parser) {
         list_add(parser->scopes, else_scope);
         parser->current_scope = else_scope;
 
+        //set the offset to what it was when entering
+        else_scope->current_offset = offset_entering_ifelse;
+
+        //parse else block
         if_node->specialization.if_statement.else_block = parse_block(parser);
 
         //exit
         parser->current_scope = exit_scope(parser->current_scope);
+
+        //update the offset for the scope. Use whichever scope used more stack space
+        if(if_scope->current_offset > else_scope->current_offset) parser->current_scope->current_offset = if_scope->current_offset;
+        else parser->current_scope->current_offset = else_scope->current_offset;
+    }
+    else {
+        //update the offset for parent scope
+        parser->current_scope->current_offset = if_scope->current_offset;
     }
     return if_node;
 }
