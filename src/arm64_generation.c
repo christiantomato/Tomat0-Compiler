@@ -104,6 +104,7 @@ static void generate_binary_op(int left_reg, int right_reg, char operator, CodeG
 
     //switch on operator
     switch(operator) {
+        //ALGEBRA:
         case '+':
             fprintf(context->output, "\tadd x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
             break;
@@ -116,6 +117,33 @@ static void generate_binary_op(int left_reg, int right_reg, char operator, CodeG
         case '/':
             fprintf(context->output, "\tsdiv x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
             break;
+
+        //BOOLEAN ALGEBRA:
+        //or case
+        case 'o':
+            fprintf(context->output, "\torr x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
+            break;
+        //and case
+        case 'a':
+            fprintf(context->output, "\tand x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
+            break;
+
+        //RELATIONAL:
+        //equals case
+        case 'e': 
+            fprintf(context->output, "\tcmp x%d, x%d\n", left_reg, right_reg);
+            fprintf(context->output, "\tcset x%d, eq\n\n", context->result_reg);
+            break;
+        case '<':
+            fprintf(context->output, "\tcmp x%d, x%d\n", left_reg, right_reg);
+            fprintf(context->output, "\tcset x%d, lt\n\n", context->result_reg);
+            break;
+        case '>':
+            fprintf(context->output, "\tcmp x%d, x%d\n", left_reg, right_reg);
+            fprintf(context->output, "\tcset x%d, gt\n\n", context->result_reg);
+            break;
+
+        default: return;
     }
 
     //free left and right registers
@@ -308,6 +336,18 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             context->result_reg = 0;
             break;
         }
+        case AST_IF_STATEMENT: {
+            //generate code for the condition
+            node_to_asm(node->specialization.if_statement.condition, context);
+
+            break;
+        }
+        case AST_WHILE_LOOP: {
+
+
+
+            break;
+        }
         case AST_VARIABLE_DECLARATION: {
             //get the variable
             Symbol* variable = lookup_symbol_in_scope(node->scope, node->specialization.var_dec.variable_name);
@@ -357,7 +397,7 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             node_to_asm(node->specialization.binary_op.right, context);
             int right_reg = context->result_reg;
             //generate assembly
-            generate_binary_op(left_reg, right_reg, *node->specialization.binary_op.operator, context);
+            generate_binary_op(left_reg, right_reg, node->specialization.binary_op.operator[0], context);
             break;
         }
         case AST_NEGATION: {
