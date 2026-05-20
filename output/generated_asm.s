@@ -1,8 +1,7 @@
 .data
 fmt_int: .asciz "%d\n"
-str0: .asciz "hi mom\n"
-str1: .asciz "hi dad\n"
-str2: .asciz "cry\n"
+str0: .asciz "x is less than y\n"
+str1: .asciz "x is not less than y\n"
 
 .text
 .global _main
@@ -20,7 +19,7 @@ _main:
 	str x9, [fp, #-8]
 
 	//move number to register.
-	mov x9, #0
+	mov x9, #2
 
 	//store variable to stack.
 	str x9, [fp, #-16]

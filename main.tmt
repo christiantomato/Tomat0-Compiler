@@ -1,24 +1,17 @@
-~ testing booleans
+~ current code gen test for booleans
 
 sprout {
-    bool idk = true
+    ~ variables
+    int x = 1
+    int y = 2
 
-    if(idk) {
-        print("hi mom")
-        int x = 4
+    if(x < y) {
+        print("x is less than y")
     }
     else {
-        print("hi dad")
-        int y = 2
-
-        ~ nested if?
-        if(false) {
-            print("cry")
-        }
+        print("x is not less than y")
     }
-
-    int mainvar = 0
-
+    
     ~ end program.
     harvest tomato
 }

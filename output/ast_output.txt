@@ -1,59 +1,41 @@
 NODE: AST_GLOBAL
 	NODE: AST_ENTRY_POINT
 		NODE: AST_VARIABLE_DECLARATION
-		data_type = TYPE_BOOL
-		variable_name = idk
+		data_type = TYPE_INT
+		variable_name = x
 		assignment = 
 			NODE: AST_NUMBER
 			value = 1
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = y
+		assignment = 
+			NODE: AST_NUMBER
+			value = 2
 		NODE: AST_IF_STATEMENT
 		condition = 
-			NODE: AST_VARIABLE
-			variable_name = idk
+			NODE: AST_BINARY_OPERATION
+			operator = <
+			left = 
+				NODE: AST_VARIABLE
+				variable_name = x
+			right = 
+				NODE: AST_VARIABLE
+				variable_name = y
 		code_block = 
 			NODE: AST_BLOCK
 				NODE: AST_PRINT_STATEMENT
 				output = 
 					NODE: AST_STRING
-					value = 'hi mom'
+					value = 'x is less than y'
 					id = 0
 				print_type = TYPE_STRING
-				NODE: AST_VARIABLE_DECLARATION
-				data_type = TYPE_INT
-				variable_name = x
-				assignment = 
-					NODE: AST_NUMBER
-					value = 4
 		else_block = 
 			NODE: AST_BLOCK
 				NODE: AST_PRINT_STATEMENT
 				output = 
 					NODE: AST_STRING
-					value = 'hi dad'
+					value = 'x is not less than y'
 					id = 1
 				print_type = TYPE_STRING
-				NODE: AST_VARIABLE_DECLARATION
-				data_type = TYPE_INT
-				variable_name = y
-				assignment = 
-					NODE: AST_NUMBER
-					value = 2
-				NODE: AST_IF_STATEMENT
-				condition = 
-					NODE: AST_NUMBER
-					value = 0
-				code_block = 
-					NODE: AST_BLOCK
-						NODE: AST_PRINT_STATEMENT
-						output = 
-							NODE: AST_STRING
-							value = 'cry'
-							id = 2
-						print_type = TYPE_STRING
-		NODE: AST_VARIABLE_DECLARATION
-		data_type = TYPE_INT
-		variable_name = mainvar
-		assignment = 
-			NODE: AST_NUMBER
-			value = 0
 		NODE: AST_RUNTIME_END
