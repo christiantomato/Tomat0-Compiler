@@ -78,14 +78,23 @@ static void print_string(CodeGenContext* context) {
  * @brief Negates a value.
  * 
  * @param value_reg Register with value to negate.
+ * @param type Either integer or boolean negation.
  * @param context Pointer to the code gen context.
  */
 
-static void negate_value(int value_reg, CodeGenContext* context) {
-    fprintf(context->output, "\t//negate value.\n");
-    //allocate for result
-    context->result_reg = allocate_general_register(context->register_manager);
-    fprintf(context->output, "\tneg x%d, x%d\n\n", context->result_reg, value_reg);
+static void negate_value(int value_reg, DataType type, CodeGenContext* context) {
+    if(type == TYPE_INT) {
+        fprintf(context->output, "\t//integer negation.\n");
+        //allocate for result
+        context->result_reg = allocate_general_register(context->register_manager);
+        fprintf(context->output, "\tneg x%d, x%d\n\n", context->result_reg, value_reg);
+    }
+    else if(type == TYPE_BOOL) {
+        fprintf(context->output, "\t//logical negation.\n");
+        //allocate for result
+        context->result_reg = allocate_general_register(context->register_manager);
+        fprintf(context->output, "\teor x%d, x%d, #1\n\n", context->result_reg, value_reg);
+    }
 }
 
 /**
@@ -403,9 +412,10 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
         case AST_NEGATION: {
             //get result for operand
             node_to_asm(node->specialization.negation.operand, context);
+            //set the value to negate
             int value_reg = context->result_reg;
-            //generate negate assembly
-            negate_value(value_reg, context); 
+            //generate assembly for either a boolean or integer negation
+            negate_value(value_reg, node->specialization.negation.type, context); 
             break;
         }
         case AST_PARAMETER: {
