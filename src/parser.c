@@ -157,8 +157,8 @@ static DataType resolve_factor_type(Parser* parser, ASTNode* factor) {
     }
 }
 
-//forward declare parse expression, as parse factor recursively calls it
-static ASTNode* parse_expression(Parser* parser);
+//forward declare parse boolean expression, as parse factor recursively calls it
+static ASTNode* parse_boolean_expression(Parser* parser);
 //forward declare parse_function_call, as it can be a factor
 static ASTNode* parse_function_call(Parser* parser);
 
@@ -178,8 +178,8 @@ static ASTNode* parse_factor(Parser* parser) {
         //advance to the expression
         parser_advance(parser);
 
-        //parse the expression inside parens
-        ASTNode* expression_node = parse_expression(parser);
+        //parse the expression inside parens, must go back all the way up in case boolean expression
+        ASTNode* expression_node = parse_boolean_expression(parser);
 
         //expect a closing parenthesis
         if(parser->current_token->type == TOKEN_RPAREN) {
@@ -346,7 +346,7 @@ static ASTNode* parse_expression(Parser* parser) {
 
     //continue the loop as long as we are doing addition or subtraction to build up our expression
     while(parser->current_token->type == TOKEN_PLUS || parser->current_token->type == TOKEN_HYPHEN) {
-        //get the operator (strdup!)
+        //get the operator 
         char* operator = strdup(parser->current_token->value);
 
         //move past
@@ -361,7 +361,7 @@ static ASTNode* parse_expression(Parser* parser) {
         binary_op_node->specialization.binary_op.operator = operator;
         binary_op_node->specialization.binary_op.right = right;
 
-        //now the left node can become the sub binary node we just created, and allows us to continue building an expression with the next term in the while loop (if any)
+        //set created sub tree as new left
         left = binary_op_node;
     }
 
@@ -369,17 +369,162 @@ static ASTNode* parse_expression(Parser* parser) {
     return left;
 }
 
+/**
+ * @brief Parses integer comparisons. 
+ * 
+ * Comparisons between integers can be between 2 arithmetic expressions, so that is the next level.
+ * ex. x + 2 * 3 < y / 7
+ * 
+ * @param parser Pointer to the parser.
+ * @return Pointer to the comparison node
+ */
+
 static ASTNode* parse_comparison(Parser* parser) {
+    //next level is expressions
+    ASTNode* left = parse_expression(parser);
 
-}
+    //if there is an equality symbol build the bin op
+    if(parser->current_token->type == TOKEN_LCHEVRON || parser->current_token->type == TOKEN_RCHEVRON) {
+        //get the operator
+        char* operator = strdup(parser->current_token->value);
+
+        //move past
+        parser_advance(parser);
+
+        //parse the right expression
+        ASTNode* right = parse_expression(parser);
+
+        //create the binary operation node
+        ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION, parser->current_scope);
+        binary_op_node->specialization.binary_op.left = left;
+        binary_op_node->specialization.binary_op.operator = operator;
+        binary_op_node->specialization.binary_op.right = right;
+
+        return binary_op_node;
+    }
+
+    //return left if there are no comparisons
+    return left;
+}   
+
+/**
+ * @brief Parses an equality check.
+ * 
+ * Equality must have lower precedence to build correct association: 
+ * a equals b < c -> a equals (b < c)
+ * Also equalities cannot be chained: 
+ * a equals b equals c - invalid.
+ * a equals b and b equals c - valid.
+ * 
+ * @param parser Pointer to the parser.
+ * @return Pointer to the equality node.
+ */
+
 static ASTNode* parse_equality(Parser* parser) {
+    //next level is comparisons
+    ASTNode* left = parse_comparison(parser);
 
+    //if there is an equality symbol build the bin op
+    if(parser->current_token->type == TOKEN_KEYWORD_EQUALS) {
+        //get the operator
+        char* operator = strdup(parser->current_token->value);
+
+        //move past
+        parser_advance(parser);
+
+        //parse the right comparison
+        ASTNode* right = parse_comparison(parser);
+
+        //create the binary operation node
+        ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION, parser->current_scope);
+        binary_op_node->specialization.binary_op.left = left;
+        binary_op_node->specialization.binary_op.operator = operator;
+        binary_op_node->specialization.binary_op.right = right;
+
+        return binary_op_node;
+    }
+
+    //return left if there are no equality comparisons
+    return left;
 }
+
+/**
+ * @brief Parses a boolean term (AND).
+ * 
+ * Same algorithm as boolean expression, 
+ * but with the higher precedence connectve AND (which acts like multiplication).
+ * 
+ * @param parser Pointer to the parser.
+ * @return Pointer to the term node. 
+ */
+
 static ASTNode* parse_boolean_term(Parser* parser) {
+    //next level are equality comparisons
+    ASTNode* left = parse_equality(parser);
 
+    //continue the loop as long as we have ands to build up our boolean expression
+    while(parser->current_token->type == TOKEN_KEYWORD_AND) {
+        //get the operator
+        char* operator = strdup(parser->current_token->value);
+
+        //move past
+        parser_advance(parser);
+
+        //parse the right equality
+        ASTNode* right = parse_equality(parser);
+
+        //create the binary operation node
+        ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION, parser->current_scope);
+        binary_op_node->specialization.binary_op.left = left;
+        binary_op_node->specialization.binary_op.operator = operator;
+        binary_op_node->specialization.binary_op.right = right;
+
+        //set created sub tree as new left
+        left = binary_op_node;
+    }
+
+    //return when no more terms to parse
+    return left;
 }
-static ASTNode* parse_boolean_expression(Parser* parser) {
 
+/**
+ * @brief Parses a boolean expression (OR).
+ * 
+ * In boolean algebras, the OR connective acts similarly to addition. It has lower precedence than AND, and so our
+ * boolean expressions are made up of sequence of terms connected by ORs. This is also our top level entry for parsing expressions
+ * since booleans can contain arithmetic expressions inside comparisons. 
+ * 
+ * @param parser Pointer to the parser.
+ * @return Pointer to the expression node. 
+ */
+
+static ASTNode* parse_boolean_expression(Parser* parser) {
+    //parse the first boolean term
+    ASTNode* left = parse_boolean_term(parser);
+
+    //continue the loop as long as we have ors to build up our boolean expression
+    while(parser->current_token->type == TOKEN_KEYWORD_OR) {
+        //get the operator (strdup!)
+        char* operator = strdup(parser->current_token->value);
+
+        //move past
+        parser_advance(parser);
+
+        //parse the right term
+        ASTNode* right = parse_boolean_term(parser);
+
+        //create the binary operation node
+        ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION, parser->current_scope);
+        binary_op_node->specialization.binary_op.left = left;
+        binary_op_node->specialization.binary_op.operator = operator;
+        binary_op_node->specialization.binary_op.right = right;
+
+        //now the left node can become the sub binary node we just created, and allows us to continue building an expression with the next term in the while loop (if any)
+        left = binary_op_node;
+    }
+
+    //return the node that has built up the expression
+    return left;
 }
 
 //forward declare parse block
@@ -750,6 +895,10 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
         var_dec_node->specialization.var_dec.data_type = TYPE_INT;
         type = TYPE_INT;
     }
+    else if(parser->current_token->type == TOKEN_KEYWORD_BOOL) {
+        var_dec_node->specialization.var_dec.data_type = TYPE_BOOL;
+        type = TYPE_BOOL;
+    }
     else if(parser->current_token->type == TOKEN_KEYWORD_STRING) {
         var_dec_node->specialization.var_dec.data_type = TYPE_STRING;
         type = TYPE_STRING;
@@ -784,7 +933,10 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
     //create and initalize the symbol
     Symbol* symbol;
     if(type == TYPE_STRING) symbol = init_symbol(parser->current_token->value, SYMBOL_STRING);
-    else symbol = init_symbol(parser->current_token->value, SYMBOL_VARIABLE);
+    else {
+        symbol = init_symbol(parser->current_token->value, SYMBOL_VARIABLE);
+        symbol->data.var_data.type = type;
+    }
 
     //generate label for strings
     if(symbol->kind == SYMBOL_STRING) {
@@ -814,8 +966,8 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
         return NULL;
     }
 
-    //recurse down and parse the assignment value
-    var_dec_node->specialization.var_dec.assignment = parse_expression(parser);
+    //recurse down from the top level of hierarchy and determine assignment
+    var_dec_node->specialization.var_dec.assignment = parse_boolean_expression(parser);
     
     //return the node once finished
     return var_dec_node;
@@ -937,6 +1089,7 @@ static ASTNode* parse_line(Parser* parser) {
         case TOKEN_KEYWORD_FUNC: return parse_function_declaration(parser);
         case TOKEN_KEYWORD_INT: return parse_variable_declaration(parser); 
         case TOKEN_KEYWORD_STRING: return parse_variable_declaration(parser);
+        case TOKEN_KEYWORD_BOOL: return parse_variable_declaration(parser);
         case TOKEN_KEYWORD_IF: return parse_if_statement(parser);
         case TOKEN_KEYWORD_WHILE: return parse_while_loop(parser);
         case TOKEN_KEYWORD_PRINT: return parse_print_statement(parser);
