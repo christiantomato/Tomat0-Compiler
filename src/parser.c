@@ -20,7 +20,6 @@
 static int string_literals = 0;
 //keeps track of if statements, else, and while in program (just for debugging)
 static int if_statements = 0;
-static int else_statements = 0;
 static int while_loops = 0;
 
 /*
@@ -591,8 +590,8 @@ static ASTNode* parse_if_statement(Parser* parser) {
 
         //enter the else scope and parse block
         Scope* else_scope = enter_scope(parser->current_scope);
-        char else_scope_name[8];
-        snprintf(else_scope_name, sizeof(else_scope_name), "else%d", else_statements++);
+        char else_scope_name[16];
+        snprintf(else_scope_name, sizeof(else_scope_name), "elseforif%d", if_statements - 1);
         else_scope->name = strdup(else_scope_name);
         list_add(parser->scopes, else_scope);
         parser->current_scope = else_scope;
