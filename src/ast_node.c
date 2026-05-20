@@ -150,6 +150,12 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
             print_indent(file, indent);
             fprintf(file, "code_block = \n");
             print_ast(file, root->specialization.if_statement.code_block, indent + 1);
+            //print else if not null
+            if(root->specialization.if_statement.else_block != NULL) {
+                print_indent(file, indent);
+                fprintf(file, "else_block = \n");
+                print_ast(file, root->specialization.if_statement.else_block, indent + 1);
+            }
             break;
         case AST_WHILE_LOOP:
             print_indent(file, indent);
@@ -269,8 +275,8 @@ void free_node(ASTNode* node) {
             free_node(node->specialization.if_statement.code_block);
             break;
         case AST_WHILE_LOOP:
-            free_node(node->specialization.if_statement.condition);
-            free_node(node->specialization.if_statement.code_block);
+            free_node(node->specialization.while_loop.condition);
+            free_node(node->specialization.while_loop.code_block);
             break;
         case AST_VARIABLE_DECLARATION:
             //free name and assignment
