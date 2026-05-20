@@ -571,7 +571,8 @@ static ASTNode* parse_if_statement(Parser* parser) {
     //enter a new scope
     Scope* if_scope = enter_scope(parser->current_scope);
     char if_scope_name[8];
-    snprintf(if_scope_name, sizeof(if_scope_name), "if%d", if_statements++);
+    int this_if = if_statements++;
+    snprintf(if_scope_name, sizeof(if_scope_name), "if%d", this_if);
     if_scope->name = strdup(if_scope_name);
     list_add(parser->scopes, if_scope);
 
@@ -598,7 +599,7 @@ static ASTNode* parse_if_statement(Parser* parser) {
         //enter the else scope
         Scope* else_scope = enter_scope(parser->current_scope);
         char else_scope_name[16];
-        snprintf(else_scope_name, sizeof(else_scope_name), "elseforif%d", if_statements - 1);
+        snprintf(else_scope_name, sizeof(else_scope_name), "elseforif%d", this_if);
         else_scope->name = strdup(else_scope_name);
         list_add(parser->scopes, else_scope);
         parser->current_scope = else_scope;

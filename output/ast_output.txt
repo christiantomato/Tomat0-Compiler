@@ -5,37 +5,81 @@ NODE: AST_GLOBAL
 		variable_name = x
 		assignment = 
 			NODE: AST_NUMBER
-			value = 1
+			value = 2
 		NODE: AST_VARIABLE_DECLARATION
 		data_type = TYPE_INT
 		variable_name = y
 		assignment = 
 			NODE: AST_NUMBER
-			value = 2
+			value = 4
 		NODE: AST_IF_STATEMENT
 		condition = 
 			NODE: AST_BINARY_OPERATION
-			operator = <
+			operator = and
 			left = 
-				NODE: AST_VARIABLE
-				variable_name = x
+				NODE: AST_BINARY_OPERATION
+				operator = >
+				left = 
+					NODE: AST_VARIABLE
+					variable_name = x
+				right = 
+					NODE: AST_NUMBER
+					value = 0
 			right = 
-				NODE: AST_VARIABLE
-				variable_name = y
+				NODE: AST_BINARY_OPERATION
+				operator = >
+				left = 
+					NODE: AST_VARIABLE
+					variable_name = y
+				right = 
+					NODE: AST_NUMBER
+					value = 0
 		code_block = 
 			NODE: AST_BLOCK
-				NODE: AST_PRINT_STATEMENT
-				output = 
-					NODE: AST_STRING
-					value = 'x is less than y'
-					id = 0
-				print_type = TYPE_STRING
+				NODE: AST_VARIABLE_DECLARATION
+				data_type = TYPE_INT
+				variable_name = sum
+				assignment = 
+					NODE: AST_BINARY_OPERATION
+					operator = +
+					left = 
+						NODE: AST_VARIABLE
+						variable_name = x
+					right = 
+						NODE: AST_VARIABLE
+						variable_name = y
+				NODE: AST_IF_STATEMENT
+				condition = 
+					NODE: AST_BINARY_OPERATION
+					operator = >
+					left = 
+						NODE: AST_VARIABLE
+						variable_name = sum
+					right = 
+						NODE: AST_NUMBER
+						value = 10
+				code_block = 
+					NODE: AST_BLOCK
+						NODE: AST_PRINT_STATEMENT
+						output = 
+							NODE: AST_STRING
+							value = 'sum is greater than 10'
+							id = 0
+						print_type = TYPE_STRING
+				else_block = 
+					NODE: AST_BLOCK
+						NODE: AST_PRINT_STATEMENT
+						output = 
+							NODE: AST_STRING
+							value = 'sum is 10 or less'
+							id = 1
+						print_type = TYPE_STRING
 		else_block = 
 			NODE: AST_BLOCK
 				NODE: AST_PRINT_STATEMENT
 				output = 
 					NODE: AST_STRING
-					value = 'x is not less than y'
-					id = 1
+					value = 'x or y is not positive'
+					id = 2
 				print_type = TYPE_STRING
 		NODE: AST_RUNTIME_END

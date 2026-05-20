@@ -354,6 +354,9 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             //check if condition is true or false
             fprintf(context->output, "\tcmp x%d, #1\n", context->result_reg);
 
+            //ready the label for end if
+            int end_if_label = end_if_labels++;
+
             //check if an else block exists
             if(node->specialization.if_statement.else_block != NULL) {
                 //branch on true
@@ -365,24 +368,24 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
                 fprintf(context->output, "_%s:\n", node->specialization.if_statement.code_block->scope->name);
                 node_to_asm(node->specialization.if_statement.code_block, context);
                 //branch to end label to resume normal execution
-                fprintf(context->output, "\tb _endif%d\n\n", end_if_labels);
+                fprintf(context->output, "\tb _endif%d\n\n", end_if_label);
 
                 //generate else label and code
                 fprintf(context->output, "_%s:\n", node->specialization.if_statement.else_block->scope->name);
                 node_to_asm(node->specialization.if_statement.else_block, context);
                 
                 //generate endif label
-                fprintf(context->output, "_endif%d:\n", end_if_labels++);
+                fprintf(context->output, "_endif%d:\n", end_if_label);
             }
             else {
                 //branch to endif when not equal
-                fprintf(context->output, "\tbne _endif%d\n\n", end_if_labels);
+                fprintf(context->output, "\tbne _endif%d\n\n", end_if_label);
 
                 //generate if label and code
                 fprintf(context->output, "_%s:\n", node->specialization.if_statement.code_block->scope->name);
                 node_to_asm(node->specialization.if_statement.code_block, context);
                 //generate endif label
-                fprintf(context->output, "_endif%d:\n\n", end_if_labels++);
+                fprintf(context->output, "_endif%d:\n\n", end_if_label);
             }
             break;
         }

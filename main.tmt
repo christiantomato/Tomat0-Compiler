@@ -1,16 +1,19 @@
-~ current code gen test for booleans
+~ nested ifs test
 
 sprout {
-    ~ variables
-    bool test = true 
-    bool x = false
-
-    bool shouldTrue = test or x or 1 < 2
-    bool shouldFalse = test and x and 3 + 3 > 4
-
-    print(shouldTrue)
-    print(shouldFalse)
-
-    ~ end program.
+    int x = 2
+    int y = 4
+    if(x > 0 and y > 0) {
+        int sum = x + y
+        if(sum > 10) {
+            print("sum is greater than 10")
+        }
+        else {
+            print("sum is 10 or less")
+        }
+    }
+    else {
+        print("x or y is not positive")
+    }
     harvest tomato
 }
