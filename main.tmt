@@ -5,8 +5,11 @@ sprout {
     bool test = true 
     bool x = false
 
-    print(not test)
-    print(not x)
+    bool shouldTrue = test or x or 1 < 2
+    bool shouldFalse = test and x and 3 + 3 > 4
+
+    print(shouldTrue)
+    print(shouldFalse)
 
     ~ end program.
     harvest tomato
