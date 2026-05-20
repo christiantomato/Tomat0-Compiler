@@ -18,6 +18,10 @@
 
 //keep track of defined string literals during parsing.
 static int string_literals = 0;
+//keeps track of if statements, else, and while in program (just for debugging)
+static int if_statements = 0;
+static int else_statements = 0;
+static int while_loops = 0;
 
 /*
  * Creates and initializes a parser with the tokens list. 
@@ -538,9 +542,6 @@ static ASTNode* parse_block(Parser* parser);
  */
 
 static ASTNode* parse_if_statement(Parser* parser) {
-    //keeps track of if statements in program
-    static int if_statements = 0;
-
     //the node we will return 
     ASTNode* if_node = init_node(AST_IF_STATEMENT, parser->current_scope);
 
@@ -572,14 +573,35 @@ static ASTNode* parse_if_statement(Parser* parser) {
     Scope* if_scope = enter_scope(parser->current_scope);
     char if_scope_name[8];
     snprintf(if_scope_name, sizeof(if_scope_name), "if%d", if_statements++);
+    if_scope->name = strdup(if_scope_name);
     list_add(parser->scopes, if_scope);
     parser->current_scope = if_scope;
 
-    //parse while block
+    //parse if block
     if_node->specialization.if_statement.code_block = parse_block(parser);
 
-    //exit scope and return
+    //exit scope
     parser->current_scope = exit_scope(parser->current_scope);
+
+    //check for an ELSE!
+    parser_skip(parser);
+    if(parser->current_token->type == TOKEN_KEYWORD_ELSE) {
+        //advance past
+        parser_advance(parser);
+
+        //enter the else scope and parse block
+        Scope* else_scope = enter_scope(parser->current_scope);
+        char else_scope_name[8];
+        snprintf(else_scope_name, sizeof(else_scope_name), "else%d", else_statements++);
+        else_scope->name = strdup(else_scope_name);
+        list_add(parser->scopes, else_scope);
+        parser->current_scope = else_scope;
+
+        if_node->specialization.if_statement.else_block = parse_block(parser);
+
+        //exit
+        parser->current_scope = exit_scope(parser->current_scope);
+    }
     return if_node;
 }
 
@@ -591,9 +613,6 @@ static ASTNode* parse_if_statement(Parser* parser) {
  */
 
 static ASTNode* parse_while_loop(Parser* parser) {
-    //keeps track of while loops in program
-    static int while_loops = 0;
-
     //the node we will return 
     ASTNode* while_node = init_node(AST_WHILE_LOOP, parser->current_scope);
 
@@ -625,6 +644,7 @@ static ASTNode* parse_while_loop(Parser* parser) {
     Scope* while_scope = enter_scope(parser->current_scope);
     char while_scope_name[8];
     snprintf(while_scope_name, sizeof(while_scope_name), "while%d", while_loops++);
+    while_scope->name = strdup(while_scope_name);
     list_add(parser->scopes, while_scope);
     parser->current_scope = while_scope;
 
