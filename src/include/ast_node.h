@@ -85,14 +85,25 @@ typedef struct {
 } FunctionCall;
 
 /**
- * @struct Conditional
- * @brief Represents a conditional statement (if or while)
+ * @struct IfStatement
+ * @brief Represents an if statement.
  */
 
 typedef struct {
-    struct ast_node_struct* condition;
-    struct ast_node_struct* code_block;
-} Conditional;
+    struct ast_node_struct* condition; /**< The execution condition. */
+    struct ast_node_struct* code_block; /**< Block which executes on true. */
+    struct ast_node_struct* else_block; /**< Optional block which executes on the complement of condition. Can be another if block! */
+} IfStatement;
+
+/**
+ * @struct WhileLoop
+ * @brief Represents a while loop (similar to if statement)
+ */
+
+typedef struct {
+    struct ast_node_struct* condition; /**< The execution condition */
+    struct ast_node_struct* code_block; /**< Block which loops until condition is false. */
+} WhileLoop;
 
 /**
  * @struct VariableDeclaration
@@ -211,8 +222,8 @@ typedef union {
     Block block;
     FunctionDeclaration func_dec;
     FunctionCall func_call;
-    Conditional if_statement;
-    Conditional while_loop;
+    IfStatement if_statement;
+    WhileLoop while_loop;
     VariableDeclaration var_dec;
     VariableAssignment var_assign;
     BinaryOperation binary_op;
