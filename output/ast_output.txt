@@ -1,33 +1,59 @@
 NODE: AST_GLOBAL
-	NODE: AST_FUNCTION_DECLARATION
-	function_name = voidFN
-	parameters = 
-		NODE: AST_PARAMETER
-		parameter_type = TYPE_STRING
-		parameter_name = msg
-	return_type = TYPE_INT
-	code_block = 
-		NODE: AST_BLOCK
-			NODE: AST_PRINT_STATEMENT
-			output = 
-				NODE: AST_VARIABLE
-				variable_name = msg
-			print_type = TYPE_STRING
-			NODE: AST_PRINT_STATEMENT
-			output = 
-				NODE: AST_VARIABLE
-				variable_name = msg
-			print_type = TYPE_STRING
-			NODE: AST_RETURN_STATEMENT
-			return = 
-				NODE: AST_NUMBER
-				value = 0
-			return_type = TYPE_INT
 	NODE: AST_ENTRY_POINT
-		NODE: AST_FUNCTION_CALL
-		function_name = voidFN
-		parameter_values = 
-			NODE: AST_STRING
-			value = 'hiiiiii'
-			id = 0
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_BOOL
+		variable_name = idk
+		assignment = 
+			NODE: AST_NUMBER
+			value = 1
+		NODE: AST_IF_STATEMENT
+		condition = 
+			NODE: AST_VARIABLE
+			variable_name = idk
+		code_block = 
+			NODE: AST_BLOCK
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_STRING
+					value = 'hi mom'
+					id = 0
+				print_type = TYPE_STRING
+				NODE: AST_VARIABLE_DECLARATION
+				data_type = TYPE_INT
+				variable_name = x
+				assignment = 
+					NODE: AST_NUMBER
+					value = 4
+		else_block = 
+			NODE: AST_BLOCK
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_STRING
+					value = 'hi dad'
+					id = 1
+				print_type = TYPE_STRING
+				NODE: AST_VARIABLE_DECLARATION
+				data_type = TYPE_INT
+				variable_name = y
+				assignment = 
+					NODE: AST_NUMBER
+					value = 2
+				NODE: AST_IF_STATEMENT
+				condition = 
+					NODE: AST_NUMBER
+					value = 0
+				code_block = 
+					NODE: AST_BLOCK
+						NODE: AST_PRINT_STATEMENT
+						output = 
+							NODE: AST_STRING
+							value = 'cry'
+							id = 2
+						print_type = TYPE_STRING
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = mainvar
+		assignment = 
+			NODE: AST_NUMBER
+			value = 0
 		NODE: AST_RUNTIME_END
