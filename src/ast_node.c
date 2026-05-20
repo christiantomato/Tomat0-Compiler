@@ -147,6 +147,7 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
             print_indent(file, indent);
             fprintf(file, "condition = \n");
             print_ast(file, root->specialization.if_statement.condition, indent + 1);
+            print_indent(file, indent);
             fprintf(file, "code_block = \n");
             print_ast(file, root->specialization.if_statement.code_block, indent + 1);
             break;
@@ -154,6 +155,7 @@ void print_ast(FILE* file, ASTNode* root, int indent) {
             print_indent(file, indent);
             fprintf(file, "condition = \n");
             print_ast(file, root->specialization.while_loop.condition, indent + 1);
+            print_indent(file, indent);
             fprintf(file, "code_block = \n");
             print_ast(file, root->specialization.while_loop.code_block, indent + 1);
             break;
