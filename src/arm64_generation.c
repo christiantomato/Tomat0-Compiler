@@ -8,6 +8,9 @@
 #include "include/arm64_generation.h"
 #include "include/codegen_context.h"
 
+//for generating labels for if statements
+static int end_if_labels = 0;
+
 /**
  * @brief Sets up the .data section with format strings for printing.
  * 
@@ -346,9 +349,41 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             break;
         }
         case AST_IF_STATEMENT: {
-            //generate code for the condition
+            //generate code for the condition and evaluate
             node_to_asm(node->specialization.if_statement.condition, context);
+            //check if condition is true or false
+            fprintf(context->output, "\tcmp x%d, #1\n", context->result_reg);
 
+            //check if an else block exists
+            if(node->specialization.if_statement.else_block != NULL) {
+                //branch on true
+                fprintf(context->output, "\tbeq _%s\n", node->specialization.if_statement.code_block->scope->name);
+                //branch to else on not equals
+                fprintf(context->output, "\tbne _%s\n\n", node->specialization.if_statement.else_block->scope->name);
+
+                //generate if label and code
+                fprintf(context->output, "_%s:\n", node->specialization.if_statement.code_block->scope->name);
+                node_to_asm(node->specialization.if_statement.code_block, context);
+                //branch to end label to resume normal execution
+                fprintf(context->output, "\tb _endif%d\n\n", end_if_labels);
+
+                //generate else label and code
+                fprintf(context->output, "_%s:\n", node->specialization.if_statement.else_block->scope->name);
+                node_to_asm(node->specialization.if_statement.else_block, context);
+                
+                //generate endif label
+                fprintf(context->output, "_endif%d:\n", end_if_labels++);
+            }
+            else {
+                //branch to endif when not equal
+                fprintf(context->output, "\tbne _endif%d\n\n", end_if_labels);
+
+                //generate if label and code
+                fprintf(context->output, "_%s:\n", node->specialization.if_statement.code_block->scope->name);
+                node_to_asm(node->specialization.if_statement.code_block, context);
+                //generate endif label
+                fprintf(context->output, "_endif%d:\n\n", end_if_labels++);
+            }
             break;
         }
         case AST_WHILE_LOOP: {
