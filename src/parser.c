@@ -18,6 +18,8 @@
 
 //keep track of defined string literals during parsing.
 static int string_literals = 0;
+//keeps track of assigned string labels.
+static int string_labels = 0;
 //keeps track of if statements, else, and while in program (just for debugging)
 static int if_statements = 0;
 static int while_loops = 0;
@@ -662,16 +664,25 @@ static ASTNode* parse_while_loop(Parser* parser) {
     //enter a new scope
     Scope* while_scope = enter_scope(parser->current_scope);
     char while_scope_name[8];
-    snprintf(while_scope_name, sizeof(while_scope_name), "while%d", while_loops++);
+    int this_while = while_loops++;
+    snprintf(while_scope_name, sizeof(while_scope_name), "while%d", this_while);
     while_scope->name = strdup(while_scope_name);
     list_add(parser->scopes, while_scope);
+
+    //no new stack frame for while loops. Save the old offset and pass it through to the scope.
+    int offset_entering_while = parser->current_scope->current_offset;
+    //set the offset for the if scope
+    while_scope->current_offset = offset_entering_while;
+
+    //set current scope to while scope
     parser->current_scope = while_scope;
 
     //parse while block
     while_node->specialization.while_loop.code_block = parse_block(parser);
 
-    //exit scope and return
+    //exit scope, set updated offset, and return
     parser->current_scope = exit_scope(parser->current_scope);
+    parser->current_scope->current_offset = while_scope->current_offset;
     return while_node;
 }
 
@@ -980,7 +991,7 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
     //generate label for strings
     if(symbol->kind == SYMBOL_STRING) {
         char label[8];
-        snprintf(label, sizeof(label), "str%d", string_literals++);
+        snprintf(label, sizeof(label), "str%d", string_labels++);
         symbol->data.str_data.label = strdup(label);
     }
     //assign offsets for variables

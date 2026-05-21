@@ -1,19 +1,18 @@
-~ nested ifs test
+~ while loops test
 
 sprout {
-    int x = 2
-    int y = 4
-    if(x > 0 and y > 0) {
-        int sum = x + y
-        if(sum > 10) {
-            print("sum is greater than 10")
+    string greet = "hello world"
+
+    int count = 0
+    while(count < 8) {
+        int x = 0
+        print(greet)
+        while(x < 3) {
+            print("ooga")
+            x = x + 1
         }
-        else {
-            print("sum is 10 or less")
-        }
+        count = count + 1
     }
-    else {
-        print("x or y is not positive")
-    }
+
     harvest tomato
 }

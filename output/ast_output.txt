@@ -1,85 +1,79 @@
 NODE: AST_GLOBAL
 	NODE: AST_ENTRY_POINT
 		NODE: AST_VARIABLE_DECLARATION
-		data_type = TYPE_INT
-		variable_name = x
+		data_type = TYPE_STRING
+		variable_name = greet
 		assignment = 
-			NODE: AST_NUMBER
-			value = 2
+			NODE: AST_STRING
+			value = 'hello world'
+			id = 0
 		NODE: AST_VARIABLE_DECLARATION
 		data_type = TYPE_INT
-		variable_name = y
+		variable_name = count
 		assignment = 
 			NODE: AST_NUMBER
-			value = 4
-		NODE: AST_IF_STATEMENT
+			value = 0
+		NODE: AST_WHILE_LOOP
 		condition = 
 			NODE: AST_BINARY_OPERATION
-			operator = and
+			operator = <
 			left = 
-				NODE: AST_BINARY_OPERATION
-				operator = >
-				left = 
-					NODE: AST_VARIABLE
-					variable_name = x
-				right = 
-					NODE: AST_NUMBER
-					value = 0
+				NODE: AST_VARIABLE
+				variable_name = count
 			right = 
-				NODE: AST_BINARY_OPERATION
-				operator = >
-				left = 
-					NODE: AST_VARIABLE
-					variable_name = y
-				right = 
-					NODE: AST_NUMBER
-					value = 0
+				NODE: AST_NUMBER
+				value = 8
 		code_block = 
 			NODE: AST_BLOCK
 				NODE: AST_VARIABLE_DECLARATION
 				data_type = TYPE_INT
-				variable_name = sum
+				variable_name = x
 				assignment = 
+					NODE: AST_NUMBER
+					value = 0
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_VARIABLE
+					variable_name = greet
+				print_type = TYPE_STRING
+				NODE: AST_WHILE_LOOP
+				condition = 
 					NODE: AST_BINARY_OPERATION
-					operator = +
+					operator = <
 					left = 
 						NODE: AST_VARIABLE
 						variable_name = x
 					right = 
-						NODE: AST_VARIABLE
-						variable_name = y
-				NODE: AST_IF_STATEMENT
-				condition = 
-					NODE: AST_BINARY_OPERATION
-					operator = >
-					left = 
-						NODE: AST_VARIABLE
-						variable_name = sum
-					right = 
 						NODE: AST_NUMBER
-						value = 10
+						value = 3
 				code_block = 
 					NODE: AST_BLOCK
 						NODE: AST_PRINT_STATEMENT
 						output = 
 							NODE: AST_STRING
-							value = 'sum is greater than 10'
-							id = 0
-						print_type = TYPE_STRING
-				else_block = 
-					NODE: AST_BLOCK
-						NODE: AST_PRINT_STATEMENT
-						output = 
-							NODE: AST_STRING
-							value = 'sum is 10 or less'
+							value = 'ooga'
 							id = 1
 						print_type = TYPE_STRING
-		else_block = 
-			NODE: AST_BLOCK
-				NODE: AST_PRINT_STATEMENT
-				output = 
-					NODE: AST_STRING
-					value = 'x or y is not positive'
-					id = 2
-				print_type = TYPE_STRING
+						NODE: AST_VARIABLE_ASSIGNMENT
+						name = x
+						assignment = 
+							NODE: AST_BINARY_OPERATION
+							operator = +
+							left = 
+								NODE: AST_VARIABLE
+								variable_name = x
+							right = 
+								NODE: AST_NUMBER
+								value = 1
+				NODE: AST_VARIABLE_ASSIGNMENT
+				name = count
+				assignment = 
+					NODE: AST_BINARY_OPERATION
+					operator = +
+					left = 
+						NODE: AST_VARIABLE
+						variable_name = count
+					right = 
+						NODE: AST_NUMBER
+						value = 1
 		NODE: AST_RUNTIME_END

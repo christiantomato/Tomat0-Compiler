@@ -10,6 +10,8 @@
 
 //for generating labels for if statements
 static int end_if_labels = 0;
+//for generating labels for while loops
+static int end_loop_labels = 0;
 
 /**
  * @brief Sets up the .data section with format strings for printing.
@@ -360,8 +362,10 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             //check if an else block exists
             if(node->specialization.if_statement.else_block != NULL) {
                 //branch on true
+                fprintf(context->output, "\t//if.\n");
                 fprintf(context->output, "\tbeq _%s\n", node->specialization.if_statement.code_block->scope->name);
                 //branch to else on not equals
+                fprintf(context->output, "\t//else.\n");
                 fprintf(context->output, "\tbne _%s\n\n", node->specialization.if_statement.else_block->scope->name);
 
                 //generate if label and code
@@ -378,7 +382,8 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
                 fprintf(context->output, "_endif%d:\n", end_if_label);
             }
             else {
-                //branch to endif when not equal
+                //branch to endif if not equal
+                fprintf(context->output, "\t//if not.\n");
                 fprintf(context->output, "\tbne _endif%d\n\n", end_if_label);
 
                 //generate if label and code
@@ -390,9 +395,23 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             break;
         }
         case AST_WHILE_LOOP: {
-
-
-
+            //generate the while loop label
+            fprintf(context->output, "_%s:\n", node->specialization.while_loop.code_block->scope->name);
+            //generate code for the condition 
+            node_to_asm(node->specialization.while_loop.condition, context);
+            //check if condition is true or false
+            fprintf(context->output, "\t//check condition.\n");
+            fprintf(context->output, "\tcmp x%d, #1\n", context->result_reg);
+            //if false, go to end
+            int end_loop_label = end_loop_labels++;
+            fprintf(context->output, "\tbne _loopend%d\n\n", end_loop_label);
+            //generate while loop code block
+            node_to_asm(node->specialization.while_loop.code_block, context);
+            //loop back to top
+            fprintf(context->output, "\t//loop.\n");
+            fprintf(context->output, "\tb _%s\n\n", node->specialization.while_loop.code_block->scope->name);
+            //generate end label
+            fprintf(context->output, "_loopend%d:\n", end_loop_label);
             break;
         }
         case AST_VARIABLE_DECLARATION: {
