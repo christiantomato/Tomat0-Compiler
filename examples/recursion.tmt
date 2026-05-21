@@ -1,4 +1,4 @@
-~ recursision
+~ recursion
 
 ~ correctly implements factorial recursively.
 func recursiveFactorial(int n) yields int {

@@ -1,9 +1,9 @@
 ~ test tomato throw
 
 sprout {
-    int x = 5
+    int x = 5 + 4
 
-    if(x > 0) {
+    if(x > 0 or y < 10) {
         print("aaahhh")
         throw tomato
     }
