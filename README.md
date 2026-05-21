@@ -30,7 +30,8 @@ Syntactic Analysis
   - [x] parse print statements
   - [x] parse expressions, terms, and factors
   - [x] parse function declarations and calls
-  - [ ] parse conditional statements (if, while)
+  - [x] parse boolean expressions, terms, comparisions
+  - [x] parse conditional statements (if, while)
 
 ARM64 Assembly Generation
   - [x] print integer values to terminal
@@ -39,8 +40,8 @@ ARM64 Assembly Generation
   - [x] store, load, and use integer variables
   - [x] strings
   - [x] subroutines
-  - [ ] loops and conditionals
+  - [x] loops and conditionals
 
 ### TODO
-- add support for boolean expressions
+- optimize parsing / syntax updates
 
