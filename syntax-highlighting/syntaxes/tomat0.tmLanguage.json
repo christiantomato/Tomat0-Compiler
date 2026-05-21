@@ -1,0 +1,28 @@
+{
+    "scopeName": "source.tomat0",
+    "patterns": [
+        { "include": "#comments" },
+        { "include": "#keywords" },
+        { "include": "#strings" },
+        { "include": "#numbers" }
+    ],
+    "repository": {
+        "comments": {
+            "match": "~.*$",
+            "name": "comment.line.tomat0"
+        },
+        "keywords": {
+            "match": "\\b(int|string|bool|func|print|while|if|else|not|and|or|true|false|equals|yields|harvest|sprout|tomato|throw)\\b",
+            "name": "keyword.control.tomat0"
+        },
+        "strings": {
+            "begin": "\"",
+            "end": "\"",
+            "name": "string.quoted.double.tomat0"
+        },
+        "numbers": {
+            "match": "\\b[0-9]+\\b",
+            "name": "constant.numeric.tomat0"
+        }
+    }
+}
