@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
     fclose(assembly_file);
 
     //make an executable
-    system("gcc output/generated_asm.s -o tomat0executable");
+    system("clang output/generated_asm.s -o tomat0executable");
     //move compiled Tomat0 file to output directory
     system("mv tomat0executable output");
     //execute
