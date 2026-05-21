@@ -1,14 +1,9 @@
-~ test tomato throw
+~ write your tomat0 source code here.
 
+~ entry point
 sprout {
-    int x = 5 + 4
-
-    if(x > 0 or y < 10) {
-        print("aaahhh")
-        throw tomato
-    }
     
-    ~ print out words of advice 
-    print("were okay don't worry")
+
+    ~ runtime end
     harvest tomato
 }

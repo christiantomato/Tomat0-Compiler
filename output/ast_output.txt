@@ -2,33 +2,161 @@ NODE: AST_GLOBAL
 	NODE: AST_ENTRY_POINT
 		NODE: AST_VARIABLE_DECLARATION
 		data_type = TYPE_INT
-		variable_name = x
+		variable_name = grade
 		assignment = 
 			NODE: AST_NUMBER
-			value = 5
+			value = 90
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = 'calculating grade...'
+			id = 0
+		print_type = TYPE_STRING
 		NODE: AST_IF_STATEMENT
 		condition = 
 			NODE: AST_BINARY_OPERATION
-			operator = >
+			operator = or
 			left = 
-				NODE: AST_VARIABLE
-				variable_name = x
+				NODE: AST_BINARY_OPERATION
+				operator = <
+				left = 
+					NODE: AST_VARIABLE
+					variable_name = grade
+				right = 
+					NODE: AST_NUMBER
+					value = 0
 			right = 
-				NODE: AST_NUMBER
-				value = 0
+				NODE: AST_BINARY_OPERATION
+				operator = >
+				left = 
+					NODE: AST_VARIABLE
+					variable_name = grade
+				right = 
+					NODE: AST_NUMBER
+					value = 100
 		code_block = 
 			NODE: AST_BLOCK
 				NODE: AST_PRINT_STATEMENT
 				output = 
 					NODE: AST_STRING
-					value = 'aaahhh'
-					id = 0
+					value = 'invalid grade'
+					id = 1
 				print_type = TYPE_STRING
 				NODE: AST_THROW
-		NODE: AST_PRINT_STATEMENT
-		output = 
-			NODE: AST_STRING
-			value = 'were okay don't worry'
-			id = 1
-		print_type = TYPE_STRING
+		else_block = 
+			NODE: AST_BLOCK
+				NODE: AST_IF_STATEMENT
+				condition = 
+					NODE: AST_BINARY_OPERATION
+					operator = or
+					left = 
+						NODE: AST_BINARY_OPERATION
+						operator = equals
+						left = 
+							NODE: AST_VARIABLE
+							variable_name = grade
+						right = 
+							NODE: AST_NUMBER
+							value = 90
+					right = 
+						NODE: AST_BINARY_OPERATION
+						operator = >
+						left = 
+							NODE: AST_VARIABLE
+							variable_name = grade
+						right = 
+							NODE: AST_NUMBER
+							value = 90
+				code_block = 
+					NODE: AST_BLOCK
+						NODE: AST_PRINT_STATEMENT
+						output = 
+							NODE: AST_STRING
+							value = 'you did awesome!'
+							id = 2
+						print_type = TYPE_STRING
+				else_block = 
+					NODE: AST_BLOCK
+						NODE: AST_IF_STATEMENT
+						condition = 
+							NODE: AST_BINARY_OPERATION
+							operator = or
+							left = 
+								NODE: AST_BINARY_OPERATION
+								operator = equals
+								left = 
+									NODE: AST_VARIABLE
+									variable_name = grade
+								right = 
+									NODE: AST_NUMBER
+									value = 70
+							right = 
+								NODE: AST_BINARY_OPERATION
+								operator = >
+								left = 
+									NODE: AST_VARIABLE
+									variable_name = grade
+								right = 
+									NODE: AST_NUMBER
+									value = 70
+						code_block = 
+							NODE: AST_BLOCK
+								NODE: AST_PRINT_STATEMENT
+								output = 
+									NODE: AST_STRING
+									value = 'you did well'
+									id = 3
+								print_type = TYPE_STRING
+						else_block = 
+							NODE: AST_BLOCK
+								NODE: AST_IF_STATEMENT
+								condition = 
+									NODE: AST_BINARY_OPERATION
+									operator = or
+									left = 
+										NODE: AST_BINARY_OPERATION
+										operator = equals
+										left = 
+											NODE: AST_VARIABLE
+											variable_name = grade
+										right = 
+											NODE: AST_NUMBER
+											value = 50
+									right = 
+										NODE: AST_BINARY_OPERATION
+										operator = >
+										left = 
+											NODE: AST_VARIABLE
+											variable_name = grade
+										right = 
+											NODE: AST_NUMBER
+											value = 50
+								code_block = 
+									NODE: AST_BLOCK
+										NODE: AST_PRINT_STATEMENT
+										output = 
+											NODE: AST_STRING
+											value = 'at least you passed'
+											id = 4
+										print_type = TYPE_STRING
+								else_block = 
+									NODE: AST_BLOCK
+										NODE: AST_IF_STATEMENT
+										condition = 
+											NODE: AST_BINARY_OPERATION
+											operator = <
+											left = 
+												NODE: AST_VARIABLE
+												variable_name = grade
+											right = 
+												NODE: AST_NUMBER
+												value = 50
+										code_block = 
+											NODE: AST_BLOCK
+												NODE: AST_PRINT_STATEMENT
+												output = 
+													NODE: AST_STRING
+													value = 'FAIL!!!'
+													id = 5
+												print_type = TYPE_STRING
 		NODE: AST_RUNTIME_END
