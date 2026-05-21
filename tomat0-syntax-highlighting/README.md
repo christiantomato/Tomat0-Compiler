@@ -5,7 +5,7 @@ Follow the steps below to enable syntax highlighting on vscode for .tmt files. T
 To install the extension, simply make a symbolic link of this directory to your .vscode/extensions folder.
 You can do this by running the following command while in this directory:
 ```
-ln -s syntax-highlighting ~/.vscode/extensions/syntax-highlighting
+ln -s . ~/.vscode/extensions/tomato-syntax-highlighting
 ```
 Alternatively, you can just copy the folder (not recommended as you will have to re-copy if changes are made).
 ```
