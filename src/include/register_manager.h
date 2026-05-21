@@ -5,8 +5,8 @@
  * List of the register uses: 
  * x0: return register
  * x0-x7: passing parameters
- * x8: system call numbers
  * x9-x15: general purpose
+ * x16: system call numbers
  * x19-x28: callee-saved registers
  * x29: frame pointer
  * x30: link register
