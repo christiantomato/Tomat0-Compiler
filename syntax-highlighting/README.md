@@ -1,12 +1,20 @@
-# Syntax Highlighting Instructions
+# Tomat0 Syntax Highlighting 
+Follow the steps below to enable syntax highlighting on vscode for .tmt files. The highlighting is purely for readability and cosmetics - there is no _syntax checking_. 
 
-### Enabling the syntax highlighting extension
+### Installing the Extension
+To install the extension, simply make a symbolic link of this directory to your .vscode/extensions folder.
+You can do this by running the following command while in this directory:
+```
+ln -s syntax-highlighting ~/.vscode/extensions/syntax-highlighting
+```
+Alternatively, you can just copy the folder (not recommended as you will have to re-copy if changes are made).
+```
+cp -r syntax-highlighting ~/.vscode/extensions
+```
 
-mv into extensions...
-
-### Using The Tomat0 Color Theme:
+### Using the Custom Tomat0 Color Theme (Optional):
 To use the custom tomat0 color theme, copy and paste the following into your 
-vscode user settings (JSON). 
+vscode user settings json file. 
 
 ```json
 //tomat0 customization.
