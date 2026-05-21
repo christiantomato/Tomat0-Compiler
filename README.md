@@ -43,5 +43,6 @@ ARM64 Assembly Generation
   - [x] loops and conditionals
 
 ### TODO
-- optimize parsing / syntax updates
+- optimize parsing
+- syntax updates
 
