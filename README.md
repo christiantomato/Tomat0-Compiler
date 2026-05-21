@@ -4,7 +4,8 @@ Compiler for my own language, Tomat0. Tomat0 focuses on increasing readibility a
 ## Compiling Tomat0 Source Code:
 
 ### Dependencies
-You must have an ARM64 CPU! x86-64 assembly is not generated. 
+- macOS with Apple Silicon (ARM64 based chip)
+- Clang to assemble and link generated ARM64 assembly
 
 ### Instructions
 1. Clone repo 
@@ -45,4 +46,3 @@ ARM64 Assembly Generation
 ### TODO
 - optimize parsing
 - syntax updates
-
