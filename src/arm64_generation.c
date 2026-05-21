@@ -507,8 +507,11 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             break;
         }
         case AST_THROW: {
-            //TODO: code gen for this case
-
+            //terminate runtime with exit system call
+            fprintf(context->output, "\t//throw tomato - terminate runtime.\n");
+            fprintf(context->output, "\tmov x0, #1\n");
+            fprintf(context->output, "\tmov x16, #1\n");
+            fprintf(context->output, "\tsvc #0x80\n\n");
             break;
         }
         case AST_RUNTIME_END: {

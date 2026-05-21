@@ -1176,6 +1176,21 @@ static ASTNode* parse_line(Parser* parser) {
             //at this point, parsing should be done...
             return main;
         }
+        case TOKEN_KEYWORD_THROW: {
+            //create the node and advance past
+            ASTNode* throw_node = init_node(AST_THROW, parser->current_scope);
+            parser_advance(parser); 
+            //expect tomato
+            if(parser->current_token->type == TOKEN_KEYWORD_TOMATO) {
+                parser_advance(parser);
+                return throw_node;
+            }
+            else {
+                printf("SYNTAX ERROR: plz throw tomato.\n"); 
+                parser_sync(parser); 
+                return NULL;
+            }
+        }
         default: 
             printf("SYNTAX ERROR: Not a valid instruction.\n");
             parser_sync(parser);
