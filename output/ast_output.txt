@@ -24,19 +24,7 @@ NODE: AST_GLOBAL
 					return = 
 						NODE: AST_VARIABLE
 						variable_name = n
-					return_type = TYPE_INT
-			NODE: AST_VARIABLE_DECLARATION
-			data_type = TYPE_INT
-			variable_name = a
-			assignment = 
-				NODE: AST_BINARY_OPERATION
-				operator = -
-				left = 
-					NODE: AST_VARIABLE
-					variable_name = n
-				right = 
-					NODE: AST_NUMBER
-					value = 1
+					return_type = TYPE_VOID
 			NODE: AST_VARIABLE_DECLARATION
 			data_type = TYPE_INT
 			variable_name = result
@@ -44,11 +32,16 @@ NODE: AST_GLOBAL
 				NODE: AST_FUNCTION_CALL
 				function_name = recursiveFactorial
 				parameter_values = 
-					NODE: AST_VARIABLE
-					variable_name = a
-			NODE: AST_VARIABLE_ASSIGNMENT
-			name = n
-			assignment = 
+					NODE: AST_BINARY_OPERATION
+					operator = -
+					left = 
+						NODE: AST_VARIABLE
+						variable_name = n
+					right = 
+						NODE: AST_NUMBER
+						value = 1
+			NODE: AST_RETURN_STATEMENT
+			return = 
 				NODE: AST_BINARY_OPERATION
 				operator = *
 				left = 
@@ -57,11 +50,7 @@ NODE: AST_GLOBAL
 				right = 
 					NODE: AST_VARIABLE
 					variable_name = result
-			NODE: AST_RETURN_STATEMENT
-			return = 
-				NODE: AST_VARIABLE
-				variable_name = n
-			return_type = TYPE_INT
+			return_type = TYPE_VOID
 	NODE: AST_FUNCTION_DECLARATION
 	function_name = recursiveFactorialBad
 	parameters = 
@@ -87,44 +76,27 @@ NODE: AST_GLOBAL
 					return = 
 						NODE: AST_VARIABLE
 						variable_name = n
-					return_type = TYPE_INT
-			NODE: AST_VARIABLE_DECLARATION
-			data_type = TYPE_INT
-			variable_name = a
-			assignment = 
-				NODE: AST_BINARY_OPERATION
-				operator = -
-				left = 
-					NODE: AST_VARIABLE
-					variable_name = n
-				right = 
-					NODE: AST_NUMBER
-					value = 1
-			NODE: AST_VARIABLE_DECLARATION
-			data_type = TYPE_INT
-			variable_name = result
-			assignment = 
-				NODE: AST_FUNCTION_CALL
-				function_name = recursiveFactorial
-				parameter_values = 
-					NODE: AST_VARIABLE
-					variable_name = a
-			NODE: AST_VARIABLE_ASSIGNMENT
-			name = n
-			assignment = 
+					return_type = TYPE_VOID
+			NODE: AST_RETURN_STATEMENT
+			return = 
 				NODE: AST_BINARY_OPERATION
 				operator = *
 				left = 
 					NODE: AST_VARIABLE
 					variable_name = n
 				right = 
-					NODE: AST_VARIABLE
-					variable_name = result
-			NODE: AST_RETURN_STATEMENT
-			return = 
-				NODE: AST_VARIABLE
-				variable_name = n
-			return_type = TYPE_INT
+					NODE: AST_FUNCTION_CALL
+					function_name = recursiveFactorialBad
+					parameter_values = 
+						NODE: AST_BINARY_OPERATION
+						operator = -
+						left = 
+							NODE: AST_VARIABLE
+							variable_name = n
+						right = 
+							NODE: AST_NUMBER
+							value = 1
+			return_type = TYPE_VOID
 	NODE: AST_ENTRY_POINT
 		NODE: AST_VARIABLE_DECLARATION
 		data_type = TYPE_INT

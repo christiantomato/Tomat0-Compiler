@@ -1,28 +1,25 @@
 ~ big test with booleans and conditionals
 
+~ correctly implements factorial recursively.
 func recursiveFactorial(int n) yields int {
     ~ base case
     if(n equals 1) {
         harvest n
     }
-    ~ multiply by n - 1
-    int a = n - 1
-    int result = recursiveFactorial(a)
-    n = n * result
-    ~ return n
-    harvest n
+    ~ LIMITATION: function calls inside expressions will clobber needed values. Save to intermediate first.
+    int result = recursiveFactorial(n-1)
+    ~ multiply after recursive call
+    harvest n * result
 }
 
+~ incorrectly implements factorial recursively (TOMAT0 LIMITATION)
 func recursiveFactorialBad(int n) yields int {
     ~ base case
     if(n equals 1) {
         harvest n
     }
-    ~ multiply by n - 1
-    int a = n - 1
-    n = n * recursiveFactorial(a)
-    ~ return n
-    harvest n
+    ~ recursively call during multiplication (bad)
+    harvest n * recursiveFactorialBad(n-1)
 }
  
 sprout {
