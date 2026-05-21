@@ -113,32 +113,37 @@ static void negate_value(int value_reg, DataType type, CodeGenContext* context) 
 
 static void generate_binary_op(int left_reg, int right_reg, char operator, CodeGenContext* context) {
     fprintf(context->output, "\t//binary operation.\n");
-    //allocate a register for result
-    context->result_reg = allocate_general_register(context->register_manager);
 
     //switch on operator
     switch(operator) {
         //ALGEBRA:
         case '+':
+            //allocate a register for result
+            context->result_reg = allocate_general_register(context->register_manager);     
             fprintf(context->output, "\tadd x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
             break;
         case '-':
+            context->result_reg = allocate_general_register(context->register_manager);  
             fprintf(context->output, "\tsub x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
             break;
         case '*':
+            context->result_reg = allocate_general_register(context->register_manager);  
             fprintf(context->output, "\tmul x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
             break;
         case '/':
+            context->result_reg = allocate_general_register(context->register_manager);  
             fprintf(context->output, "\tsdiv x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
             break;
 
         //BOOLEAN ALGEBRA:
         //or case
         case 'o':
+            context->result_reg = allocate_general_register(context->register_manager);  
             fprintf(context->output, "\torr x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
             break;
         //and case
         case 'a':
+            context->result_reg = allocate_general_register(context->register_manager);  
             fprintf(context->output, "\tand x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
             break;
 
@@ -146,21 +151,31 @@ static void generate_binary_op(int left_reg, int right_reg, char operator, CodeG
         //equals case
         case 'e': 
             fprintf(context->output, "\tcmp x%d, x%d\n", left_reg, right_reg);
+            //free registers before allocating result reg for efficiency!
+            free_register(context->register_manager, left_reg);
+            free_register(context->register_manager, right_reg);
+            context->result_reg = allocate_general_register(context->register_manager);  
             fprintf(context->output, "\tcset x%d, eq\n\n", context->result_reg);
-            break;
+            return;
         case '<':
+            free_register(context->register_manager, left_reg);
+            free_register(context->register_manager, right_reg);
+            context->result_reg = allocate_general_register(context->register_manager);  
             fprintf(context->output, "\tcmp x%d, x%d\n", left_reg, right_reg);
             fprintf(context->output, "\tcset x%d, lt\n\n", context->result_reg);
-            break;
+            return;
         case '>':
+            free_register(context->register_manager, left_reg);
+            free_register(context->register_manager, right_reg);
+            context->result_reg = allocate_general_register(context->register_manager);  
             fprintf(context->output, "\tcmp x%d, x%d\n", left_reg, right_reg);
             fprintf(context->output, "\tcset x%d, gt\n\n", context->result_reg);
-            break;
+            return;
 
         default: return;
     }
 
-    //free left and right registers
+    //free left and right registers (for operations other than relational which already freed)
     free_register(context->register_manager, left_reg);
     free_register(context->register_manager, right_reg);
 }
