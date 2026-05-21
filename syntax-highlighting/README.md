@@ -14,7 +14,7 @@ cp -r syntax-highlighting ~/.vscode/extensions
 
 ## Using the Custom Tomat0 Color Theme (Optional):
 To use the custom tomat0 color theme, copy and paste the following into your 
-vscode user settings json file. 
+vscode user settings json file. A dark theme for vscode is recommended with this color theme. 
 
 ```json
 //tomat0 customization.
