@@ -4,3 +4,6 @@
 #ignore doxyfile and latex
 docs/latex
 Doxyfile
+
+#ignore annoying ds store
+.DS_Store
