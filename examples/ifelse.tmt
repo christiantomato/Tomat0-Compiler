@@ -1,0 +1,40 @@
+~ if/else example.
+
+~ entry point
+sprout {
+    ~ initialize a grade
+    int grade = 90
+
+    print("calculating grade...")
+
+    ~ determine feedback on grade
+    ~ NOTE: extreme nesting like this will cause registers to overflow. This is the max. >4 levels will break.
+    if(grade < 0 or grade > 100) {
+        ~ invalid input
+        print("invalid grade")
+        throw tomato
+    }
+    else {
+        if(grade equals 90 or grade > 90) {
+            print("you did awesome!")
+        }
+        else {
+            if(grade equals 70 or grade > 70) {
+                print("you did well")
+            }
+            else {
+                if(grade equals 50 or grade > 50) {
+                    print("at least you passed")
+                }
+                else {
+                    if(grade < 50) {
+                        print("FAIL!!!")
+                    }
+                }
+            }
+        }
+    }
+
+    ~ runtime end
+    harvest tomato
+}
