@@ -17,7 +17,7 @@
     TYPE_INT, /**< Integers. */
     TYPE_STRING, /**< Strings. */
     TYPE_BOOL, /**< Booleans (1 for true, 0 for false). */
-    TYPE_VOID /**< Use for unresolved types or for functions with no return. */
+    TYPE_VOID /**< Used for unresolved types or for functions with no return. */
  } DataType;
 
  /**
