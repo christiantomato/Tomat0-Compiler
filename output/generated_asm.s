@@ -1,10 +1,176 @@
 .data
 fmt_int: .asciz "%d\n"
-str0: .asciz "hello world\n"
-str1: .asciz "ooga\n"
 
 .text
 .global _main
+
+_recursiveFactorial:
+	//setup stack frame.
+	stp fp, lr, [sp, #-16]!
+	mov fp, sp
+	sub sp, sp, #32
+
+	//spill param to stack.
+	str x0, [fp, #-8]
+
+	//load variable from stack.
+	ldr x9, [fp, #-8]
+
+	//move number to register.
+	mov x10, #1
+
+	//binary operation.
+	cmp x9, x10
+	cset x11, eq
+
+	//check condition.
+	cmp x11, #1
+	//if not.
+	bne _endif0
+
+_if0:
+	//load variable from stack.
+	ldr x9, [fp, #-8]
+
+	//return into x0.
+	mov x0, x9
+
+	//collapse the stack frame.
+	mov sp, fp
+	ldp fp, lr, [sp], #16
+	ret
+
+_endif0:
+	//load variable from stack.
+	ldr x9, [fp, #-8]
+
+	//move number to register.
+	mov x10, #1
+
+	//binary operation.
+	sub x12, x9, x10
+
+	//store variable to stack.
+	str x12, [fp, #-16]
+
+	//load variable from stack.
+	ldr x9, [fp, #-16]
+
+	//pass parameter.
+	mov x0, x9
+
+	//call function.
+	bl _recursiveFactorial
+
+	//store variable to stack.
+	str x0, [fp, #-24]
+
+	//load variable from stack.
+	ldr x9, [fp, #-8]
+
+	//load variable from stack.
+	ldr x10, [fp, #-24]
+
+	//binary operation.
+	mul x12, x9, x10
+
+	//store variable to stack.
+	str x12, [fp, #-8]
+
+	//load variable from stack.
+	ldr x9, [fp, #-8]
+
+	//return into x0.
+	mov x0, x9
+
+	//collapse the stack frame.
+	mov sp, fp
+	ldp fp, lr, [sp], #16
+	ret
+
+_recursiveFactorialBad:
+	//setup stack frame.
+	stp fp, lr, [sp, #-16]!
+	mov fp, sp
+	sub sp, sp, #32
+
+	//spill param to stack.
+	str x0, [fp, #-8]
+
+	//load variable from stack.
+	ldr x9, [fp, #-8]
+
+	//move number to register.
+	mov x10, #1
+
+	//binary operation.
+	cmp x9, x10
+	cset x12, eq
+
+	//check condition.
+	cmp x12, #1
+	//if not.
+	bne _endif1
+
+_if1:
+	//load variable from stack.
+	ldr x9, [fp, #-8]
+
+	//return into x0.
+	mov x0, x9
+
+	//collapse the stack frame.
+	mov sp, fp
+	ldp fp, lr, [sp], #16
+	ret
+
+_endif1:
+	//load variable from stack.
+	ldr x9, [fp, #-8]
+
+	//move number to register.
+	mov x10, #1
+
+	//binary operation.
+	sub x13, x9, x10
+
+	//store variable to stack.
+	str x13, [fp, #-16]
+
+	//load variable from stack.
+	ldr x9, [fp, #-16]
+
+	//pass parameter.
+	mov x0, x9
+
+	//call function.
+	bl _recursiveFactorial
+
+	//store variable to stack.
+	str x0, [fp, #-24]
+
+	//load variable from stack.
+	ldr x9, [fp, #-8]
+
+	//load variable from stack.
+	ldr x10, [fp, #-24]
+
+	//binary operation.
+	mul x13, x9, x10
+
+	//store variable to stack.
+	str x13, [fp, #-8]
+
+	//load variable from stack.
+	ldr x9, [fp, #-8]
+
+	//return into x0.
+	mov x0, x9
+
+	//collapse the stack frame.
+	mov sp, fp
+	ldp fp, lr, [sp], #16
+	ret
 
 _main:
 	//setup stack frame.
@@ -13,95 +179,29 @@ _main:
 	sub sp, sp, #16
 
 	//move number to register.
-	mov x9, #0
+	mov x9, #5
 
 	//store variable to stack.
 	str x9, [fp, #-8]
 
-_while0:
 	//load variable from stack.
 	ldr x9, [fp, #-8]
 
-	//move number to register.
-	mov x10, #8
-
-	//binary operation.
-	cmp x9, x10
-	cset x11, lt
-
-	//check condition.
-	cmp x11, #1
-	bne _loopend0
-
-	//move number to register.
-	mov x9, #0
-
-	//store variable to stack.
-	str x9, [fp, #-16]
-
-	//load string address from label.
-	adrp x9, str0@PAGE
-	add x9, x9, str0@PAGEOFF
-
-	//print string.
+	//pass parameter.
 	mov x0, x9
+
+	//call function.
+	bl _recursiveFactorial
+
+	//ensure int to print doesn't get clobbered.
+	mov x9, x0
+	//print integer.
+	adrp x0, fmt_int@PAGE
+	add x0, x0, fmt_int@PAGEOFF
+	str x9, [sp, #-16]!
 	bl _printf
+	add sp, sp, #16
 
-_while1:
-	//load variable from stack.
-	ldr x9, [fp, #-16]
-
-	//move number to register.
-	mov x10, #3
-
-	//binary operation.
-	cmp x9, x10
-	cset x12, lt
-
-	//check condition.
-	cmp x12, #1
-	bne _loopend1
-
-	//load string address from label.
-	adrp x9, str1@PAGE
-	add x9, x9, str1@PAGEOFF
-
-	//print string.
-	mov x0, x9
-	bl _printf
-
-	//load variable from stack.
-	ldr x9, [fp, #-16]
-
-	//move number to register.
-	mov x10, #1
-
-	//binary operation.
-	add x13, x9, x10
-
-	//store variable to stack.
-	str x13, [fp, #-16]
-
-	//loop.
-	b _while1
-
-_loopend1:
-	//load variable from stack.
-	ldr x9, [fp, #-8]
-
-	//move number to register.
-	mov x10, #1
-
-	//binary operation.
-	add x13, x9, x10
-
-	//store variable to stack.
-	str x13, [fp, #-8]
-
-	//loop.
-	b _while0
-
-_loopend0:
 	//put status code 0 in ret register.
 	mov x0, #0
 	//collapse the stack frame.

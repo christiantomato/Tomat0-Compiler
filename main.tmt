@@ -1,18 +1,34 @@
-~ while loops test
+~ big test with booleans and conditionals
 
-sprout {
-    string greet = "hello world"
-
-    int count = 0
-    while(count < 8) {
-        int x = 0
-        print(greet)
-        while(x < 3) {
-            print("ooga")
-            x = x + 1
-        }
-        count = count + 1
+func recursiveFactorial(int n) yields int {
+    ~ base case
+    if(n equals 1) {
+        harvest n
     }
+    ~ multiply by n - 1
+    int a = n - 1
+    int result = recursiveFactorial(a)
+    n = n * result
+    ~ return n
+    harvest n
+}
+
+func recursiveFactorialBad(int n) yields int {
+    ~ base case
+    if(n equals 1) {
+        harvest n
+    }
+    ~ multiply by n - 1
+    int a = n - 1
+    n = n * recursiveFactorial(a)
+    ~ return n
+    harvest n
+}
+ 
+sprout {
+    ~ compute factorial on num
+    int num = 5
+    print(recursiveFactorial(num))
 
     harvest tomato
 }

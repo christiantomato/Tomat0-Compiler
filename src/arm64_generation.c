@@ -354,6 +354,7 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             //generate code for the condition and evaluate
             node_to_asm(node->specialization.if_statement.condition, context);
             //check if condition is true or false
+            fprintf(context->output, "\t//check condition.\n");
             fprintf(context->output, "\tcmp x%d, #1\n", context->result_reg);
 
             //ready the label for end if
@@ -390,7 +391,7 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
                 fprintf(context->output, "_%s:\n", node->specialization.if_statement.code_block->scope->name);
                 node_to_asm(node->specialization.if_statement.code_block, context);
                 //generate endif label
-                fprintf(context->output, "_endif%d:\n\n", end_if_label);
+                fprintf(context->output, "_endif%d:\n", end_if_label);
             }
             break;
         }
