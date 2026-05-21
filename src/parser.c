@@ -769,8 +769,9 @@ static ASTNode* parse_function_call(Parser* parser) {
     while(parser->current_token->type != TOKEN_RPAREN) {
         //parse the parameter, which we will restrict to being a factor for simplicity
         ASTNode* param_node;
-        param_node = parse_factor(parser);
+        param_node = parse_boolean_expression(parser);
 
+        /* Sacrifice safety check for expression passing. User is responsible. 
         //check if types match
         DataType param_type = resolve_factor_type(parser, param_node);
         Symbol* param_symbol = (Symbol*) func_symbol->data.func_data.parameters->array[param_index];
@@ -780,6 +781,7 @@ static ASTNode* parse_function_call(Parser* parser) {
             printf("SEMANTIC ERROR: Parameter type does not match function definition.\n");
             return NULL;
         }
+        */
 
         //skip past comma if there is one
         if(parser->current_token->type == TOKEN_COMMA) {
@@ -1117,8 +1119,8 @@ static ASTNode* parse_return_statement(Parser* parser) {
     parser_advance(parser);
 
     //evaluate FACTOR to return
-    return_node->specialization.return_statement.operand = parse_factor(parser);
-    return_node->specialization.return_statement.type = resolve_factor_type(parser, return_node->specialization.return_statement.operand);
+    return_node->specialization.return_statement.operand = parse_boolean_expression(parser);
+    return_node->specialization.return_statement.type = TYPE_VOID;
 
     //done return statement
     return return_node;
