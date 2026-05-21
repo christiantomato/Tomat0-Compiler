@@ -7,7 +7,8 @@ sprout {
         print("aaahhh")
         throw tomato
     }
-
+    
+    ~ print out words of advice 
     print("were okay don't worry")
     harvest tomato
 }
