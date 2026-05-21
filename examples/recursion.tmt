@@ -1,0 +1,31 @@
+~ recursision
+
+~ correctly implements factorial recursively.
+func recursiveFactorial(int n) yields int {
+    ~ base case
+    if(n equals 1) {
+        harvest n
+    }
+    ~ LIMITATION: function calls inside expressions will clobber needed values. Save to intermediate first.
+    int result = recursiveFactorial(n-1)
+    ~ multiply after recursive call
+    harvest n * result
+}
+
+~ incorrectly implements factorial recursively (TOMAT0 LIMITATION)
+func recursiveFactorialBad(int n) yields int {
+    ~ base case
+    if(n equals 1) {
+        harvest n
+    }
+    ~ recursively call during multiplication (bad)
+    harvest n * recursiveFactorialBad(n-1)
+}
+ 
+sprout {
+    ~ compute factorial on num
+    int num = 5
+    print(recursiveFactorial(num))
+
+    harvest tomato
+}
