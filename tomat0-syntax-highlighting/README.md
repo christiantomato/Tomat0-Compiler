@@ -2,28 +2,20 @@
 Follow the steps below to enable syntax highlighting on vscode for .tmt files. The highlighting is purely for readability and cosmetics - there is no _syntax checking_. 
 
 ## Installing the Extension
-To install the extension, simply make a symbolic link of this directory to your .vscode/extensions folder.
-You can do this by running the following command while in this directory:
-```
-ln -s . ~/.vscode/extensions/tomato-syntax-highlighting
-```
-Alternatively, you can just copy the folder (not recommended as you will have to re-copy if changes are made).
-```
-cp -r syntax-highlighting ~/.vscode/extensions
-```
+... find on marketplace
 
-## Using the Custom Tomat0 Color Theme (Optional):
+## Using the Custom Tomat0 Settings (Optional):
 To use the custom tomat0 color theme, copy and paste the following into your 
-vscode user settings json file. A dark theme for vscode is recommended with this color theme. 
+vscode user settings json file. A dark theme for vscode is recommended with these settings. 
 
 ```json
-//tomat0 customization.
+//custom token colors for tomat0
 "editor.tokenColorCustomizations": {
     "textMateRules": [
         {
             "scope": "keyword.control.tomat0",
             "settings": {
-                "foreground": "#ff8f8f"
+                "foreground": "#ff7272"
             }
         },
         {
@@ -35,16 +27,21 @@ vscode user settings json file. A dark theme for vscode is recommended with this
         {
             "scope": "constant.numeric.tomat0",
             "settings": {
-                "foreground": "#f8c555"
+                "foreground": "#e2ee9b"
             }
         },
         {
             "scope": "comment.line.tomat0",
             "settings": {
-                "foreground": "#666666",
+                "foreground": "#746587",
                 "fontStyle": "italic"
             }
         }
     ]
+},
+//specific configurations for tomat0
+"[tomat0]": {
+    //disabled bracket pair colors
+    "editor.bracketPairColorization.enabled": false
 }
 ```
