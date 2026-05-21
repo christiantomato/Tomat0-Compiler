@@ -1,31 +1,47 @@
-~ recursion
+~ recursion example.
 
-~ correctly implements factorial recursively.
-func recursiveFactorial(int n) yields int {
+~ factorial function
+func factorial(int n) yields int {
     ~ base case
     if(n equals 1) {
         harvest n
     }
-    ~ LIMITATION: function calls inside expressions will clobber needed values. Save to intermediate first.
-    int result = recursiveFactorial(n-1)
-    ~ multiply after recursive call
+    ~ NOTE: harvest n * factorial(n-1) will not work in tomat0. Function calls inside an expression can clobber needed values. 
+    ~ save to intermediate first!
+    int result = factorial(n-1)
+    ~ multiply and return after recursive call
     harvest n * result
 }
 
-~ incorrectly implements factorial recursively (TOMAT0 LIMITATION)
-func recursiveFactorialBad(int n) yields int {
-    ~ base case
-    if(n equals 1) {
-        harvest n
+~ fibonacci sequence function
+func fibonacci(int n) yields int {
+    ~ base cases
+    if(n equals 0) {
+        harvest 0
     }
-    ~ recursively call during multiplication (bad)
-    harvest n * recursiveFactorialBad(n-1)
+    if(n equals 1) {
+        harvest 1
+    }
+    ~ compute recursively: Fn = Fn-1 + Fn-2
+    int fn1 = fibonacci(n-1)
+    int fn2 = fibonacci(n-2)
+    ~ add and return after recursive calls
+    harvest fn1 + fn2
 }
- 
-sprout {
-    ~ compute factorial on num
-    int num = 5
-    print(recursiveFactorial(num))
 
+~ entry point
+sprout {
+    ~ initalize a number
+    int num = 8
+
+    ~ compute factorial of num
+    print("computing factorial...")
+    print(factorial(num))
+
+    ~ compute fibonacci term of num
+    print("computing fibonacci...")
+    print(fibonacci(num))
+
+    ~ runtime end
     harvest tomato
 }
