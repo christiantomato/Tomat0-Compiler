@@ -11,9 +11,11 @@ Compiler for my own language, Tomat0. Tomat0 focuses on increasing readibility a
 1. Clone repo 
 2. Write Tomat0 source code in main.tmt (see notes/syntax.txt or wiki for syntax rules).
 3. Compile the compiler using make:
+
 ```
 make
 ```
+
 4. Compile and run the source code using the executable
 
 ```
@@ -44,5 +46,6 @@ ARM64 Assembly Generation
   - [x] loops and conditionals
 
 ### TODO
-- optimize parsing
-- syntax updates
+- optimize register allocation to allow for deeper nesting levels (breaks after for >4)
+- optimize parsing algorithm
+- deploy vscode extension for syntax highlighting
