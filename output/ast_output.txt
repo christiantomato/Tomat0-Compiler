@@ -1,115 +1,34 @@
 NODE: AST_GLOBAL
-	NODE: AST_FUNCTION_DECLARATION
-	function_name = recursiveFactorial
-	parameters = 
-		NODE: AST_PARAMETER
-		parameter_type = TYPE_INT
-		parameter_name = n
-	return_type = TYPE_INT
-	code_block = 
-		NODE: AST_BLOCK
-			NODE: AST_IF_STATEMENT
-			condition = 
-				NODE: AST_BINARY_OPERATION
-				operator = equals
-				left = 
-					NODE: AST_VARIABLE
-					variable_name = n
-				right = 
-					NODE: AST_NUMBER
-					value = 1
-			code_block = 
-				NODE: AST_BLOCK
-					NODE: AST_RETURN_STATEMENT
-					return = 
-						NODE: AST_VARIABLE
-						variable_name = n
-					return_type = TYPE_VOID
-			NODE: AST_VARIABLE_DECLARATION
-			data_type = TYPE_INT
-			variable_name = result
-			assignment = 
-				NODE: AST_FUNCTION_CALL
-				function_name = recursiveFactorial
-				parameter_values = 
-					NODE: AST_BINARY_OPERATION
-					operator = -
-					left = 
-						NODE: AST_VARIABLE
-						variable_name = n
-					right = 
-						NODE: AST_NUMBER
-						value = 1
-			NODE: AST_RETURN_STATEMENT
-			return = 
-				NODE: AST_BINARY_OPERATION
-				operator = *
-				left = 
-					NODE: AST_VARIABLE
-					variable_name = n
-				right = 
-					NODE: AST_VARIABLE
-					variable_name = result
-			return_type = TYPE_VOID
-	NODE: AST_FUNCTION_DECLARATION
-	function_name = recursiveFactorialBad
-	parameters = 
-		NODE: AST_PARAMETER
-		parameter_type = TYPE_INT
-		parameter_name = n
-	return_type = TYPE_INT
-	code_block = 
-		NODE: AST_BLOCK
-			NODE: AST_IF_STATEMENT
-			condition = 
-				NODE: AST_BINARY_OPERATION
-				operator = equals
-				left = 
-					NODE: AST_VARIABLE
-					variable_name = n
-				right = 
-					NODE: AST_NUMBER
-					value = 1
-			code_block = 
-				NODE: AST_BLOCK
-					NODE: AST_RETURN_STATEMENT
-					return = 
-						NODE: AST_VARIABLE
-						variable_name = n
-					return_type = TYPE_VOID
-			NODE: AST_RETURN_STATEMENT
-			return = 
-				NODE: AST_BINARY_OPERATION
-				operator = *
-				left = 
-					NODE: AST_VARIABLE
-					variable_name = n
-				right = 
-					NODE: AST_FUNCTION_CALL
-					function_name = recursiveFactorialBad
-					parameter_values = 
-						NODE: AST_BINARY_OPERATION
-						operator = -
-						left = 
-							NODE: AST_VARIABLE
-							variable_name = n
-						right = 
-							NODE: AST_NUMBER
-							value = 1
-			return_type = TYPE_VOID
 	NODE: AST_ENTRY_POINT
 		NODE: AST_VARIABLE_DECLARATION
 		data_type = TYPE_INT
-		variable_name = num
+		variable_name = x
 		assignment = 
 			NODE: AST_NUMBER
 			value = 5
+		NODE: AST_IF_STATEMENT
+		condition = 
+			NODE: AST_BINARY_OPERATION
+			operator = >
+			left = 
+				NODE: AST_VARIABLE
+				variable_name = x
+			right = 
+				NODE: AST_NUMBER
+				value = 0
+		code_block = 
+			NODE: AST_BLOCK
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_STRING
+					value = 'aaahhh'
+					id = 0
+				print_type = TYPE_STRING
+				NODE: AST_THROW
 		NODE: AST_PRINT_STATEMENT
 		output = 
-			NODE: AST_FUNCTION_CALL
-			function_name = recursiveFactorial
-			parameter_values = 
-				NODE: AST_VARIABLE
-				variable_name = num
-		print_type = TYPE_INT
+			NODE: AST_STRING
+			value = 'were okay don't worry'
+			id = 1
+		print_type = TYPE_STRING
 		NODE: AST_RUNTIME_END
