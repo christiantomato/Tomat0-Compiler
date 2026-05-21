@@ -49,6 +49,7 @@ typedef enum {
     TOKEN_TILDA,
     TOKEN_EQUALS,
     TOKEN_SEMI,
+    TOKEN_COLON,
     TOKEN_COMMA,
     TOKEN_PERIOD,
     TOKEN_APOSTROPHE,
