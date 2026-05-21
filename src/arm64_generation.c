@@ -8,6 +8,11 @@
 #include "include/arm64_generation.h"
 #include "include/codegen_context.h"
 
+//for generating labels for if statements
+static int end_if_labels = 0;
+//for generating labels for while loops
+static int end_loop_labels = 0;
+
 /**
  * @brief Sets up the .data section with format strings for printing.
  * 
@@ -78,14 +83,23 @@ static void print_string(CodeGenContext* context) {
  * @brief Negates a value.
  * 
  * @param value_reg Register with value to negate.
+ * @param type Either integer or boolean negation.
  * @param context Pointer to the code gen context.
  */
 
-static void negate_value(int value_reg, CodeGenContext* context) {
-    fprintf(context->output, "\t//negate value.\n");
-    //allocate for result
-    context->result_reg = allocate_general_register(context->register_manager);
-    fprintf(context->output, "\tneg x%d, x%d\n\n", context->result_reg, value_reg);
+static void negate_value(int value_reg, DataType type, CodeGenContext* context) {
+    if(type == TYPE_INT) {
+        fprintf(context->output, "\t//integer negation.\n");
+        //allocate for result
+        context->result_reg = allocate_general_register(context->register_manager);
+        fprintf(context->output, "\tneg x%d, x%d\n\n", context->result_reg, value_reg);
+    }
+    else if(type == TYPE_BOOL) {
+        fprintf(context->output, "\t//logical negation.\n");
+        //allocate for result
+        context->result_reg = allocate_general_register(context->register_manager);
+        fprintf(context->output, "\teor x%d, x%d, #1\n\n", context->result_reg, value_reg);
+    }
 }
 
 /**
@@ -104,6 +118,7 @@ static void generate_binary_op(int left_reg, int right_reg, char operator, CodeG
 
     //switch on operator
     switch(operator) {
+        //ALGEBRA:
         case '+':
             fprintf(context->output, "\tadd x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
             break;
@@ -116,6 +131,33 @@ static void generate_binary_op(int left_reg, int right_reg, char operator, CodeG
         case '/':
             fprintf(context->output, "\tsdiv x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
             break;
+
+        //BOOLEAN ALGEBRA:
+        //or case
+        case 'o':
+            fprintf(context->output, "\torr x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
+            break;
+        //and case
+        case 'a':
+            fprintf(context->output, "\tand x%d, x%d, x%d\n\n", context->result_reg, left_reg, right_reg);
+            break;
+
+        //RELATIONAL:
+        //equals case
+        case 'e': 
+            fprintf(context->output, "\tcmp x%d, x%d\n", left_reg, right_reg);
+            fprintf(context->output, "\tcset x%d, eq\n\n", context->result_reg);
+            break;
+        case '<':
+            fprintf(context->output, "\tcmp x%d, x%d\n", left_reg, right_reg);
+            fprintf(context->output, "\tcset x%d, lt\n\n", context->result_reg);
+            break;
+        case '>':
+            fprintf(context->output, "\tcmp x%d, x%d\n", left_reg, right_reg);
+            fprintf(context->output, "\tcset x%d, gt\n\n", context->result_reg);
+            break;
+
+        default: return;
     }
 
     //free left and right registers
@@ -283,6 +325,8 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             spill_params(func_symbol->data.func_data.parameters, context);
             //generate code
             node_to_asm(node->specialization.func_dec.code_block, context);
+            //check if its void so we can collapse
+            if(func_symbol->data.func_data.return_type == TYPE_VOID) collapse_stack_frame(node->scope, context);
             break;
         }
         case AST_FUNCTION_CALL: {
@@ -302,8 +346,73 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             for(int i = 1; i < node->specialization.func_call.parameter_inputs->num_items; i++) {
                 free_register(context->register_manager, i);
             }
-            //result comes back to x0
+            //result comes back to x0 (if there is a return)
             context->result_reg = 0;
+            break;
+        }
+        case AST_IF_STATEMENT: {
+            //generate code for the condition and evaluate
+            node_to_asm(node->specialization.if_statement.condition, context);
+            //check if condition is true or false
+            fprintf(context->output, "\t//check condition.\n");
+            fprintf(context->output, "\tcmp x%d, #1\n", context->result_reg);
+
+            //ready the label for end if
+            int end_if_label = end_if_labels++;
+
+            //check if an else block exists
+            if(node->specialization.if_statement.else_block != NULL) {
+                //branch on true
+                fprintf(context->output, "\t//if.\n");
+                fprintf(context->output, "\tbeq _%s\n", node->specialization.if_statement.code_block->scope->name);
+                //branch to else on not equals
+                fprintf(context->output, "\t//else.\n");
+                fprintf(context->output, "\tbne _%s\n\n", node->specialization.if_statement.else_block->scope->name);
+
+                //generate if label and code
+                fprintf(context->output, "_%s:\n", node->specialization.if_statement.code_block->scope->name);
+                node_to_asm(node->specialization.if_statement.code_block, context);
+                //branch to end label to resume normal execution
+                fprintf(context->output, "\tb _endif%d\n\n", end_if_label);
+
+                //generate else label and code
+                fprintf(context->output, "_%s:\n", node->specialization.if_statement.else_block->scope->name);
+                node_to_asm(node->specialization.if_statement.else_block, context);
+                
+                //generate endif label
+                fprintf(context->output, "_endif%d:\n", end_if_label);
+            }
+            else {
+                //branch to endif if not equal
+                fprintf(context->output, "\t//if not.\n");
+                fprintf(context->output, "\tbne _endif%d\n\n", end_if_label);
+
+                //generate if label and code
+                fprintf(context->output, "_%s:\n", node->specialization.if_statement.code_block->scope->name);
+                node_to_asm(node->specialization.if_statement.code_block, context);
+                //generate endif label
+                fprintf(context->output, "_endif%d:\n", end_if_label);
+            }
+            break;
+        }
+        case AST_WHILE_LOOP: {
+            //generate the while loop label
+            fprintf(context->output, "_%s:\n", node->specialization.while_loop.code_block->scope->name);
+            //generate code for the condition 
+            node_to_asm(node->specialization.while_loop.condition, context);
+            //check if condition is true or false
+            fprintf(context->output, "\t//check condition.\n");
+            fprintf(context->output, "\tcmp x%d, #1\n", context->result_reg);
+            //if false, go to end
+            int end_loop_label = end_loop_labels++;
+            fprintf(context->output, "\tbne _loopend%d\n\n", end_loop_label);
+            //generate while loop code block
+            node_to_asm(node->specialization.while_loop.code_block, context);
+            //loop back to top
+            fprintf(context->output, "\t//loop.\n");
+            fprintf(context->output, "\tb _%s\n\n", node->specialization.while_loop.code_block->scope->name);
+            //generate end label
+            fprintf(context->output, "_loopend%d:\n", end_loop_label);
             break;
         }
         case AST_VARIABLE_DECLARATION: {
@@ -332,7 +441,7 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             //evaluate the statement
             node_to_asm(node->specialization.print_statement.operand, context);
             //print based on type
-            if(node->specialization.print_statement.type == TYPE_INT) print_int(context);
+            if(node->specialization.print_statement.type == TYPE_INT || node->specialization.print_statement.type == TYPE_BOOL) print_int(context);
             else if(node->specialization.print_statement.type == TYPE_STRING) print_string(context);
             break;
         }
@@ -355,15 +464,16 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             node_to_asm(node->specialization.binary_op.right, context);
             int right_reg = context->result_reg;
             //generate assembly
-            generate_binary_op(left_reg, right_reg, *node->specialization.binary_op.operator, context);
+            generate_binary_op(left_reg, right_reg, node->specialization.binary_op.operator[0], context);
             break;
         }
         case AST_NEGATION: {
             //get result for operand
             node_to_asm(node->specialization.negation.operand, context);
+            //set the value to negate
             int value_reg = context->result_reg;
-            //generate negate assembly
-            negate_value(value_reg, context); 
+            //generate assembly for either a boolean or integer negation
+            negate_value(value_reg, node->specialization.negation.type, context); 
             break;
         }
         case AST_PARAMETER: {

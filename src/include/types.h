@@ -14,9 +14,10 @@
  */
 
  typedef enum {
-    TYPE_INT,
-    TYPE_STRING,
-    TYPE_BOOL,
+    TYPE_INT, /**< Integers. */
+    TYPE_STRING, /**< Strings. */
+    TYPE_BOOL, /**< Booleans (1 for true, 0 for false). */
+    TYPE_VOID /**< Used for unresolved types or for functions with no return. */
  } DataType;
 
  /**

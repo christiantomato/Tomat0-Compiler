@@ -18,6 +18,11 @@
 
 //keep track of defined string literals during parsing.
 static int string_literals = 0;
+//keeps track of assigned string labels.
+static int string_labels = 0;
+//keeps track of if statements, else, and while in program (just for debugging)
+static int if_statements = 0;
+static int while_loops = 0;
 
 /*
  * Creates and initializes a parser with the tokens list. 
@@ -148,8 +153,7 @@ static DataType resolve_factor_type(Parser* parser, ASTNode* factor) {
             else if(variable->kind == SYMBOL_STRING) return TYPE_STRING;
         }
         case AST_NEGATION: 
-            //assume integer, for now..
-            return TYPE_INT;
+            return factor->specialization.negation.type;
         case AST_NUMBER:
             return TYPE_INT;
         case AST_STRING:
@@ -158,8 +162,8 @@ static DataType resolve_factor_type(Parser* parser, ASTNode* factor) {
     }
 }
 
-//forward declare parse expression, as parse factor recursively calls it
-static ASTNode* parse_expression(Parser* parser);
+//forward declare parse boolean expression, as parse factor recursively calls it
+static ASTNode* parse_boolean_expression(Parser* parser);
 //forward declare parse_function_call, as it can be a factor
 static ASTNode* parse_function_call(Parser* parser);
 
@@ -179,8 +183,8 @@ static ASTNode* parse_factor(Parser* parser) {
         //advance to the expression
         parser_advance(parser);
 
-        //parse the expression inside parens
-        ASTNode* expression_node = parse_expression(parser);
+        //parse the expression inside parens, must go back all the way up in case boolean expression
+        ASTNode* expression_node = parse_boolean_expression(parser);
 
         //expect a closing parenthesis
         if(parser->current_token->type == TOKEN_RPAREN) {
@@ -191,11 +195,13 @@ static ASTNode* parse_factor(Parser* parser) {
         }
         else {
             //problem
+            printf("SYNTAX ERROR: Expected closing paren for expression.\n");
+            parser_sync(parser);
             return NULL;
         }
     }
 
-    //check for negation
+    //check for arithmetic negation
     if(parser->current_token->type == TOKEN_HYPHEN) {
         //advance to the factor
         parser_advance(parser);
@@ -203,7 +209,21 @@ static ASTNode* parse_factor(Parser* parser) {
         ASTNode* negation_node = init_node(AST_NEGATION, parser->current_scope);
         //assign
         negation_node->specialization.negation.operand = parse_factor(parser);
+        negation_node->specialization.negation.type = TYPE_INT;
         //return the node
+        return negation_node;
+    }
+
+    //check for a logical negation
+    if(parser->current_token->type == TOKEN_KEYWORD_NOT) {
+        //advance to the factor
+        parser_advance(parser);
+        //create the negation node
+        ASTNode* negation_node = init_node(AST_NEGATION, parser->current_scope);
+        //assign
+        negation_node->specialization.negation.operand = parse_factor(parser);
+        negation_node->specialization.negation.type = TYPE_BOOL;
+        //return
         return negation_node;
     }
 
@@ -232,11 +252,23 @@ static ASTNode* parse_factor(Parser* parser) {
         }
     }
 
+    //check for a boolean literal
+    if(parser->current_token->type == TOKEN_KEYWORD_TRUE || parser->current_token->type == TOKEN_KEYWORD_FALSE) {
+        //represent as a number literal
+        ASTNode* bool_value_node = init_node(AST_NUMBER, parser->current_scope);
+        //true = 1, false = 0
+        if(parser->current_token->type == TOKEN_KEYWORD_TRUE) bool_value_node->specialization.num.value = 1;
+        else bool_value_node->specialization.num.value = 0;
+        //advance past
+        parser_advance(parser);
+        return bool_value_node;
+    }
+
     //check for an integer literal
     if(parser->current_token->type == TOKEN_NUM) {
         //create the AST_NUMBER
         ASTNode* integer_node = init_node(AST_NUMBER, parser->current_scope);
-        //assign
+        //assign and convert char to int
         integer_node->specialization.num.value = atoi(parser->current_token->value);
         //advance past the number
         parser_advance(parser);
@@ -250,7 +282,7 @@ static ASTNode* parse_factor(Parser* parser) {
         ASTNode* string_node = init_node(AST_STRING, parser->current_scope);
         //assign the string (make sure to duplicate)
         string_node->specialization.string.value = strdup(parser->current_token->value);
-        //assign id
+        //assign id and increment
         string_node->specialization.string.id = string_literals++;
         //add to strings list
         list_add(parser->strings, strdup(parser->current_token->value));
@@ -261,6 +293,8 @@ static ASTNode* parse_factor(Parser* parser) {
     }
 
     //nothing expected, problem
+    printf("SYNTAX ERROR: Didn't find factor.\n");
+    parser_sync(parser);
     return NULL;
 }
 
@@ -317,7 +351,7 @@ static ASTNode* parse_expression(Parser* parser) {
 
     //continue the loop as long as we are doing addition or subtraction to build up our expression
     while(parser->current_token->type == TOKEN_PLUS || parser->current_token->type == TOKEN_HYPHEN) {
-        //get the operator (strdup!)
+        //get the operator 
         char* operator = strdup(parser->current_token->value);
 
         //move past
@@ -325,6 +359,164 @@ static ASTNode* parse_expression(Parser* parser) {
 
         //parse the right term
         ASTNode* right = parse_term(parser);
+
+        //create the binary operation node
+        ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION, parser->current_scope);
+        binary_op_node->specialization.binary_op.left = left;
+        binary_op_node->specialization.binary_op.operator = operator;
+        binary_op_node->specialization.binary_op.right = right;
+
+        //set created sub tree as new left
+        left = binary_op_node;
+    }
+
+    //return the node that has built up the expression
+    return left;
+}
+
+/**
+ * @brief Parses integer comparisons. 
+ * 
+ * Comparisons between integers can be between 2 arithmetic expressions, so that is the next level.
+ * ex. x + 2 * 3 < y / 7
+ * 
+ * @param parser Pointer to the parser.
+ * @return Pointer to the comparison node
+ */
+
+static ASTNode* parse_comparison(Parser* parser) {
+    //next level is expressions
+    ASTNode* left = parse_expression(parser);
+
+    //if there is an equality symbol build the bin op
+    if(parser->current_token->type == TOKEN_LCHEVRON || parser->current_token->type == TOKEN_RCHEVRON) {
+        //get the operator
+        char* operator = strdup(parser->current_token->value);
+
+        //move past
+        parser_advance(parser);
+
+        //parse the right expression
+        ASTNode* right = parse_expression(parser);
+
+        //create the binary operation node
+        ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION, parser->current_scope);
+        binary_op_node->specialization.binary_op.left = left;
+        binary_op_node->specialization.binary_op.operator = operator;
+        binary_op_node->specialization.binary_op.right = right;
+
+        return binary_op_node;
+    }
+
+    //return left if there are no comparisons
+    return left;
+}   
+
+/**
+ * @brief Parses an equality check.
+ * 
+ * Equality must have lower precedence to build correct association: 
+ * a equals b < c -> a equals (b < c)
+ * Also equalities cannot be chained: 
+ * a equals b equals c - invalid.
+ * a equals b and b equals c - valid.
+ * 
+ * @param parser Pointer to the parser.
+ * @return Pointer to the equality node.
+ */
+
+static ASTNode* parse_equality(Parser* parser) {
+    //next level is comparisons
+    ASTNode* left = parse_comparison(parser);
+
+    //if there is an equality symbol build the bin op
+    if(parser->current_token->type == TOKEN_KEYWORD_EQUALS) {
+        //get the operator
+        char* operator = strdup(parser->current_token->value);
+
+        //move past
+        parser_advance(parser);
+
+        //parse the right comparison
+        ASTNode* right = parse_comparison(parser);
+
+        //create the binary operation node
+        ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION, parser->current_scope);
+        binary_op_node->specialization.binary_op.left = left;
+        binary_op_node->specialization.binary_op.operator = operator;
+        binary_op_node->specialization.binary_op.right = right;
+
+        return binary_op_node;
+    }
+
+    //return left if there are no equality comparisons
+    return left;
+}
+
+/**
+ * @brief Parses a boolean term (AND).
+ * 
+ * Same algorithm as boolean expression, 
+ * but with the higher precedence connectve AND (which acts like multiplication).
+ * 
+ * @param parser Pointer to the parser.
+ * @return Pointer to the term node. 
+ */
+
+static ASTNode* parse_boolean_term(Parser* parser) {
+    //next level are equality comparisons
+    ASTNode* left = parse_equality(parser);
+
+    //continue the loop as long as we have ands to build up our boolean expression
+    while(parser->current_token->type == TOKEN_KEYWORD_AND) {
+        //get the operator
+        char* operator = strdup(parser->current_token->value);
+
+        //move past
+        parser_advance(parser);
+
+        //parse the right equality
+        ASTNode* right = parse_equality(parser);
+
+        //create the binary operation node
+        ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION, parser->current_scope);
+        binary_op_node->specialization.binary_op.left = left;
+        binary_op_node->specialization.binary_op.operator = operator;
+        binary_op_node->specialization.binary_op.right = right;
+
+        //set created sub tree as new left
+        left = binary_op_node;
+    }
+
+    //return when no more terms to parse
+    return left;
+}
+
+/**
+ * @brief Parses a boolean expression (OR).
+ * 
+ * In boolean algebras, the OR connective acts similarly to addition. It has lower precedence than AND, and so our
+ * boolean expressions are made up of sequence of terms connected by ORs. This is also our top level entry for parsing expressions
+ * since booleans can contain arithmetic expressions inside comparisons. 
+ * 
+ * @param parser Pointer to the parser.
+ * @return Pointer to the expression node. 
+ */
+
+static ASTNode* parse_boolean_expression(Parser* parser) {
+    //parse the first boolean term
+    ASTNode* left = parse_boolean_term(parser);
+
+    //continue the loop as long as we have ors to build up our boolean expression
+    while(parser->current_token->type == TOKEN_KEYWORD_OR) {
+        //get the operator (strdup!)
+        char* operator = strdup(parser->current_token->value);
+
+        //move past
+        parser_advance(parser);
+
+        //parse the right term
+        ASTNode* right = parse_boolean_term(parser);
 
         //create the binary operation node
         ASTNode* binary_op_node = init_node(AST_BINARY_OPERATION, parser->current_scope);
@@ -340,11 +532,165 @@ static ASTNode* parse_expression(Parser* parser) {
     return left;
 }
 
+//forward declare parse block
+static ASTNode* parse_block(Parser* parser);
+
+/**
+ * @brief Parses an if statement.
+ * 
+ * @param parser Point to the parser
+ * @return Pointer to the if statement node. 
+ */
+
+static ASTNode* parse_if_statement(Parser* parser) {
+    //the node we will return 
+    ASTNode* if_node = init_node(AST_IF_STATEMENT, parser->current_scope);
+
+    //move past keyword 
+    parser_advance(parser);
+
+    //expect l paren
+    if(parser->current_token->type == TOKEN_LPAREN) parser_advance(parser);
+    else {
+        //problem
+        printf("SYNTAX ERROR: Expected opening bracket on if statement.\n");
+        parser_sync(parser);
+        return NULL;
+    }
+
+    //parse condition
+    if_node->specialization.if_statement.condition = parse_boolean_expression(parser);
+
+    //advance past closing paren
+    if(parser->current_token->type == TOKEN_RPAREN) parser_advance(parser);
+    else {
+        //problem
+        printf("SYNTAX ERROR: Expected closing bracket on if statement.\n");
+        parser_sync(parser);
+        return NULL;
+    }
+
+    //enter a new scope
+    Scope* if_scope = enter_scope(parser->current_scope);
+    char if_scope_name[8];
+    int this_if = if_statements++;
+    snprintf(if_scope_name, sizeof(if_scope_name), "if%d", this_if);
+    if_scope->name = strdup(if_scope_name);
+    list_add(parser->scopes, if_scope);
+
+    //if and else scopes don't create a new stack frame. Save the old offset and pass it through to the scopes.
+    int offset_entering_ifelse = parser->current_scope->current_offset;
+    //set the offset for the if scope
+    if_scope->current_offset = offset_entering_ifelse;
+
+    //set current scope as if scope
+    parser->current_scope = if_scope;
+
+    //parse if block
+    if_node->specialization.if_statement.code_block = parse_block(parser);
+
+    //exit scope
+    parser->current_scope = exit_scope(parser->current_scope);
+
+    //check for an ELSE!
+    parser_skip(parser);
+    if(parser->current_token->type == TOKEN_KEYWORD_ELSE) {
+        //advance past
+        parser_advance(parser);
+
+        //enter the else scope
+        Scope* else_scope = enter_scope(parser->current_scope);
+        char else_scope_name[16];
+        snprintf(else_scope_name, sizeof(else_scope_name), "elseforif%d", this_if);
+        else_scope->name = strdup(else_scope_name);
+        list_add(parser->scopes, else_scope);
+        parser->current_scope = else_scope;
+
+        //set the offset to what it was when entering
+        else_scope->current_offset = offset_entering_ifelse;
+
+        //parse else block
+        if_node->specialization.if_statement.else_block = parse_block(parser);
+
+        //exit
+        parser->current_scope = exit_scope(parser->current_scope);
+
+        //update the offset for the scope. Use whichever scope used more stack space
+        if(if_scope->current_offset > else_scope->current_offset) parser->current_scope->current_offset = if_scope->current_offset;
+        else parser->current_scope->current_offset = else_scope->current_offset;
+    }
+    else {
+        //update the offset for parent scope
+        parser->current_scope->current_offset = if_scope->current_offset;
+    }
+    return if_node;
+}
+
+/**
+ * @brief Parses a while loop.
+ * 
+ * @param parser Pointer to the parser.
+ * @return Pointer to the while loop node.
+ */
+
+static ASTNode* parse_while_loop(Parser* parser) {
+    //the node we will return 
+    ASTNode* while_node = init_node(AST_WHILE_LOOP, parser->current_scope);
+
+    //move past keyword 
+    parser_advance(parser);
+
+    //expect l paren
+    if(parser->current_token->type == TOKEN_LPAREN) parser_advance(parser);
+    else {
+        //problem
+        printf("SYNTAX ERROR: Expected opening bracket on while loop.\n");
+        parser_sync(parser);
+        return NULL;
+    }
+
+    //parse condition
+    while_node->specialization.while_loop.condition = parse_boolean_expression(parser);
+
+    //advance past closing paren
+    if(parser->current_token->type == TOKEN_RPAREN) parser_advance(parser);
+    else {
+        //problem
+        printf("SYNTAX ERROR: Expected closing bracket on while loop.\n");
+        parser_sync(parser);
+        return NULL;
+    }
+
+    //enter a new scope
+    Scope* while_scope = enter_scope(parser->current_scope);
+    char while_scope_name[8];
+    int this_while = while_loops++;
+    snprintf(while_scope_name, sizeof(while_scope_name), "while%d", this_while);
+    while_scope->name = strdup(while_scope_name);
+    list_add(parser->scopes, while_scope);
+
+    //no new stack frame for while loops. Save the old offset and pass it through to the scope.
+    int offset_entering_while = parser->current_scope->current_offset;
+    //set the offset for the if scope
+    while_scope->current_offset = offset_entering_while;
+
+    //set current scope to while scope
+    parser->current_scope = while_scope;
+
+    //parse while block
+    while_node->specialization.while_loop.code_block = parse_block(parser);
+
+    //exit scope, set updated offset, and return
+    parser->current_scope = exit_scope(parser->current_scope);
+    parser->current_scope->current_offset = while_scope->current_offset;
+    return while_node;
+}
+
 /**
  * @brief Parses a parameter during a function declaration.
  * 
  * @param parser Pointer to the parser.
- * @
+ * @return Pointer to the parameter node.
  */
 
 static ASTNode* parse_parameter(Parser* parser) {
@@ -405,8 +751,16 @@ static ASTNode* parse_function_call(Parser* parser) {
     //get function name
     func_call_node->specialization.func_call.function_name = strdup(parser->current_token->value);
 
-    //advance past name and opening bracket
-    parser_advance(parser); parser_advance(parser);
+    //advance past name and expect l paren
+    parser_advance(parser);
+
+    if(parser->current_token->type == TOKEN_LPAREN) parser_advance(parser);
+    else {
+        //problem
+        printf("SYNTAX ERROR: Expected opening bracket on function call.\n");
+        parser_sync(parser);
+        return NULL;
+    }
 
     //keep an index for func params
     int param_index = 0;
@@ -415,8 +769,9 @@ static ASTNode* parse_function_call(Parser* parser) {
     while(parser->current_token->type != TOKEN_RPAREN) {
         //parse the parameter, which we will restrict to being a factor for simplicity
         ASTNode* param_node;
-        param_node = parse_factor(parser);
+        param_node = parse_boolean_expression(parser);
 
+        /* Sacrifice safety check for expression passing. User is responsible. 
         //check if types match
         DataType param_type = resolve_factor_type(parser, param_node);
         Symbol* param_symbol = (Symbol*) func_symbol->data.func_data.parameters->array[param_index];
@@ -426,6 +781,7 @@ static ASTNode* parse_function_call(Parser* parser) {
             printf("SEMANTIC ERROR: Parameter type does not match function definition.\n");
             return NULL;
         }
+        */
 
         //skip past comma if there is one
         if(parser->current_token->type == TOKEN_COMMA) {
@@ -449,9 +805,6 @@ static ASTNode* parse_function_call(Parser* parser) {
 
     return func_call_node;
 }
-
-//forward declare parse block
-static ASTNode* parse_block(Parser* parser);
 
 /**
  * @brief Parses a function declaration. 
@@ -529,33 +882,36 @@ static ASTNode* parse_function_declaration(Parser* parser) {
         //advance past the closing
         parser_advance(parser);
 
-        //expect the keyword yields
+        //expect the keyword yields, if none specified then void
         if(parser->current_token->type == TOKEN_KEYWORD_YIELDS) {
+            parser_advance(parser);
+            //expect return type
+            if(parser->current_token->type == TOKEN_KEYWORD_INT) {
+                func_dec_node->specialization.func_dec.return_type = TYPE_INT;
+                func_symbol->data.func_data.return_type = TYPE_INT;
+            }
+            else if(parser->current_token->type == TOKEN_KEYWORD_STRING) {
+                func_dec_node->specialization.func_dec.return_type = TYPE_STRING;
+                func_symbol->data.func_data.return_type = TYPE_STRING;
+            }
+            else if(parser->current_token->type == TOKEN_KEYWORD_BOOL) {
+                func_dec_node->specialization.func_dec.return_type = TYPE_BOOL;
+                func_symbol->data.func_data.return_type = TYPE_BOOL;
+            }
+            else {
+                printf("SYNTAX ERROR: Unrecognized return type for %s.\n", function_name);
+                parser_sync(parser);
+                return NULL;
+            }
+
+            //advance past type
             parser_advance(parser);
         }
         else {
-            printf("SYNTAX ERROR: Expected keyword yields.\n");
-            parser_sync(parser);
-            return NULL;
+            //must be void
+            func_dec_node->specialization.func_dec.return_type = TYPE_VOID;
+            func_symbol->data.func_data.return_type = TYPE_VOID;
         }
-
-        //expect return type
-        if(parser->current_token->type == TOKEN_KEYWORD_INT) {
-            func_dec_node->specialization.func_dec.return_type = TYPE_INT;
-            func_symbol->data.func_data.return_type = TYPE_INT;
-        }
-        else if(parser->current_token->type == TOKEN_KEYWORD_STRING) {
-            func_dec_node->specialization.func_dec.return_type = TYPE_STRING;
-            func_symbol->data.func_data.return_type = TYPE_STRING;
-        }
-        else {
-            printf("SYNTAX ERROR: Unrecognized return type.\n");
-            parser_sync(parser);
-            return NULL;
-        }
-
-        //advance past type
-        parser_advance(parser);
 
         //finally parse the code block and return
         func_dec_node->specialization.func_dec.code_block = parse_block(parser);
@@ -591,6 +947,10 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
         var_dec_node->specialization.var_dec.data_type = TYPE_INT;
         type = TYPE_INT;
     }
+    else if(parser->current_token->type == TOKEN_KEYWORD_BOOL) {
+        var_dec_node->specialization.var_dec.data_type = TYPE_BOOL;
+        type = TYPE_BOOL;
+    }
     else if(parser->current_token->type == TOKEN_KEYWORD_STRING) {
         var_dec_node->specialization.var_dec.data_type = TYPE_STRING;
         type = TYPE_STRING;
@@ -625,12 +985,15 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
     //create and initalize the symbol
     Symbol* symbol;
     if(type == TYPE_STRING) symbol = init_symbol(parser->current_token->value, SYMBOL_STRING);
-    else symbol = init_symbol(parser->current_token->value, SYMBOL_VARIABLE);
+    else {
+        symbol = init_symbol(parser->current_token->value, SYMBOL_VARIABLE);
+        symbol->data.var_data.type = type;
+    }
 
     //generate label for strings
     if(symbol->kind == SYMBOL_STRING) {
         char label[8];
-        snprintf(label, sizeof(label), "str%d", string_literals++);
+        snprintf(label, sizeof(label), "str%d", string_labels++);
         symbol->data.str_data.label = strdup(label);
     }
     //assign offsets for variables
@@ -655,8 +1018,8 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
         return NULL;
     }
 
-    //recurse down and parse the assignment value
-    var_dec_node->specialization.var_dec.assignment = parse_expression(parser);
+    //recurse down from the top level of hierarchy and determine assignment
+    var_dec_node->specialization.var_dec.assignment = parse_boolean_expression(parser);
     
     //return the node once finished
     return var_dec_node;
@@ -713,9 +1076,7 @@ static ASTNode* parse_print_statement(Parser* parser) {
     parser_advance(parser);
 
     //expect an LPAREN
-    if(parser->current_token->type == TOKEN_LPAREN) {
-        parser_advance(parser);
-    }
+    if(parser->current_token->type == TOKEN_LPAREN) parser_advance(parser);
     else {
         //problem 
         printf("SYNTAX ERROR: Expected LPAREN.\n");
@@ -758,8 +1119,8 @@ static ASTNode* parse_return_statement(Parser* parser) {
     parser_advance(parser);
 
     //evaluate FACTOR to return
-    return_node->specialization.return_statement.operand = parse_factor(parser);
-    return_node->specialization.return_statement.type = resolve_factor_type(parser, return_node->specialization.return_statement.operand);
+    return_node->specialization.return_statement.operand = parse_boolean_expression(parser);
+    return_node->specialization.return_statement.type = TYPE_VOID;
 
     //done return statement
     return return_node;
@@ -780,6 +1141,9 @@ static ASTNode* parse_line(Parser* parser) {
         case TOKEN_KEYWORD_FUNC: return parse_function_declaration(parser);
         case TOKEN_KEYWORD_INT: return parse_variable_declaration(parser); 
         case TOKEN_KEYWORD_STRING: return parse_variable_declaration(parser);
+        case TOKEN_KEYWORD_BOOL: return parse_variable_declaration(parser);
+        case TOKEN_KEYWORD_IF: return parse_if_statement(parser);
+        case TOKEN_KEYWORD_WHILE: return parse_while_loop(parser);
         case TOKEN_KEYWORD_PRINT: return parse_print_statement(parser);
         case TOKEN_ID: 
             //check for function calls

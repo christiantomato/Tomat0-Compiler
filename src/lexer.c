@@ -178,11 +178,23 @@ static Token* tokenize_ID(Lexer* lexer) {
     else if(strcmp(id_value, "print") == 0) {
         return init_token(TOKEN_KEYWORD_PRINT, id_value);
     }
+    else if(strcmp(id_value, "while") == 0) {
+        return init_token(TOKEN_KEYWORD_WHILE, id_value);
+    }
     else if(strcmp(id_value, "if") == 0) {
         return init_token(TOKEN_KEYWORD_IF, id_value);
     }
-    else if(strcmp(id_value, "while") == 0) {
-        return init_token(TOKEN_KEYWORD_WHILE, id_value);
+    else if(strcmp(id_value, "else") == 0) {
+        return init_token(TOKEN_KEYWORD_ELSE, id_value);
+    }
+    else if(strcmp(id_value, "not") == 0) {
+        return init_token(TOKEN_KEYWORD_NOT, id_value);
+    }
+    else if(strcmp(id_value, "and") == 0) {
+        return init_token(TOKEN_KEYWORD_AND, id_value);
+    }
+    else if(strcmp(id_value, "or") == 0) {
+        return init_token(TOKEN_KEYWORD_OR, id_value);
     }
     else if(strcmp(id_value, "true") == 0) {
         return init_token(TOKEN_KEYWORD_TRUE, id_value);
@@ -190,8 +202,8 @@ static Token* tokenize_ID(Lexer* lexer) {
     else if(strcmp(id_value, "false") == 0) {
         return init_token(TOKEN_KEYWORD_FALSE, id_value);
     }
-    else if(strcmp(id_value, "is") == 0) {
-        return init_token(TOKEN_KEYWORD_IS, id_value);
+    else if(strcmp(id_value, "equals") == 0) {
+        return init_token(TOKEN_KEYWORD_EQUALS, id_value);
     }
     else if(strcmp(id_value, "yields") == 0) {
         return init_token(TOKEN_KEYWORD_YIELDS, id_value);
@@ -271,7 +283,8 @@ static Token* tokenize_next(Lexer* lexer) {
             case '\n': return continue_with_token(lexer, init_token(TOKEN_NEWLINE, lexer_char_as_str(lexer))); 
             case '~': return continue_with_token(lexer, init_token(TOKEN_TILDA, lexer_char_as_str(lexer))); 
             case '=': return continue_with_token(lexer, init_token(TOKEN_EQUALS, lexer_char_as_str(lexer))); 
-            case ';': return continue_with_token(lexer, init_token(TOKEN_SEMI, lexer_char_as_str(lexer))); 
+            case ';': return continue_with_token(lexer, init_token(TOKEN_SEMI, lexer_char_as_str(lexer)));
+            case ':': return continue_with_token(lexer, init_token(TOKEN_COLON, lexer_char_as_str(lexer)));  
             case ',': return continue_with_token(lexer, init_token(TOKEN_COMMA, lexer_char_as_str(lexer))); 
             case '.': return continue_with_token(lexer, init_token(TOKEN_PERIOD, lexer_char_as_str(lexer))); 
             case '\'': return continue_with_token(lexer, init_token(TOKEN_APOSTROPHE, lexer_char_as_str(lexer))); 
