@@ -363,6 +363,10 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             }
             //result comes back to x0 (if there is a return)
             context->result_reg = 0;
+
+            //check if void function to free x0
+            Symbol* func_sym = lookup_symbol(node->scope, node->specialization.func_call.function_name);
+            if(func_sym->data.func_data.return_type == TYPE_VOID) free_register(context->register_manager, 0);
             break;
         }
         case AST_IF_STATEMENT: {
