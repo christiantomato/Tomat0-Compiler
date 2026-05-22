@@ -1,0 +1,51 @@
+~ functions example
+
+~ non return function (void)
+func print3(string msg) {
+    print(msg)
+    print(msg)
+    print(msg)
+}
+
+~ boolean function
+func greaterThan(int x, int y) yields bool {
+    if(x > y) {
+        harvest true
+    }
+    ~ otherwise false
+    harvest false
+}
+
+~ integer function
+func evaluateQuadratic(int a, int b, int c, int x) yields int {
+    harvest a * x * x + b * x + c
+}
+
+~ will compose this with greater than
+func calculate(bool shouldCompute, int y) yields int {
+    if(shouldCompute) {
+        ~ add 1
+        harvest y + 1
+    }
+    ~ otherwise return untouched
+    harvest y
+}
+
+~ entry point
+sprout {
+    ~ print out our message 3 times
+    print3("hello world\n")
+
+    ~ setup some quadratic to evaluate (x + 3)(x - 3)
+    int a = 1
+    int b = 0
+    int c = -9
+    print("evaluating quadratic at x = 1\n")
+    print(evaluateQuadratic(a, b, c, 1))
+    print("\n")
+
+    ~ do a composition of calls with funky parameter passing
+    int num = 4
+    print(calculate(greaterThan(1*4, 10/2-2), num))
+    print("\n")
+}

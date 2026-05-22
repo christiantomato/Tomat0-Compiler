@@ -1,0 +1,39 @@
+~ loops example. 
+
+~ entry point
+sprout {
+    ~ print something 10 times
+    int counter = 0
+    while(counter < 10) {
+        print("hello world\n")
+        counter = counter + 1
+    }
+
+    ~ nest loops and print a table
+    int a = 0
+    while(a < 3) {
+        int b = 0
+        while(b < 5) {
+            print(" x")
+            b = b + 1
+        }
+        print("\n")
+        a = a + 1
+    }
+
+    ~ print even integers up to n
+    int n = 26
+    int even = 0
+    while(even < n or even equals n) {
+        print(even)
+        ~ print comma as long as not on last
+        if(not(even + 1 > n)) {
+            print(", ")
+        }
+        even = even + 2
+    }
+    print("\n")
+  
+    ~ runtime end
+    harvest tomato
+}
