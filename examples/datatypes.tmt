@@ -26,9 +26,8 @@ sprout {
 
     ~ strings:
     ~ you can declare a string variable if you want, but you cannot do any operations on them, and they are immutable
-    string z = "hello world"
+    string z = "hello world\n"
     print(z)
-    print("\n")
 
     ~ runtime end
     harvest tomato
