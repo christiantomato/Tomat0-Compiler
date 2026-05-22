@@ -35,7 +35,7 @@ sprout {
     int num = 8
 
     ~ compute factorial of num
-    print("computing factorial...")
+    print("computing factorial...\n")
     print(factorial(num))
 
     ~ compute fibonacci term of num

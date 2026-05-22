@@ -5,13 +5,13 @@ sprout {
     ~ initialize a grade
     int grade = 90
 
-    print("calculating grade...")
+    print("calculating grade...\n")
 
     ~ determine feedback on grade
     ~ NOTE: extreme nesting like this will cause registers to overflow. This is the max. >4 levels will break.
     if(grade < 0 or grade > 100) {
         ~ invalid input
-        print("invalid grade")
+        print("invalid grade\n")
         throw tomato
     }
     else {
@@ -34,6 +34,7 @@ sprout {
             }
         }
     }
+    print("\n")
 
     ~ runtime end
     harvest tomato
