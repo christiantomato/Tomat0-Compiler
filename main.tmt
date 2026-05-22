@@ -3,7 +3,7 @@
 ~ entry point
 sprout {
 
-    print("hello world\n")
+    print("hello, world\n")
 
     ~ runtime end
     harvest tomato
