@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     List* tokens_list = tokenize_all(my_lexer);
 
     //write all the tokens to a file
-    FILE* tokens_file = fopen("output/tokens_output.csv", "w");
+    FILE* tokens_file = fopen("output/tokens_output.txt", "w");
     print_list(tokens_file, tokens_list, token_to_str);
     fclose(tokens_file);
 
