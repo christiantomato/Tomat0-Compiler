@@ -35,12 +35,14 @@ sprout {
     int num = 8
 
     ~ compute factorial of num
-    print("computing factorial...\n")
+    print("computing factorial... ")
     print(factorial(num))
+    print("\n")
 
     ~ compute fibonacci term of num
-    print("computing fibonacci...")
+    print("computing fibonacci... ")
     print(fibonacci(num))
+    print("\n")
 
     ~ runtime end
     harvest tomato
