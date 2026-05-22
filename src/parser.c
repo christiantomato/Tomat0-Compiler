@@ -702,6 +702,9 @@ static ASTNode* parse_parameter(Parser* parser) {
     else if(parser->current_token->type == TOKEN_KEYWORD_STRING) {
         param_node->specialization.param.parameter_type = TYPE_STRING;
     }
+    else if(parser->current_token->type == TOKEN_KEYWORD_BOOL) {
+        param_node->specialization.param.parameter_type = TYPE_BOOL;
+    }
     else {
         printf("SYNTAX ERROR: Unrecognized parameter type.\n");
         parser_sync(parser);
@@ -795,7 +798,7 @@ static ASTNode* parse_function_call(Parser* parser) {
 
     //check if it was the correct amount of arguments
     if(param_index != func_symbol->data.func_data.parameters->num_items) {
-        printf("SEMANTIC ERROR: Incorrect amount of arguments.\n");
+        printf("SEMANTIC ERROR: Incorrect amount of arguments for %s.\n", func_symbol->name);
     }
 
     //advance past closing
