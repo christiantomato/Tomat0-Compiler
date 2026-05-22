@@ -1,23 +1,4 @@
 SCOPE: global
 
 SCOPE: main
-SYMBOL NAME: grade, KIND: SYMBOL_VARIABLE, DATA TYPE: TYPE_INT, OFFSET: -8
-
-SCOPE: if0
-
-SCOPE: elseforif0
-
-SCOPE: if1
-
-SCOPE: elseforif1
-
-SCOPE: if2
-
-SCOPE: elseforif2
-
-SCOPE: if3
-
-SCOPE: elseforif3
-
-SCOPE: if4
 
