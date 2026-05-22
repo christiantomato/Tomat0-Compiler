@@ -43,26 +43,19 @@ static void setup(CodeGenContext* context) {
  */
 
 static void print_int(CodeGenContext* context) {
-    //save result to new register in case its a return value in x0.
-    int safe_reg = allocate_general_register(context->register_manager);
-    fprintf(context->output, "\t//ensure int to print doesn't get clobbered.\n");
-    fprintf(context->output, "\tmov x%d, x%d\n", safe_reg, context->result_reg);
-    //free result register
-    free_register(context->register_manager, context->result_reg);
-
     fprintf(context->output, "\t//print integer.\n");
     //load format string address into x0 (printf's address arg) using this weird page off thing since its too far away from text section
     fprintf(context->output, "\tadrp x0, fmt_int@PAGE\n");
     //add some offset thing
     fprintf(context->output, "\tadd x0, x0, fmt_int@PAGEOFF\n");
     //push the int arg to the stack (keep 16 byte aligned)
-    fprintf(context->output, "\tstr x%d, [sp, #-16]!\n", safe_reg);
+    fprintf(context->output, "\tstr x%d, [sp, #-16]!\n", context->result_reg);
     //call printf
     fprintf(context->output, "\tbl _printf\n");
     //restore sp
     fprintf(context->output, "\tadd sp, sp, #16\n\n");
     //free safe reg
-    free_register(context->register_manager, safe_reg);
+    free_register(context->register_manager, context->result_reg);
 }
 
 /**
@@ -361,12 +354,11 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             for(int i = 1; i < node->specialization.func_call.parameter_inputs->num_items; i++) {
                 free_register(context->register_manager, i);
             }
-            //result comes back to x0 (if there is a return)
-            context->result_reg = 0;
-
-            //check if void function to free x0
-            Symbol* func_sym = lookup_symbol(node->scope, node->specialization.func_call.function_name);
-            if(func_sym->data.func_data.return_type == TYPE_VOID) free_register(context->register_manager, 0);
+            //move result out of x0 into scratch incase in nested func calls
+            fprintf(context->output, "\t//move result into general register for safety.\n");
+            context->result_reg = allocate_general_register(context->register_manager);
+            fprintf(context->output, "\tmov x%d, x0\n\n", context->result_reg);
+            free_register(context->register_manager, 0);
             break;
         }
         case AST_IF_STATEMENT: {
