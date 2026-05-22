@@ -18,8 +18,6 @@
 
 //keep track of defined string literals during parsing.
 static int string_literals = 0;
-//keeps track of assigned string labels.
-static int string_labels = 0;
 //keeps track of if statements, else, and while in program (just for debugging)
 static int if_statements = 0;
 static int while_loops = 0;
@@ -993,7 +991,7 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
     //generate label for strings
     if(symbol->kind == SYMBOL_STRING) {
         char label[8];
-        snprintf(label, sizeof(label), "str%d", string_labels++);
+        snprintf(label, sizeof(label), "str%d", string_literals++);
         symbol->data.str_data.label = strdup(label);
     }
     //assign offsets for variables
@@ -1017,6 +1015,9 @@ static ASTNode* parse_variable_declaration(Parser* parser) {
         parser_sync(parser);
         return NULL;
     }
+
+    //if it was a string override the label and minus one so we don't double count
+    if(symbol->kind == SYMBOL_STRING) string_literals--;
 
     //recurse down from the top level of hierarchy and determine assignment
     var_dec_node->specialization.var_dec.assignment = parse_boolean_expression(parser);
