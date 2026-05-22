@@ -1,0 +1,35 @@
+~ data types example.
+
+~ there are 3 supported data types: integers, booleans, and strings
+
+~ entry point
+sprout {
+    ~ integers:
+    ~ you can assign any number or arithmetic expression to an integer variable
+    int x = -(3 + 2 * -6) / 3
+    print(x)
+    print("\n\n")
+
+    ~ booleans:
+    ~ you can assign any boolean expression to a boolean variable
+    ~ booleans are just integers under the hood: 1 is true, 0 is false
+    bool y = true
+    print(y)
+    print("\n")
+    y = 1
+    print(y)
+    print("\n")
+    ~ a false statement (0)
+    y = not(1 < 2 and 1 < 3)
+    print(y)
+    print("\n\n")
+
+    ~ strings:
+    ~ you can declare a string variable if you want, but you cannot do any operations on them, and they are immutable
+    string z = "hello world"
+    print(z)
+    print("\n")
+
+    ~ runtime end
+    harvest tomato
+}
