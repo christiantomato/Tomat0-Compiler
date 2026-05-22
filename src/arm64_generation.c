@@ -22,11 +22,11 @@ static int end_loop_labels = 0;
 static void setup(CodeGenContext* context) {
     //emit .data section upfront
     fprintf(context->output, ".data\n");
-    fprintf(context->output, "fmt_int: .asciz \"%%d\\n\"\n");
+    fprintf(context->output, "fmt_int: .asciz \"%%d\"\n");
 
     //emit string literals
     for(int i = 0; i < context->string_literals->num_items; i++) {
-        fprintf(context->output, "str%d: .asciz \"%s\\n\"\n", i, (char*) context->string_literals->array[i]);
+        fprintf(context->output, "str%d: .asciz \"%s\"\n", i, (char*) context->string_literals->array[i]);
     }
     fprintf(context->output, "\n");
     
