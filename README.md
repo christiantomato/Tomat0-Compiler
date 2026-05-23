@@ -9,7 +9,7 @@ Compiler for my own language, Tomat0. Tomat0 focuses on increasing readibility a
 
 ### Instructions
 1. Clone repo 
-2. Write Tomat0 source code in main.tmt (see notes/syntax.txt or wiki for syntax rules).
+2. Write Tomat0 source code in main.tmt (see [wiki]() for documentation on syntax).
 3. Compile the compiler using make:
 
 ```
