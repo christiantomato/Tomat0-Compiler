@@ -7,7 +7,7 @@
  * x0-x7: passing parameters
  * x9-x15: general purpose
  * x16: system call numbers
- * x19-x28: callee-saved registers
+ * x19-x28: callee-saved registers (we are going to abuse these for general)
  * x29: frame pointer
  * x30: link register
  * sp: stack pointer

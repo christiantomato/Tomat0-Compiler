@@ -63,8 +63,8 @@ int allocate_general_register(RegisterManager* manager) {
             return i + 9;
         }
     }
-    //otherwise no registers free
-    return -1;
+    //if not registers free, use callee instead lol
+    return allocate_callee_register(manager);
 }
 
 /*
