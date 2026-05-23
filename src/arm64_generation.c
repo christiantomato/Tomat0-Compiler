@@ -354,10 +354,15 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             for(int i = 1; i < node->specialization.func_call.parameter_inputs->num_items; i++) {
                 free_register(context->register_manager, i);
             }
-            //move result out of x0 into scratch incase in nested func calls
-            fprintf(context->output, "\t//move result into general register for safety.\n");
-            context->result_reg = allocate_general_register(context->register_manager);
-            fprintf(context->output, "\tmov x%d, x0\n\n", context->result_reg);
+            //move to safe unless void func
+            Symbol* func_sym = lookup_symbol(node->scope, node->specialization.func_call.function_name);
+            if(func_sym->data.func_data.return_type != TYPE_VOID) {
+                //move result out of x0 into scratch incase in nested func calls
+                fprintf(context->output, "\t//move result into general register for safety.\n");
+                context->result_reg = allocate_general_register(context->register_manager);
+                fprintf(context->output, "\tmov x%d, x0\n\n", context->result_reg);
+            }
+            //free return reg
             free_register(context->register_manager, 0);
             break;
         }
