@@ -46,6 +46,5 @@ ARM64 Assembly Generation
   - [x] loops and conditionals
 
 ### TODO
-- optimize register allocation to allow for deeper nesting levels (breaks after for >4)
-- optimize parsing algorithm
-- deploy vscode extension for syntax highlighting
+- [x] optimize register allocation to allow for deeper nesting levels 
+- [ ] deploy vscode extension for syntax highlighting
