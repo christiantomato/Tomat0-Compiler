@@ -1,10 +1,202 @@
-~ tomat0 hello world.
+~ example Tomat0 program.
 
-~ entry point
+~ prints greeting
+func welcome() {
+    print("Welcome to Tomat0!\n\n")
+
+    ~ tomato stem
+    print("     \\    |    /   \n")
+    print("       \\  |  /     \n")
+    print("         \\|/       \n")
+
+    ~ tomato
+    int row = 0
+    while(row < 7) {
+        int col = 0
+        while(col < 21) {
+            ~ eyes
+            if(row equals 3 and (col equals 8 or col equals 12)) {
+                print("^")
+                col = col + 1
+            }
+            ~ body
+            else {
+                if(row equals 0 or row equals 6) {
+                    print("*")
+                    col = col + 1
+                }
+                else {
+                    if(col equals 0 or col equals 20) {
+                        print("*")
+
+                    }
+                    else {
+                        print(" ")
+                    }
+                    col = col + 1
+                }
+            }
+        }
+        ~ go to next row
+        print("\n")
+        row = row + 1
+    }
+    print("\nBelow is an example program which does vector computations.\n\n")
+}
+
+~ to string for a vector
+func vectorToString(int x, int y) {
+    print("[")
+    print(x)
+    print(", ")
+    print(y)
+    print("]\n")
+}
+
+~ computes the dot product between two vectors in R2
+func dot(int x1, int y1, int x2, int y2) yields int {
+    harvest x1 * x2 + y1 * y2
+}
+
+~ checks if two vectors in R2 are orthogonal
+func isOrthogonal(int x1, int y1, int x2, int y2) yields bool {
+    ~ compute dot product
+    int product = dot(x1, y1, x2, y2)
+    ~ orthogonal when 0
+    if(product equals 0) {
+        harvest true
+    }
+    harvest false
+}
+
+~ finds a square root using a linear search
+func squareRoot(int s) yields int {
+    int guess = 1
+    ~ inefficient search
+    while(guess < s or guess equals s) {
+        if(guess * guess equals s) {
+            harvest guess
+        }
+        guess = guess + 1
+    }
+    ~ square root not found :O
+    print("no square root found.\n")
+    throw tomato
+}
+
+~ computes the magnitude of a vector
+func magnitude(int x, int y) yields int {
+    int length = squareRoot(x * x + y * y)
+    harvest length
+}
+
+~ checks if a vector is a unit vector
+func isNormalized(int x, int y) yields bool {
+    if(magnitude(x, y) equals 1) {
+        harvest true
+    }
+    harvest false
+}
+
+~ computes the scalar component of [x1,y1] onto [x2,y2]
+func comp(int x1, int y1, int x2, int y2) yields int {
+    ~ compute dot product
+    int product = dot(x1, y1, x2, y2)
+    ~ get magnitude of v2
+    int mag = magnitude(x2, y2)
+    ~ return scalar component
+    harvest product / mag
+}
+
 sprout {
+    ~ output welcome mesage
+    welcome()
 
-    print("hello, world\n")
+    ~ vector 1
+    int a = 3
+    int b = 4
+    print("vector 1: ")
+    vectorToString(a, b)
+    ~ vector 2
+    int c = 4
+    int d = -3
+    print("vector 2: ")
+    vectorToString(c, d)
+    ~ vector 3
+    int e = 1
+    int f = 0
+    print("vector 3: ")
+    vectorToString(e, f)
+    ~ vector 4
+    int g = 0
+    int h = 5
+    print("vector 4: ")
+    vectorToString(g, h)
 
-    ~ runtime end
+    ~ compute magnitude of v1
+    print("magnitude of vector1: ")
+    print(magnitude(a, b))
+    print("\n")
+    ~ compute magnitude of v2
+    print("magnitude of vector2: ")
+    print(magnitude(c, d))
+    print("\n")
+    ~ compute magnitude of v3
+    print("magnitude of vector3: ")
+    print(magnitude(e, f))
+    print("\n")
+    ~ compute magnitude of v4
+    print("magnitude of vector4: ")
+    print(magnitude(g, h))
+    print("\n")
+
+    ~ v1 and v2 orthgonality
+    if(isOrthogonal(a, b, c, d)) {
+        print("vector 1 and vector 2 are orthogonal.\n")
+    }
+    else {
+        print("vector 1 and 2 are not orthogonal, dot product was: ")
+        print(dot(a, b, c, d))
+        print("\n")
+    }
+    ~ v1 and v4 orthgonality
+    if(isOrthogonal(a, b, g, h)) {
+        print("vector 1 and vector 4 are orthogonal.\n")
+    }
+    else {
+        print("vector 1 and vector 4 are not orthogonal, dot product was: ")
+        print(dot(a, b, g, h))
+        print("\n")
+    }
+   
+    ~ check v3 unit norm
+    if(isNormalized(e, f)) {
+        print("vector 3 is a unit vector.\n")
+    }
+    else {
+        print("vector 3 is not a unit vector, length is: ")
+        print(magnitude(e, f))
+        print("\n")
+    }
+    ~ check v4 unit norm
+    if(isNormalized(g, h)) {
+        print("vector 4 is a unit vector.\n")
+    }
+    else {
+        print("vector 4 is not a unit vector, length is: ")
+        print(magnitude(g, h))
+        print("\n")
+    }
+
+    ~ compute the scalar component of v1 on v4
+    print("component of v1 on v4 is: ")
+    print(comp(a, b, g, h))
+    print("\n")
+    ~ compute the scalar component of v4 on v3
+    print("component of v4 on v3 is: ")
+    print(comp(g, h, e, f))
+    print("\n")
+    
+    ~ end program
     harvest tomato
 }

@@ -1,9 +1,1018 @@
 NODE: AST_GLOBAL
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = welcome
+	parameters = 
+	return_type = TYPE_VOID
+	code_block = 
+		NODE: AST_BLOCK
+			NODE: AST_PRINT_STATEMENT
+			output = 
+				NODE: AST_STRING
+				value = 'Welcome to Tomat0!\n\n'
+				id = 0
+			print_type = TYPE_STRING
+			NODE: AST_PRINT_STATEMENT
+			output = 
+				NODE: AST_STRING
+				value = '     \\    |    /   \n'
+				id = 1
+			print_type = TYPE_STRING
+			NODE: AST_PRINT_STATEMENT
+			output = 
+				NODE: AST_STRING
+				value = '       \\  |  /     \n'
+				id = 2
+			print_type = TYPE_STRING
+			NODE: AST_PRINT_STATEMENT
+			output = 
+				NODE: AST_STRING
+				value = '         \\|/       \n'
+				id = 3
+			print_type = TYPE_STRING
+			NODE: AST_VARIABLE_DECLARATION
+			data_type = TYPE_INT
+			variable_name = row
+			assignment = 
+				NODE: AST_NUMBER
+				value = 0
+			NODE: AST_WHILE_LOOP
+			condition = 
+				NODE: AST_BINARY_OPERATION
+				operator = <
+				left = 
+					NODE: AST_VARIABLE
+					variable_name = row
+				right = 
+					NODE: AST_NUMBER
+					value = 7
+			code_block = 
+				NODE: AST_BLOCK
+					NODE: AST_VARIABLE_DECLARATION
+					data_type = TYPE_INT
+					variable_name = col
+					assignment = 
+						NODE: AST_NUMBER
+						value = 0
+					NODE: AST_WHILE_LOOP
+					condition = 
+						NODE: AST_BINARY_OPERATION
+						operator = <
+						left = 
+							NODE: AST_VARIABLE
+							variable_name = col
+						right = 
+							NODE: AST_NUMBER
+							value = 21
+					code_block = 
+						NODE: AST_BLOCK
+							NODE: AST_IF_STATEMENT
+							condition = 
+								NODE: AST_BINARY_OPERATION
+								operator = and
+								left = 
+									NODE: AST_BINARY_OPERATION
+									operator = equals
+									left = 
+										NODE: AST_VARIABLE
+										variable_name = row
+									right = 
+										NODE: AST_NUMBER
+										value = 3
+								right = 
+									NODE: AST_BINARY_OPERATION
+									operator = or
+									left = 
+										NODE: AST_BINARY_OPERATION
+										operator = equals
+										left = 
+											NODE: AST_VARIABLE
+											variable_name = col
+										right = 
+											NODE: AST_NUMBER
+											value = 8
+									right = 
+										NODE: AST_BINARY_OPERATION
+										operator = equals
+										left = 
+											NODE: AST_VARIABLE
+											variable_name = col
+										right = 
+											NODE: AST_NUMBER
+											value = 12
+							code_block = 
+								NODE: AST_BLOCK
+									NODE: AST_PRINT_STATEMENT
+									output = 
+										NODE: AST_STRING
+										value = '^'
+										id = 4
+									print_type = TYPE_STRING
+									NODE: AST_VARIABLE_ASSIGNMENT
+									name = col
+									assignment = 
+										NODE: AST_BINARY_OPERATION
+										operator = +
+										left = 
+											NODE: AST_VARIABLE
+											variable_name = col
+										right = 
+											NODE: AST_NUMBER
+											value = 1
+							else_block = 
+								NODE: AST_BLOCK
+									NODE: AST_IF_STATEMENT
+									condition = 
+										NODE: AST_BINARY_OPERATION
+										operator = or
+										left = 
+											NODE: AST_BINARY_OPERATION
+											operator = equals
+											left = 
+												NODE: AST_VARIABLE
+												variable_name = row
+											right = 
+												NODE: AST_NUMBER
+												value = 0
+										right = 
+											NODE: AST_BINARY_OPERATION
+											operator = equals
+											left = 
+												NODE: AST_VARIABLE
+												variable_name = row
+											right = 
+												NODE: AST_NUMBER
+												value = 6
+									code_block = 
+										NODE: AST_BLOCK
+											NODE: AST_PRINT_STATEMENT
+											output = 
+												NODE: AST_STRING
+												value = '*'
+												id = 5
+											print_type = TYPE_STRING
+											NODE: AST_VARIABLE_ASSIGNMENT
+											name = col
+											assignment = 
+												NODE: AST_BINARY_OPERATION
+												operator = +
+												left = 
+													NODE: AST_VARIABLE
+													variable_name = col
+												right = 
+													NODE: AST_NUMBER
+													value = 1
+									else_block = 
+										NODE: AST_BLOCK
+											NODE: AST_IF_STATEMENT
+											condition = 
+												NODE: AST_BINARY_OPERATION
+												operator = or
+												left = 
+													NODE: AST_BINARY_OPERATION
+													operator = equals
+													left = 
+														NODE: AST_VARIABLE
+														variable_name = col
+													right = 
+														NODE: AST_NUMBER
+														value = 0
+												right = 
+													NODE: AST_BINARY_OPERATION
+													operator = equals
+													left = 
+														NODE: AST_VARIABLE
+														variable_name = col
+													right = 
+														NODE: AST_NUMBER
+														value = 20
+											code_block = 
+												NODE: AST_BLOCK
+													NODE: AST_PRINT_STATEMENT
+													output = 
+														NODE: AST_STRING
+														value = '*'
+														id = 6
+													print_type = TYPE_STRING
+											else_block = 
+												NODE: AST_BLOCK
+													NODE: AST_PRINT_STATEMENT
+													output = 
+														NODE: AST_STRING
+														value = ' '
+														id = 7
+													print_type = TYPE_STRING
+											NODE: AST_VARIABLE_ASSIGNMENT
+											name = col
+											assignment = 
+												NODE: AST_BINARY_OPERATION
+												operator = +
+												left = 
+													NODE: AST_VARIABLE
+													variable_name = col
+												right = 
+													NODE: AST_NUMBER
+													value = 1
+					NODE: AST_PRINT_STATEMENT
+					output = 
+						NODE: AST_STRING
+						value = '\n'
+						id = 8
+					print_type = TYPE_STRING
+					NODE: AST_VARIABLE_ASSIGNMENT
+					name = row
+					assignment = 
+						NODE: AST_BINARY_OPERATION
+						operator = +
+						left = 
+							NODE: AST_VARIABLE
+							variable_name = row
+						right = 
+							NODE: AST_NUMBER
+							value = 1
+			NODE: AST_PRINT_STATEMENT
+			output = 
+				NODE: AST_STRING
+				value = '\nBelow is an example program which does vector computations.\n\n'
+				id = 9
+			print_type = TYPE_STRING
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = vectorToString
+	parameters = 
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = y
+	return_type = TYPE_VOID
+	code_block = 
+		NODE: AST_BLOCK
+			NODE: AST_PRINT_STATEMENT
+			output = 
+				NODE: AST_STRING
+				value = '['
+				id = 10
+			print_type = TYPE_STRING
+			NODE: AST_PRINT_STATEMENT
+			output = 
+				NODE: AST_VARIABLE
+				variable_name = x
+			print_type = TYPE_INT
+			NODE: AST_PRINT_STATEMENT
+			output = 
+				NODE: AST_STRING
+				value = ', '
+				id = 11
+			print_type = TYPE_STRING
+			NODE: AST_PRINT_STATEMENT
+			output = 
+				NODE: AST_VARIABLE
+				variable_name = y
+			print_type = TYPE_INT
+			NODE: AST_PRINT_STATEMENT
+			output = 
+				NODE: AST_STRING
+				value = ']\n'
+				id = 12
+			print_type = TYPE_STRING
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = dot
+	parameters = 
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x1
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = y1
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x2
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = y2
+	return_type = TYPE_INT
+	code_block = 
+		NODE: AST_BLOCK
+			NODE: AST_RETURN_STATEMENT
+			return = 
+				NODE: AST_BINARY_OPERATION
+				operator = +
+				left = 
+					NODE: AST_BINARY_OPERATION
+					operator = *
+					left = 
+						NODE: AST_VARIABLE
+						variable_name = x1
+					right = 
+						NODE: AST_VARIABLE
+						variable_name = x2
+				right = 
+					NODE: AST_BINARY_OPERATION
+					operator = *
+					left = 
+						NODE: AST_VARIABLE
+						variable_name = y1
+					right = 
+						NODE: AST_VARIABLE
+						variable_name = y2
+			return_type = TYPE_VOID
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = isOrthogonal
+	parameters = 
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x1
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = y1
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x2
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = y2
+	return_type = TYPE_BOOL
+	code_block = 
+		NODE: AST_BLOCK
+			NODE: AST_VARIABLE_DECLARATION
+			data_type = TYPE_INT
+			variable_name = product
+			assignment = 
+				NODE: AST_FUNCTION_CALL
+				function_name = dot
+				parameter_values = 
+					NODE: AST_VARIABLE
+					variable_name = x1
+					NODE: AST_VARIABLE
+					variable_name = y1
+					NODE: AST_VARIABLE
+					variable_name = x2
+					NODE: AST_VARIABLE
+					variable_name = y2
+			NODE: AST_IF_STATEMENT
+			condition = 
+				NODE: AST_BINARY_OPERATION
+				operator = equals
+				left = 
+					NODE: AST_VARIABLE
+					variable_name = product
+				right = 
+					NODE: AST_NUMBER
+					value = 0
+			code_block = 
+				NODE: AST_BLOCK
+					NODE: AST_RETURN_STATEMENT
+					return = 
+						NODE: AST_NUMBER
+						value = 1
+					return_type = TYPE_VOID
+			NODE: AST_RETURN_STATEMENT
+			return = 
+				NODE: AST_NUMBER
+				value = 0
+			return_type = TYPE_VOID
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = squareRoot
+	parameters = 
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = s
+	return_type = TYPE_INT
+	code_block = 
+		NODE: AST_BLOCK
+			NODE: AST_VARIABLE_DECLARATION
+			data_type = TYPE_INT
+			variable_name = guess
+			assignment = 
+				NODE: AST_NUMBER
+				value = 1
+			NODE: AST_WHILE_LOOP
+			condition = 
+				NODE: AST_BINARY_OPERATION
+				operator = or
+				left = 
+					NODE: AST_BINARY_OPERATION
+					operator = <
+					left = 
+						NODE: AST_VARIABLE
+						variable_name = guess
+					right = 
+						NODE: AST_VARIABLE
+						variable_name = s
+				right = 
+					NODE: AST_BINARY_OPERATION
+					operator = equals
+					left = 
+						NODE: AST_VARIABLE
+						variable_name = guess
+					right = 
+						NODE: AST_VARIABLE
+						variable_name = s
+			code_block = 
+				NODE: AST_BLOCK
+					NODE: AST_IF_STATEMENT
+					condition = 
+						NODE: AST_BINARY_OPERATION
+						operator = equals
+						left = 
+							NODE: AST_BINARY_OPERATION
+							operator = *
+							left = 
+								NODE: AST_VARIABLE
+								variable_name = guess
+							right = 
+								NODE: AST_VARIABLE
+								variable_name = guess
+						right = 
+							NODE: AST_VARIABLE
+							variable_name = s
+					code_block = 
+						NODE: AST_BLOCK
+							NODE: AST_RETURN_STATEMENT
+							return = 
+								NODE: AST_VARIABLE
+								variable_name = guess
+							return_type = TYPE_VOID
+					NODE: AST_VARIABLE_ASSIGNMENT
+					name = guess
+					assignment = 
+						NODE: AST_BINARY_OPERATION
+						operator = +
+						left = 
+							NODE: AST_VARIABLE
+							variable_name = guess
+						right = 
+							NODE: AST_NUMBER
+							value = 1
+			NODE: AST_PRINT_STATEMENT
+			output = 
+				NODE: AST_STRING
+				value = 'no square root found.\n'
+				id = 13
+			print_type = TYPE_STRING
+			NODE: AST_THROW
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = magnitude
+	parameters = 
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = y
+	return_type = TYPE_INT
+	code_block = 
+		NODE: AST_BLOCK
+			NODE: AST_VARIABLE_DECLARATION
+			data_type = TYPE_INT
+			variable_name = length
+			assignment = 
+				NODE: AST_FUNCTION_CALL
+				function_name = squareRoot
+				parameter_values = 
+					NODE: AST_BINARY_OPERATION
+					operator = +
+					left = 
+						NODE: AST_BINARY_OPERATION
+						operator = *
+						left = 
+							NODE: AST_VARIABLE
+							variable_name = x
+						right = 
+							NODE: AST_VARIABLE
+							variable_name = x
+					right = 
+						NODE: AST_BINARY_OPERATION
+						operator = *
+						left = 
+							NODE: AST_VARIABLE
+							variable_name = y
+						right = 
+							NODE: AST_VARIABLE
+							variable_name = y
+			NODE: AST_RETURN_STATEMENT
+			return = 
+				NODE: AST_VARIABLE
+				variable_name = length
+			return_type = TYPE_VOID
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = isNormalized
+	parameters = 
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = y
+	return_type = TYPE_BOOL
+	code_block = 
+		NODE: AST_BLOCK
+			NODE: AST_IF_STATEMENT
+			condition = 
+				NODE: AST_BINARY_OPERATION
+				operator = equals
+				left = 
+					NODE: AST_FUNCTION_CALL
+					function_name = magnitude
+					parameter_values = 
+						NODE: AST_VARIABLE
+						variable_name = x
+						NODE: AST_VARIABLE
+						variable_name = y
+				right = 
+					NODE: AST_NUMBER
+					value = 1
+			code_block = 
+				NODE: AST_BLOCK
+					NODE: AST_RETURN_STATEMENT
+					return = 
+						NODE: AST_NUMBER
+						value = 1
+					return_type = TYPE_VOID
+			NODE: AST_RETURN_STATEMENT
+			return = 
+				NODE: AST_NUMBER
+				value = 0
+			return_type = TYPE_VOID
+	NODE: AST_FUNCTION_DECLARATION
+	function_name = comp
+	parameters = 
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x1
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = y1
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = x2
+		NODE: AST_PARAMETER
+		parameter_type = TYPE_INT
+		parameter_name = y2
+	return_type = TYPE_INT
+	code_block = 
+		NODE: AST_BLOCK
+			NODE: AST_VARIABLE_DECLARATION
+			data_type = TYPE_INT
+			variable_name = product
+			assignment = 
+				NODE: AST_FUNCTION_CALL
+				function_name = dot
+				parameter_values = 
+					NODE: AST_VARIABLE
+					variable_name = x1
+					NODE: AST_VARIABLE
+					variable_name = y1
+					NODE: AST_VARIABLE
+					variable_name = x2
+					NODE: AST_VARIABLE
+					variable_name = y2
+			NODE: AST_VARIABLE_DECLARATION
+			data_type = TYPE_INT
+			variable_name = mag
+			assignment = 
+				NODE: AST_FUNCTION_CALL
+				function_name = magnitude
+				parameter_values = 
+					NODE: AST_VARIABLE
+					variable_name = x2
+					NODE: AST_VARIABLE
+					variable_name = y2
+			NODE: AST_RETURN_STATEMENT
+			return = 
+				NODE: AST_BINARY_OPERATION
+				operator = /
+				left = 
+					NODE: AST_VARIABLE
+					variable_name = product
+				right = 
+					NODE: AST_VARIABLE
+					variable_name = mag
+			return_type = TYPE_VOID
 	NODE: AST_ENTRY_POINT
+		NODE: AST_FUNCTION_CALL
+		function_name = welcome
+		parameter_values = 
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = a
+		assignment = 
+			NODE: AST_NUMBER
+			value = 3
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = b
+		assignment = 
+			NODE: AST_NUMBER
+			value = 4
 		NODE: AST_PRINT_STATEMENT
 		output = 
 			NODE: AST_STRING
-			value = 'hello, world\n'
-			id = 0
+			value = 'vector 1: '
+			id = 14
+		print_type = TYPE_STRING
+		NODE: AST_FUNCTION_CALL
+		function_name = vectorToString
+		parameter_values = 
+			NODE: AST_VARIABLE
+			variable_name = a
+			NODE: AST_VARIABLE
+			variable_name = b
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = c
+		assignment = 
+			NODE: AST_NUMBER
+			value = 4
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = d
+		assignment = 
+			NODE: AST_NEGATION
+			negate = 
+				NODE: AST_NUMBER
+				value = 3
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = 'vector 2: '
+			id = 15
+		print_type = TYPE_STRING
+		NODE: AST_FUNCTION_CALL
+		function_name = vectorToString
+		parameter_values = 
+			NODE: AST_VARIABLE
+			variable_name = c
+			NODE: AST_VARIABLE
+			variable_name = d
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = e
+		assignment = 
+			NODE: AST_NUMBER
+			value = 1
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = f
+		assignment = 
+			NODE: AST_NUMBER
+			value = 0
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = 'vector 3: '
+			id = 16
+		print_type = TYPE_STRING
+		NODE: AST_FUNCTION_CALL
+		function_name = vectorToString
+		parameter_values = 
+			NODE: AST_VARIABLE
+			variable_name = e
+			NODE: AST_VARIABLE
+			variable_name = f
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = g
+		assignment = 
+			NODE: AST_NUMBER
+			value = 0
+		NODE: AST_VARIABLE_DECLARATION
+		data_type = TYPE_INT
+		variable_name = h
+		assignment = 
+			NODE: AST_NUMBER
+			value = 5
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = 'vector 4: '
+			id = 17
+		print_type = TYPE_STRING
+		NODE: AST_FUNCTION_CALL
+		function_name = vectorToString
+		parameter_values = 
+			NODE: AST_VARIABLE
+			variable_name = g
+			NODE: AST_VARIABLE
+			variable_name = h
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = 'magnitude of vector1: '
+			id = 18
+		print_type = TYPE_STRING
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_FUNCTION_CALL
+			function_name = magnitude
+			parameter_values = 
+				NODE: AST_VARIABLE
+				variable_name = a
+				NODE: AST_VARIABLE
+				variable_name = b
+		print_type = TYPE_INT
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = '\n'
+			id = 19
+		print_type = TYPE_STRING
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = 'magnitude of vector2: '
+			id = 20
+		print_type = TYPE_STRING
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_FUNCTION_CALL
+			function_name = magnitude
+			parameter_values = 
+				NODE: AST_VARIABLE
+				variable_name = c
+				NODE: AST_VARIABLE
+				variable_name = d
+		print_type = TYPE_INT
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = '\n'
+			id = 21
+		print_type = TYPE_STRING
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = 'magnitude of vector3: '
+			id = 22
+		print_type = TYPE_STRING
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_FUNCTION_CALL
+			function_name = magnitude
+			parameter_values = 
+				NODE: AST_VARIABLE
+				variable_name = e
+				NODE: AST_VARIABLE
+				variable_name = f
+		print_type = TYPE_INT
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = '\n'
+			id = 23
+		print_type = TYPE_STRING
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = 'magnitude of vector4: '
+			id = 24
+		print_type = TYPE_STRING
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_FUNCTION_CALL
+			function_name = magnitude
+			parameter_values = 
+				NODE: AST_VARIABLE
+				variable_name = g
+				NODE: AST_VARIABLE
+				variable_name = h
+		print_type = TYPE_INT
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = '\n'
+			id = 25
+		print_type = TYPE_STRING
+		NODE: AST_IF_STATEMENT
+		condition = 
+			NODE: AST_FUNCTION_CALL
+			function_name = isOrthogonal
+			parameter_values = 
+				NODE: AST_VARIABLE
+				variable_name = a
+				NODE: AST_VARIABLE
+				variable_name = b
+				NODE: AST_VARIABLE
+				variable_name = c
+				NODE: AST_VARIABLE
+				variable_name = d
+		code_block = 
+			NODE: AST_BLOCK
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_STRING
+					value = 'vector 1 and vector 2 are orthogonal.\n'
+					id = 26
+				print_type = TYPE_STRING
+		else_block = 
+			NODE: AST_BLOCK
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_STRING
+					value = 'vector 1 and 2 are not orthogonal, dot product was: '
+					id = 27
+				print_type = TYPE_STRING
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_FUNCTION_CALL
+					function_name = dot
+					parameter_values = 
+						NODE: AST_VARIABLE
+						variable_name = a
+						NODE: AST_VARIABLE
+						variable_name = b
+						NODE: AST_VARIABLE
+						variable_name = c
+						NODE: AST_VARIABLE
+						variable_name = d
+				print_type = TYPE_INT
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_STRING
+					value = '\n'
+					id = 28
+				print_type = TYPE_STRING
+		NODE: AST_IF_STATEMENT
+		condition = 
+			NODE: AST_FUNCTION_CALL
+			function_name = isOrthogonal
+			parameter_values = 
+				NODE: AST_VARIABLE
+				variable_name = a
+				NODE: AST_VARIABLE
+				variable_name = b
+				NODE: AST_VARIABLE
+				variable_name = g
+				NODE: AST_VARIABLE
+				variable_name = h
+		code_block = 
+			NODE: AST_BLOCK
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_STRING
+					value = 'vector 1 and vector 4 are orthogonal.\n'
+					id = 29
+				print_type = TYPE_STRING
+		else_block = 
+			NODE: AST_BLOCK
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_STRING
+					value = 'vector 1 and vector 4 are not orthogonal, dot product was: '
+					id = 30
+				print_type = TYPE_STRING
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_FUNCTION_CALL
+					function_name = dot
+					parameter_values = 
+						NODE: AST_VARIABLE
+						variable_name = a
+						NODE: AST_VARIABLE
+						variable_name = b
+						NODE: AST_VARIABLE
+						variable_name = g
+						NODE: AST_VARIABLE
+						variable_name = h
+				print_type = TYPE_INT
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_STRING
+					value = '\n'
+					id = 31
+				print_type = TYPE_STRING
+		NODE: AST_IF_STATEMENT
+		condition = 
+			NODE: AST_FUNCTION_CALL
+			function_name = isNormalized
+			parameter_values = 
+				NODE: AST_VARIABLE
+				variable_name = e
+				NODE: AST_VARIABLE
+				variable_name = f
+		code_block = 
+			NODE: AST_BLOCK
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_STRING
+					value = 'vector 3 is a unit vector.\n'
+					id = 32
+				print_type = TYPE_STRING
+		else_block = 
+			NODE: AST_BLOCK
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_STRING
+					value = 'vector 3 is not a unit vector, length is: '
+					id = 33
+				print_type = TYPE_STRING
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_FUNCTION_CALL
+					function_name = magnitude
+					parameter_values = 
+						NODE: AST_VARIABLE
+						variable_name = e
+						NODE: AST_VARIABLE
+						variable_name = f
+				print_type = TYPE_INT
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_STRING
+					value = '\n'
+					id = 34
+				print_type = TYPE_STRING
+		NODE: AST_IF_STATEMENT
+		condition = 
+			NODE: AST_FUNCTION_CALL
+			function_name = isNormalized
+			parameter_values = 
+				NODE: AST_VARIABLE
+				variable_name = g
+				NODE: AST_VARIABLE
+				variable_name = h
+		code_block = 
+			NODE: AST_BLOCK
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_STRING
+					value = 'vector 4 is a unit vector.\n'
+					id = 35
+				print_type = TYPE_STRING
+		else_block = 
+			NODE: AST_BLOCK
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_STRING
+					value = 'vector 4 is not a unit vector, length is: '
+					id = 36
+				print_type = TYPE_STRING
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_FUNCTION_CALL
+					function_name = magnitude
+					parameter_values = 
+						NODE: AST_VARIABLE
+						variable_name = g
+						NODE: AST_VARIABLE
+						variable_name = h
+				print_type = TYPE_INT
+				NODE: AST_PRINT_STATEMENT
+				output = 
+					NODE: AST_STRING
+					value = '\n'
+					id = 37
+				print_type = TYPE_STRING
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = 'component of v1 on v4 is: '
+			id = 38
+		print_type = TYPE_STRING
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_FUNCTION_CALL
+			function_name = comp
+			parameter_values = 
+				NODE: AST_VARIABLE
+				variable_name = a
+				NODE: AST_VARIABLE
+				variable_name = b
+				NODE: AST_VARIABLE
+				variable_name = g
+				NODE: AST_VARIABLE
+				variable_name = h
+		print_type = TYPE_INT
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = '\n'
+			id = 39
+		print_type = TYPE_STRING
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = 'component of v4 on v3 is: '
+			id = 40
+		print_type = TYPE_STRING
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_FUNCTION_CALL
+			function_name = comp
+			parameter_values = 
+				NODE: AST_VARIABLE
+				variable_name = g
+				NODE: AST_VARIABLE
+				variable_name = h
+				NODE: AST_VARIABLE
+				variable_name = e
+				NODE: AST_VARIABLE
+				variable_name = f
+		print_type = TYPE_INT
+		NODE: AST_PRINT_STATEMENT
+		output = 
+			NODE: AST_STRING
+			value = '\n'
+			id = 41
 		print_type = TYPE_STRING
 		NODE: AST_RUNTIME_END
