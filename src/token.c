@@ -61,6 +61,8 @@ char* token_type_as_str(Token* token) {
         case TOKEN_RPAREN: return "TOKEN_RPAREN"; 
         case TOKEN_LCURLY: return "TOKEN_LCURLY"; 
         case TOKEN_RCURLY: return "TOKEN_RCURLY"; 
+        case TOKEN_LSQUARE: return "TOKEN_LSQUARE"; 
+        case TOKEN_RSQUARE: return "TOKEN_RSQUARE"; 
         case TOKEN_LCHEVRON: return "TOKEN_LCHEVRON"; 
         case TOKEN_RCHEVRON: return "TOKEN_RCHEVRON"; 
         case TOKEN_FSLASH: return "TOKEN_FSLASH"; 
