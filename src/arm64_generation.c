@@ -372,6 +372,8 @@ static void node_to_asm(ASTNode* node, CodeGenContext* context) {
             //check if condition is true or false
             fprintf(context->output, "\t//check condition.\n");
             fprintf(context->output, "\tcmp x%d, #1\n", context->result_reg);
+            //free condition reg
+            free_register(context->register_manager, context->result_reg);
 
             //ready the label for end if
             int end_if_label = end_if_labels++;
