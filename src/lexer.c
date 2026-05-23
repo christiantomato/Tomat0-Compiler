@@ -64,14 +64,18 @@ static void lexer_skip_whitespace(Lexer* lexer) {
  */
 
 static char* lexer_char_as_str(Lexer* lexer) {
-    //special case for a newline character and tab character
+    //special case for a newline characters and fslash
     if(lexer->curr == '\n') {
         //return it in the form "\n"
         return strdup("\\n");
     }
-    else if(lexer->curr == '\t') {
-        //return it in the for "\t"
-        return strdup("\\t");
+    else if(lexer->curr == '\\') {
+        //we need check if we are trying to escape character for backslash! so peek.
+        if(lexer->contents[lexer->index + 1] == '\\') {
+            //return it in the form "\\". looks funky lol. also advance past
+            lexer_advance(lexer);
+            return strdup("\\\\");
+        }
     }
 
     //lexer->c is char, we need to make it a proper null terminated string
@@ -122,8 +126,8 @@ static Token* tokenize_string(Lexer* lexer) {
     while(lexer->curr != '"') {
         //obtain the current lexer character as a string, and start building the entire string one character at a time
         char* temp = lexer_char_as_str(lexer);
-        //reallocate memory as needed (+1 for the newly added character, and +1 for the null terminator which isn't counted)
-        str_value = realloc(str_value, (strlen(str_value) + 2) * sizeof(char));
+        //reallocate memory as needed (+1 for null char)
+        str_value = realloc(str_value, (strlen(str_value) + strlen(temp) + 1) * sizeof(char));
         //concatenate it to our string
         strcat(str_value, temp);
         //free the temporary character as it has been concatenated and is not needed
