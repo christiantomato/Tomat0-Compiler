@@ -1,0 +1,10 @@
+~ tomat0 hello world.
+
+~ entry point
+sprout {
+
+    print("hello, world\n")
+
+    ~ runtime end
+    harvest tomato
+}
