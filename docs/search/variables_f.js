@@ -1,9 +1,5 @@
 var searchData=
 [
-  ['value_0',['value',['../struct_number_literal.html#a9522566b80160673e5e3e9b9c5533ae9',1,'NumberLiteral::value'],['../struct_string_literal.html#acced39ea2770e5bb4fc7851efa6a262a',1,'StringLiteral::value'],['../struct_token.html#a2a240c7e82be05331fbe8acc2b774955',1,'Token::value']]],
-  ['var_1',['var',['../union_a_s_t_specialization.html#a30c5db47ca36ca8ff3d8165d32c71521',1,'ASTSpecialization']]],
-  ['var_5fassign_2',['var_assign',['../union_a_s_t_specialization.html#a01246776f5a370a1be9ae1e137c1614e',1,'ASTSpecialization']]],
-  ['var_5fdec_3',['var_dec',['../union_a_s_t_specialization.html#a048cc9116db6a0003dc93c930c68ab64',1,'ASTSpecialization']]],
-  ['var_5fsym_4',['var_sym',['../union_symbol_data.html#a54fe089c3df08bd25b8aa02151bda6c5',1,'SymbolData']]],
-  ['variable_5fname_5',['variable_name',['../struct_variable_declaration.html#a019818f0f625bdd0429c24d711bbd24d',1,'VariableDeclaration::variable_name'],['../struct_variable_assignment.html#a95f6b4ebbb0341b65f837f4d21eba086',1,'VariableAssignment::variable_name'],['../struct_variable.html#adc0847cbd204c84bf234d6113f458c09',1,'Variable::variable_name']]]
+  ['tokens_0',['tokens',['../struct_parser.html#a63bafb871bdaf58c1d25ec3f35e8dca7',1,'Parser']]],
+  ['type_1',['type',['../struct_unary_operation.html#a477ffb9a465c0452e665ce2872d01855',1,'UnaryOperation::type'],['../structast__node__struct.html#a7590939e59c6448f78799e2e4ce90e25',1,'ast_node_struct::type'],['../struct_variable_symbol.html#a3a45b4530e7d166bb8fe162b963d0009',1,'VariableSymbol::type'],['../struct_parameter_symbol.html#a094acfa87fd53b3b2effffefc143461a',1,'ParameterSymbol::type'],['../struct_token.html#a67919af9f3a80dc0b28a0ab1e6d5bf8a',1,'Token::type']]]
 ];

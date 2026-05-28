@@ -135,6 +135,10 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a function declaration.  <a href="struct_function_declaration.html#details">More...</a><br /></td></tr>
 <tr class="memitem:FunctionCall" id="r_FunctionCall"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="struct_function_call.html">FunctionCall</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a function call.  <a href="struct_function_call.html#details">More...</a><br /></td></tr>
+<tr class="memitem:IfStatement" id="r_IfStatement"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="struct_if_statement.html">IfStatement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents an if statement.  <a href="struct_if_statement.html#details">More...</a><br /></td></tr>
+<tr class="memitem:WhileLoop" id="r_WhileLoop"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="struct_while_loop.html">WhileLoop</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a while loop (similar to if statement).  <a href="struct_while_loop.html#details">More...</a><br /></td></tr>
 <tr class="memitem:VariableDeclaration" id="r_VariableDeclaration"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="struct_variable_declaration.html">VariableDeclaration</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a variable declaration instruction.  <a href="struct_variable_declaration.html#details">More...</a><br /></td></tr>
 <tr class="memitem:VariableAssignment" id="r_VariableAssignment"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="struct_variable_assignment.html">VariableAssignment</a></td></tr>
@@ -170,21 +174,23 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#acac9cbaeea226ed297804c012dc12b16aa6d4f74aa9d441ac0647cd80139d8a9f">AST_FUNCTION_DECLARATION</a>
 , <br />
 &#160;&#160;<a class="el" href="#acac9cbaeea226ed297804c012dc12b16af46475df24aac17d71de7c93176a22d0">AST_FUNCTION_CALL</a>
+, <a class="el" href="#acac9cbaeea226ed297804c012dc12b16a2dfe93a030a5b2ef4ffe35c078f6e734">AST_IF_STATEMENT</a>
+, <a class="el" href="#acac9cbaeea226ed297804c012dc12b16ac00295677b55c15f07c957269669f232">AST_WHILE_LOOP</a>
 , <a class="el" href="#acac9cbaeea226ed297804c012dc12b16a87242d4d044e8cedbe07e1b78592cb6b">AST_VARIABLE_DECLARATION</a>
-, <a class="el" href="#acac9cbaeea226ed297804c012dc12b16abb5c9ec2d3f189238d0359177bf59cbf">AST_VARIABLE_ASSIGNMENT</a>
+, <br />
+&#160;&#160;<a class="el" href="#acac9cbaeea226ed297804c012dc12b16abb5c9ec2d3f189238d0359177bf59cbf">AST_VARIABLE_ASSIGNMENT</a>
 , <a class="el" href="#acac9cbaeea226ed297804c012dc12b16ab76e60c22a89e5df1dc58b255fa33ead">AST_BINARY_OPERATION</a>
-, <br />
-&#160;&#160;<a class="el" href="#acac9cbaeea226ed297804c012dc12b16a5ee3a649877460e5033f1c54340efd74">AST_PRINT_STATEMENT</a>
+, <a class="el" href="#acac9cbaeea226ed297804c012dc12b16a5ee3a649877460e5033f1c54340efd74">AST_PRINT_STATEMENT</a>
 , <a class="el" href="#acac9cbaeea226ed297804c012dc12b16a1d8b28398786b605c96e3054063c8015">AST_RETURN_STATEMENT</a>
-, <a class="el" href="#acac9cbaeea226ed297804c012dc12b16a90f9cc5a1c3b0c4ce065446c565232da">AST_NEGATION</a>
+, <br />
+&#160;&#160;<a class="el" href="#acac9cbaeea226ed297804c012dc12b16a90f9cc5a1c3b0c4ce065446c565232da">AST_NEGATION</a>
 , <a class="el" href="#acac9cbaeea226ed297804c012dc12b16abc9e0a43377a0d89af3bee709af3fa42">AST_PARAMETER</a>
-, <br />
-&#160;&#160;<a class="el" href="#acac9cbaeea226ed297804c012dc12b16ad46ebb4f81948b96d20409aa8b800a33">AST_VARIABLE</a>
+, <a class="el" href="#acac9cbaeea226ed297804c012dc12b16ad46ebb4f81948b96d20409aa8b800a33">AST_VARIABLE</a>
 , <a class="el" href="#acac9cbaeea226ed297804c012dc12b16a7982834c4541f163a66dbe5f2e425245">AST_NUMBER</a>
-, <a class="el" href="#acac9cbaeea226ed297804c012dc12b16ad8a69d0bec8bb28732bf193e08378fce">AST_STRING</a>
-, <a class="el" href="#acac9cbaeea226ed297804c012dc12b16a6b7594c68b223d187061f00f7cf54467">AST_THROW</a>
 , <br />
-&#160;&#160;<a class="el" href="#acac9cbaeea226ed297804c012dc12b16ac5f82eebf33503148dbff2fa83ccc533">AST_RUNTIME_END</a>
+&#160;&#160;<a class="el" href="#acac9cbaeea226ed297804c012dc12b16ad8a69d0bec8bb28732bf193e08378fce">AST_STRING</a>
+, <a class="el" href="#acac9cbaeea226ed297804c012dc12b16a6b7594c68b223d187061f00f7cf54467">AST_THROW</a>
+, <a class="el" href="#acac9cbaeea226ed297804c012dc12b16ac5f82eebf33503148dbff2fa83ccc533">AST_RUNTIME_END</a>
 <br />
  }</td></tr>
 <tr class="memdesc:acac9cbaeea226ed297804c012dc12b16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents all possible node types in our abstract syntax tree.  <a href="#acac9cbaeea226ed297804c012dc12b16">More...</a><br /></td></tr>
@@ -249,6 +255,8 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="acac9cbaeea226ed297804c012dc12b16a7363b4a7ae92574be814ec183b54efba" name="acac9cbaeea226ed297804c012dc12b16a7363b4a7ae92574be814ec183b54efba"></a>AST_BLOCK&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="acac9cbaeea226ed297804c012dc12b16aa6d4f74aa9d441ac0647cd80139d8a9f" name="acac9cbaeea226ed297804c012dc12b16aa6d4f74aa9d441ac0647cd80139d8a9f"></a>AST_FUNCTION_DECLARATION&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="acac9cbaeea226ed297804c012dc12b16af46475df24aac17d71de7c93176a22d0" name="acac9cbaeea226ed297804c012dc12b16af46475df24aac17d71de7c93176a22d0"></a>AST_FUNCTION_CALL&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acac9cbaeea226ed297804c012dc12b16a2dfe93a030a5b2ef4ffe35c078f6e734" name="acac9cbaeea226ed297804c012dc12b16a2dfe93a030a5b2ef4ffe35c078f6e734"></a>AST_IF_STATEMENT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acac9cbaeea226ed297804c012dc12b16ac00295677b55c15f07c957269669f232" name="acac9cbaeea226ed297804c012dc12b16ac00295677b55c15f07c957269669f232"></a>AST_WHILE_LOOP&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="acac9cbaeea226ed297804c012dc12b16a87242d4d044e8cedbe07e1b78592cb6b" name="acac9cbaeea226ed297804c012dc12b16a87242d4d044e8cedbe07e1b78592cb6b"></a>AST_VARIABLE_DECLARATION&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="acac9cbaeea226ed297804c012dc12b16abb5c9ec2d3f189238d0359177bf59cbf" name="acac9cbaeea226ed297804c012dc12b16abb5c9ec2d3f189238d0359177bf59cbf"></a>AST_VARIABLE_ASSIGNMENT&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="acac9cbaeea226ed297804c012dc12b16ab76e60c22a89e5df1dc58b255fa33ead" name="acac9cbaeea226ed297804c012dc12b16ab76e60c22a89e5df1dc58b255fa33ead"></a>AST_BINARY_OPERATION&#160;</td><td class="fielddoc"></td></tr>

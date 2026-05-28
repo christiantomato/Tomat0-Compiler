@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.17.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Tomat0 Compiler: Main Page</title>
+<title>Tomat0 Compiler: My Compiler</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="codefolding.js"></script>
 <script type="text/javascript" src="clipboard.js"></script>
@@ -114,10 +114,23 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('index.html',''
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">Tomat0 Compiler Documentation</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">My Compiler </div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><h1 class="doxsection"><a class="anchor" id="intro"></a>
+Introduction</h1>
+<p>Welcome to the documentation for the Tomat0 compiler: A compiler for my custom programming language written in C.</p>
+<p>You can find documentation on every file on this Doxygen site.</p>
+<h1 class="doxsection"><a class="anchor" id="architecture"></a>
+Architecture Overview</h1>
+<p>The compiler is organized into the following stages:</p>
+<ol type="1">
+<li><b>Lexing</b> – Tokenizes raw source text into a stream of tokens.</li>
+<li><b>Parsing</b> + <b>Semantic Analysis</b> – Consumes the token stream and builds an Abstract Syntax Tree (AST) and performs type checking, scope resolution, and validation.</li>
+<li><b>Code Generation</b> – Emits ARM64 assembly. </li>
+</ol>
+</div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
 </div><!-- doc-content -->

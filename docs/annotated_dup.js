@@ -10,15 +10,18 @@ var annotated_dup =
     [ "FunctionSymbol", "struct_function_symbol.html", "struct_function_symbol" ],
     [ "hash_node_struct", "structhash__node__struct.html", "structhash__node__struct" ],
     [ "HashTable", "struct_hash_table.html", "struct_hash_table" ],
+    [ "IfStatement", "struct_if_statement.html", "struct_if_statement" ],
     [ "Lexer", "struct_lexer.html", "struct_lexer" ],
     [ "List", "struct_list.html", "struct_list" ],
     [ "NumberLiteral", "struct_number_literal.html", "struct_number_literal" ],
     [ "Parameter", "struct_parameter.html", "struct_parameter" ],
+    [ "ParameterSymbol", "struct_parameter_symbol.html", "struct_parameter_symbol" ],
     [ "Parser", "struct_parser.html", "struct_parser" ],
     [ "Program", "struct_program.html", "struct_program" ],
     [ "RegisterManager", "struct_register_manager.html", "struct_register_manager" ],
     [ "scope_struct", "structscope__struct.html", "structscope__struct" ],
     [ "StringLiteral", "struct_string_literal.html", "struct_string_literal" ],
+    [ "StringSymbol", "struct_string_symbol.html", "struct_string_symbol" ],
     [ "Symbol", "struct_symbol.html", "struct_symbol" ],
     [ "SymbolData", "union_symbol_data.html", "union_symbol_data" ],
     [ "Token", "struct_token.html", "struct_token" ],
@@ -26,5 +29,6 @@ var annotated_dup =
     [ "Variable", "struct_variable.html", "struct_variable" ],
     [ "VariableAssignment", "struct_variable_assignment.html", "struct_variable_assignment" ],
     [ "VariableDeclaration", "struct_variable_declaration.html", "struct_variable_declaration" ],
-    [ "VariableSymbol", "struct_variable_symbol.html", "struct_variable_symbol" ]
+    [ "VariableSymbol", "struct_variable_symbol.html", "struct_variable_symbol" ],
+    [ "WhileLoop", "struct_while_loop.html", "struct_while_loop" ]
 ];

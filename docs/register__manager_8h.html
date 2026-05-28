@@ -147,7 +147,7 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>For managing the state of the registers. </p>
-<p><a class="el" href="struct_list.html" title="Generic array list structure.">List</a> of the register uses: x0: return register x0-x7: passing parameters x8: system call numbers x9-x15: general purpose x19-x28: callee-saved registers x29: frame pointer x30: link register sp: stack pointer </p>
+<p><a class="el" href="struct_list.html" title="Generic array list structure.">List</a> of the register uses: x0: return register x0-x7: passing parameters x9-x15: general purpose x16: system call numbers x19-x28: callee-saved registers (we are going to abuse these for general) x29: frame pointer x30: link register sp: stack pointer </p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
 <a id="a0c6585de1ef5be234a5a9aea3b04a38d" name="a0c6585de1ef5be234a5a9aea3b04a38d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0c6585de1ef5be234a5a9aea3b04a38d">&#9670;&#160;</a></span>allocate_callee_register()</h2>

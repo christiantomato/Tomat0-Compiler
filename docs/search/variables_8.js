@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['left_0',['left',['../struct_binary_operation.html#a2f47476e5e5cab0e9bd4ddbc58a0a036',1,'BinaryOperation']]]
+  ['kind_0',['kind',['../struct_symbol.html#a15ea2d09721ddb027b2502717d27de0a',1,'Symbol']]]
 ];

@@ -132,7 +132,11 @@ Classes</h2></td></tr>
 <tr class="memitem:VariableSymbol" id="r_VariableSymbol"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="struct_variable_symbol.html">VariableSymbol</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes necessary data needed for a variable.  <a href="struct_variable_symbol.html#details">More...</a><br /></td></tr>
 <tr class="memitem:FunctionSymbol" id="r_FunctionSymbol"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="struct_function_symbol.html">FunctionSymbol</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encpdes necessary data needed for a function.  <a href="struct_function_symbol.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes necessary data needed for a function.  <a href="struct_function_symbol.html#details">More...</a><br /></td></tr>
+<tr class="memitem:StringSymbol" id="r_StringSymbol"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="struct_string_symbol.html">StringSymbol</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes necessary data needed for a string.  <a href="struct_string_symbol.html#details">More...</a><br /></td></tr>
+<tr class="memitem:ParameterSymbol" id="r_ParameterSymbol"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="struct_parameter_symbol.html">ParameterSymbol</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes necessary data needed for a parameter.  <a href="struct_parameter_symbol.html#details">More...</a><br /></td></tr>
 <tr class="memitem:SymbolData" id="r_SymbolData"><td class="memItemLeft">union &#160;</td><td class="memItemRight"><a class="el" href="union_symbol_data.html">SymbolData</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A union so we can store specific data for each type.  <a href="union_symbol_data.html#details">More...</a><br /></td></tr>
 <tr class="memitem:Symbol" id="r_Symbol"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="struct_symbol.html">Symbol</a></td></tr>
@@ -142,12 +146,9 @@ Classes</h2></td></tr>
 Enumerations</h2></td></tr>
 <tr class="memitem:a05812818de02fb4b202d7513ce50745d" id="r_a05812818de02fb4b202d7513ce50745d"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#a05812818de02fb4b202d7513ce50745d">SymbolKind</a> { <a class="el" href="#a05812818de02fb4b202d7513ce50745da456be8edf768d9b767b0b7ee790201da">SYMBOL_VARIABLE</a>
 , <a class="el" href="#a05812818de02fb4b202d7513ce50745da5d3b13ebd92d51f6606a2a36a7bac8ba">SYMBOL_FUNCTION</a>
+, <a class="el" href="#a05812818de02fb4b202d7513ce50745da0d6ecfc7951257173ef042108ef8e54d">SYMBOL_STRING</a>
+, <a class="el" href="#a05812818de02fb4b202d7513ce50745da10ca25c5fdffe8ddaeba5e8377188841">SYMBOL_PARAMETER</a>
  }</td></tr>
-<tr class="memitem:ab0743e872d4c8a3c37455ded673c3645" id="r_ab0743e872d4c8a3c37455ded673c3645"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#ab0743e872d4c8a3c37455ded673c3645">VariableStorage</a> { <a class="el" href="#ab0743e872d4c8a3c37455ded673c3645ab6e3c4a2e391e692867dae1a2aa0b049">STORAGE_GLOBAL</a>
-, <a class="el" href="#ab0743e872d4c8a3c37455ded673c3645ac8721ea814bb9b57d313e71b6d243a57">STORAGE_LOCAL</a>
-, <a class="el" href="#ab0743e872d4c8a3c37455ded673c3645a3e59a5ebb4f61827b22bce635a288d72">STORAGE_PARAMETER</a>
- }</td></tr>
-<tr class="memdesc:ab0743e872d4c8a3c37455ded673c3645"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum for the different types of variable storage.  <a href="#ab0743e872d4c8a3c37455ded673c3645">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -159,6 +160,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:a8a29aabb93329808f5018ed1fad12a13"><td class="mdescLeft">&#160;</td><td class="mdescRight">A toString for a symbol.  <br /></td></tr>
 <tr class="memitem:a51ce30240261dda827dbb0275fbf4c58" id="r_a51ce30240261dda827dbb0275fbf4c58"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a51ce30240261dda827dbb0275fbf4c58">free_symbol</a> (<a class="el" href="struct_symbol.html">Symbol</a> *symbol)</td></tr>
 <tr class="memdesc:a51ce30240261dda827dbb0275fbf4c58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees memory allocated by a symbol.  <br /></td></tr>
+<tr class="memitem:a0e02d15e4ff0d3020e6d2f9e7e8e3e62" id="r_a0e02d15e4ff0d3020e6d2f9e7e8e3e62"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a0e02d15e4ff0d3020e6d2f9e7e8e3e62">free_symbol_wrapper</a> (void *symbol)</td></tr>
+<tr class="memdesc:a0e02d15e4ff0d3020e6d2f9e7e8e3e62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper for free function.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Defines a symbol. </p>
@@ -175,29 +178,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a05812818de02fb4b202d7513ce50745da456be8edf768d9b767b0b7ee790201da" name="a05812818de02fb4b202d7513ce50745da456be8edf768d9b767b0b7ee790201da"></a>SYMBOL_VARIABLE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a05812818de02fb4b202d7513ce50745da5d3b13ebd92d51f6606a2a36a7bac8ba" name="a05812818de02fb4b202d7513ce50745da5d3b13ebd92d51f6606a2a36a7bac8ba"></a>SYMBOL_FUNCTION&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
-<a id="ab0743e872d4c8a3c37455ded673c3645" name="ab0743e872d4c8a3c37455ded673c3645"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0743e872d4c8a3c37455ded673c3645">&#9670;&#160;</a></span>VariableStorage</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#ab0743e872d4c8a3c37455ded673c3645">VariableStorage</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Enum for the different types of variable storage. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab0743e872d4c8a3c37455ded673c3645ab6e3c4a2e391e692867dae1a2aa0b049" name="ab0743e872d4c8a3c37455ded673c3645ab6e3c4a2e391e692867dae1a2aa0b049"></a>STORAGE_GLOBAL&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ab0743e872d4c8a3c37455ded673c3645ac8721ea814bb9b57d313e71b6d243a57" name="ab0743e872d4c8a3c37455ded673c3645ac8721ea814bb9b57d313e71b6d243a57"></a>STORAGE_LOCAL&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ab0743e872d4c8a3c37455ded673c3645a3e59a5ebb4f61827b22bce635a288d72" name="ab0743e872d4c8a3c37455ded673c3645a3e59a5ebb4f61827b22bce635a288d72"></a>STORAGE_PARAMETER&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a05812818de02fb4b202d7513ce50745da456be8edf768d9b767b0b7ee790201da" name="a05812818de02fb4b202d7513ce50745da456be8edf768d9b767b0b7ee790201da"></a>SYMBOL_VARIABLE&#160;</td><td class="fielddoc"><p>Integers and booleans. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a05812818de02fb4b202d7513ce50745da5d3b13ebd92d51f6606a2a36a7bac8ba" name="a05812818de02fb4b202d7513ce50745da5d3b13ebd92d51f6606a2a36a7bac8ba"></a>SYMBOL_FUNCTION&#160;</td><td class="fielddoc"><p>Functions. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a05812818de02fb4b202d7513ce50745da0d6ecfc7951257173ef042108ef8e54d" name="a05812818de02fb4b202d7513ce50745da0d6ecfc7951257173ef042108ef8e54d"></a>SYMBOL_STRING&#160;</td><td class="fielddoc"><p>Strings, which are immutable and stored in .data. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a05812818de02fb4b202d7513ce50745da10ca25c5fdffe8ddaeba5e8377188841" name="a05812818de02fb4b202d7513ce50745da10ca25c5fdffe8ddaeba5e8377188841"></a>SYMBOL_PARAMETER&#160;</td><td class="fielddoc"><p>Function parameters. </p>
+</td></tr>
 </table>
 
 </div>
@@ -219,6 +207,31 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Frees memory allocated by a symbol. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">symbol</td><td>Pointer to the symbol. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0e02d15e4ff0d3020e6d2f9e7e8e3e62" name="a0e02d15e4ff0d3020e6d2f9e7e8e3e62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e02d15e4ff0d3020e6d2f9e7e8e3e62">&#9670;&#160;</a></span>free_symbol_wrapper()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void free_symbol_wrapper </td>
+          <td>(</td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>symbol</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Wrapper for free function. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">symbol</td><td>Pointer to the symbol. </td></tr>

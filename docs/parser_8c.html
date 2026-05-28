@@ -139,16 +139,30 @@ Functions</h2></td></tr>
 <tr class="memdesc:a9fa64f8cb95d3eca5d56468b5f95f8ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ignores comments and blank lines, which do not require any logic to be parsed.  <br /></td></tr>
 <tr class="memitem:a6fe839e8c2f41730a71b89a9bd5cb61a" id="r_a6fe839e8c2f41730a71b89a9bd5cb61a"><td class="memItemLeft">static <a class="el" href="types_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</a>&#160;</td><td class="memItemRight"><a class="el" href="#a6fe839e8c2f41730a71b89a9bd5cb61a">resolve_factor_type</a> (<a class="el" href="struct_parser.html">Parser</a> *parser, <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *factor)</td></tr>
 <tr class="memdesc:a6fe839e8c2f41730a71b89a9bd5cb61a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resolves the type for a factor.  <br /></td></tr>
-<tr class="memitem:aec97a6f440706fbb72557da3f4c44f77" id="r_aec97a6f440706fbb72557da3f4c44f77"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#aec97a6f440706fbb72557da3f4c44f77">parse_expression</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
-<tr class="memdesc:aec97a6f440706fbb72557da3f4c44f77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an expression.  <br /></td></tr>
+<tr class="memitem:a3e054c9ff3c7ac9b8131062a6d951edc" id="r_a3e054c9ff3c7ac9b8131062a6d951edc"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a3e054c9ff3c7ac9b8131062a6d951edc">parse_boolean_expression</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
+<tr class="memdesc:a3e054c9ff3c7ac9b8131062a6d951edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a boolean expression (OR).  <br /></td></tr>
+<tr class="memitem:ad28981199ba4192fab073ee030e5fef5" id="r_ad28981199ba4192fab073ee030e5fef5"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#ad28981199ba4192fab073ee030e5fef5">parse_function_call</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
+<tr class="memdesc:ad28981199ba4192fab073ee030e5fef5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a function call.  <br /></td></tr>
 <tr class="memitem:afda7e3d123717d99b10bcef7f6cfb2d2" id="r_afda7e3d123717d99b10bcef7f6cfb2d2"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#afda7e3d123717d99b10bcef7f6cfb2d2">parse_factor</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
 <tr class="memdesc:afda7e3d123717d99b10bcef7f6cfb2d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a factor.  <br /></td></tr>
 <tr class="memitem:ad56867cd598982d53e931fd1d89a38cf" id="r_ad56867cd598982d53e931fd1d89a38cf"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#ad56867cd598982d53e931fd1d89a38cf">parse_term</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
 <tr class="memdesc:ad56867cd598982d53e931fd1d89a38cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a term.  <br /></td></tr>
-<tr class="memitem:a3831b76249f4dc78f427f12f85cd2ebb" id="r_a3831b76249f4dc78f427f12f85cd2ebb"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a3831b76249f4dc78f427f12f85cd2ebb">parse_parameter</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
-<tr class="memdesc:a3831b76249f4dc78f427f12f85cd2ebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a parameter during a function declaration.  <br /></td></tr>
+<tr class="memitem:aec97a6f440706fbb72557da3f4c44f77" id="r_aec97a6f440706fbb72557da3f4c44f77"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#aec97a6f440706fbb72557da3f4c44f77">parse_expression</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
+<tr class="memdesc:aec97a6f440706fbb72557da3f4c44f77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an expression.  <br /></td></tr>
+<tr class="memitem:a5a5e325ee5b39020441da54ec7835ef5" id="r_a5a5e325ee5b39020441da54ec7835ef5"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a5a5e325ee5b39020441da54ec7835ef5">parse_comparison</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
+<tr class="memdesc:a5a5e325ee5b39020441da54ec7835ef5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses integer comparisons.  <br /></td></tr>
+<tr class="memitem:ad6658362878e05b74b677ef6942c8900" id="r_ad6658362878e05b74b677ef6942c8900"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#ad6658362878e05b74b677ef6942c8900">parse_equality</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
+<tr class="memdesc:ad6658362878e05b74b677ef6942c8900"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an equality check.  <br /></td></tr>
+<tr class="memitem:a8335e3540f0e6b320477b6b38fd5c219" id="r_a8335e3540f0e6b320477b6b38fd5c219"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a8335e3540f0e6b320477b6b38fd5c219">parse_boolean_term</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
+<tr class="memdesc:a8335e3540f0e6b320477b6b38fd5c219"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a boolean term (AND).  <br /></td></tr>
 <tr class="memitem:a7033460358706eaf7a3837fd02097ada" id="r_a7033460358706eaf7a3837fd02097ada"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a7033460358706eaf7a3837fd02097ada">parse_block</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
 <tr class="memdesc:a7033460358706eaf7a3837fd02097ada"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a block of code.  <br /></td></tr>
+<tr class="memitem:a3337b83e66f7f60b96c2bfc83efdf9a5" id="r_a3337b83e66f7f60b96c2bfc83efdf9a5"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a3337b83e66f7f60b96c2bfc83efdf9a5">parse_if_statement</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
+<tr class="memdesc:a3337b83e66f7f60b96c2bfc83efdf9a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an if statement.  <br /></td></tr>
+<tr class="memitem:a879091a76ab50647d64bb216ac2f6e20" id="r_a879091a76ab50647d64bb216ac2f6e20"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a879091a76ab50647d64bb216ac2f6e20">parse_while_loop</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
+<tr class="memdesc:a879091a76ab50647d64bb216ac2f6e20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a while loop.  <br /></td></tr>
+<tr class="memitem:a3831b76249f4dc78f427f12f85cd2ebb" id="r_a3831b76249f4dc78f427f12f85cd2ebb"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a3831b76249f4dc78f427f12f85cd2ebb">parse_parameter</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
+<tr class="memdesc:a3831b76249f4dc78f427f12f85cd2ebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a parameter during a function declaration.  <br /></td></tr>
 <tr class="memitem:a69d7865fe50c7685bffe897a2baf7839" id="r_a69d7865fe50c7685bffe897a2baf7839"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a69d7865fe50c7685bffe897a2baf7839">parse_function_declaration</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
 <tr class="memdesc:a69d7865fe50c7685bffe897a2baf7839"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a function declaration.  <br /></td></tr>
 <tr class="memitem:a58747faa4dad4db3ed2ad85dd558c06e" id="r_a58747faa4dad4db3ed2ad85dd558c06e"><td class="memItemLeft">static <a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a58747faa4dad4db3ed2ad85dd558c06e">parse_variable_declaration</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
@@ -165,6 +179,12 @@ Functions</h2></td></tr>
 <tr class="memdesc:a125082ed0cd27b0b3f9f1b3cfdad0202"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main parsing function.  <br /></td></tr>
 <tr class="memitem:a5f1115e8474107eec03cbdb0e09d8c10" id="r_a5f1115e8474107eec03cbdb0e09d8c10"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a5f1115e8474107eec03cbdb0e09d8c10">free_parser</a> (<a class="el" href="struct_parser.html">Parser</a> *parser)</td></tr>
 <tr class="memdesc:a5f1115e8474107eec03cbdb0e09d8c10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees allocated memory by the parser.  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a6b201e9d9dcf7ebc65bdb01b67798da0" id="r_a6b201e9d9dcf7ebc65bdb01b67798da0"><td class="memItemLeft">static int&#160;</td><td class="memItemRight"><a class="el" href="#a6b201e9d9dcf7ebc65bdb01b67798da0">string_literals</a> = 0</td></tr>
+<tr class="memitem:a25bd40ddea64366157a250aadb067ca0" id="r_a25bd40ddea64366157a250aadb067ca0"><td class="memItemLeft">static int&#160;</td><td class="memItemRight"><a class="el" href="#a25bd40ddea64366157a250aadb067ca0">if_statements</a> = 0</td></tr>
+<tr class="memitem:af6b9bd29d10afef3f445b62a1f5efe12" id="r_af6b9bd29d10afef3f445b62a1f5efe12"><td class="memItemLeft">static int&#160;</td><td class="memItemRight"><a class="el" href="#af6b9bd29d10afef3f445b62a1f5efe12">while_loops</a> = 0</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implements the parsing algorithm using top down recursive descent. </p>
@@ -256,6 +276,146 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a3e054c9ff3c7ac9b8131062a6d951edc" name="a3e054c9ff3c7ac9b8131062a6d951edc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e054c9ff3c7ac9b8131062a6d951edc">&#9670;&#160;</a></span>parse_boolean_expression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> * parse_boolean_expression </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_parser.html">Parser</a> *</td>          <td class="paramname"><span class="paramname"><em>parser</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parses a boolean expression (OR). </p>
+<p>In boolean algebras, the OR connective acts similarly to addition. It has lower precedence than AND, and so our boolean expressions are made up of sequence of terms connected by ORs. This is also our top level entry for parsing expressions since booleans can contain arithmetic expressions inside comparisons.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parser</td><td>Pointer to the parser. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the expression node. </dd></dl>
+
+</div>
+</div>
+<a id="a8335e3540f0e6b320477b6b38fd5c219" name="a8335e3540f0e6b320477b6b38fd5c219"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8335e3540f0e6b320477b6b38fd5c219">&#9670;&#160;</a></span>parse_boolean_term()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> * parse_boolean_term </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_parser.html">Parser</a> *</td>          <td class="paramname"><span class="paramname"><em>parser</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parses a boolean term (AND). </p>
+<p>Same algorithm as boolean expression, but with the higher precedence connectve AND (which acts like multiplication).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parser</td><td>Pointer to the parser. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the term node. </dd></dl>
+
+</div>
+</div>
+<a id="a5a5e325ee5b39020441da54ec7835ef5" name="a5a5e325ee5b39020441da54ec7835ef5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a5e325ee5b39020441da54ec7835ef5">&#9670;&#160;</a></span>parse_comparison()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> * parse_comparison </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_parser.html">Parser</a> *</td>          <td class="paramname"><span class="paramname"><em>parser</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parses integer comparisons. </p>
+<p>Comparisons between integers can be between 2 arithmetic expressions, so that is the next level. ex. x + 2 * 3 &lt; y / 7</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parser</td><td>Pointer to the parser. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the comparison node </dd></dl>
+
+</div>
+</div>
+<a id="ad6658362878e05b74b677ef6942c8900" name="ad6658362878e05b74b677ef6942c8900"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6658362878e05b74b677ef6942c8900">&#9670;&#160;</a></span>parse_equality()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> * parse_equality </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_parser.html">Parser</a> *</td>          <td class="paramname"><span class="paramname"><em>parser</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parses an equality check. </p>
+<p>Equality must have lower precedence to build correct association: a equals b &lt; c -&gt; a equals (b &lt; c) Also equalities cannot be chained: a equals b equals c - invalid. a equals b and b equals c - valid.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parser</td><td>Pointer to the parser. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the equality node. </dd></dl>
+
+</div>
+</div>
 <a id="aec97a6f440706fbb72557da3f4c44f77" name="aec97a6f440706fbb72557da3f4c44f77"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aec97a6f440706fbb72557da3f4c44f77">&#9670;&#160;</a></span>parse_expression()</h2>
 
@@ -326,6 +486,40 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ad28981199ba4192fab073ee030e5fef5" name="ad28981199ba4192fab073ee030e5fef5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad28981199ba4192fab073ee030e5fef5">&#9670;&#160;</a></span>parse_function_call()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> * parse_function_call </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_parser.html">Parser</a> *</td>          <td class="paramname"><span class="paramname"><em>parser</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parses a function call. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parser</td><td>Pointer to the parser. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the function call node. </dd></dl>
+
+</div>
+</div>
 <a id="a69d7865fe50c7685bffe897a2baf7839" name="a69d7865fe50c7685bffe897a2baf7839"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a69d7865fe50c7685bffe897a2baf7839">&#9670;&#160;</a></span>parse_function_declaration()</h2>
 
@@ -357,6 +551,40 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the function declaration node. </dd></dl>
+
+</div>
+</div>
+<a id="a3337b83e66f7f60b96c2bfc83efdf9a5" name="a3337b83e66f7f60b96c2bfc83efdf9a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3337b83e66f7f60b96c2bfc83efdf9a5">&#9670;&#160;</a></span>parse_if_statement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> * parse_if_statement </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_parser.html">Parser</a> *</td>          <td class="paramname"><span class="paramname"><em>parser</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parses an if statement. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parser</td><td>Point to the parser </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the if statement node. </dd></dl>
 
 </div>
 </div>
@@ -421,10 +649,11 @@ Functions</h2></td></tr>
 <p>Parses a parameter during a function declaration. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">parser</td><td>Pointer to the parser. @ </td></tr>
+    <tr><td class="paramname">parser</td><td>Pointer to the parser. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the parameter node. </dd></dl>
 
 </div>
 </div>
@@ -597,6 +826,40 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the variable declaration node. </dd></dl>
+
+</div>
+</div>
+<a id="a879091a76ab50647d64bb216ac2f6e20" name="a879091a76ab50647d64bb216ac2f6e20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a879091a76ab50647d64bb216ac2f6e20">&#9670;&#160;</a></span>parse_while_loop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="ast__node_8h.html#a06ae99a2d52079a3ff756cfbfccbcb0b">ASTNode</a> * parse_while_loop </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_parser.html">Parser</a> *</td>          <td class="paramname"><span class="paramname"><em>parser</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parses a while loop. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parser</td><td>Pointer to the parser. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the while loop node. </dd></dl>
 
 </div>
 </div>
@@ -799,6 +1062,73 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The expected data type. </dd></dl>
+
+</div>
+</div>
+<a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Variable Documentation</h2>
+<a id="a25bd40ddea64366157a250aadb067ca0" name="a25bd40ddea64366157a250aadb067ca0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25bd40ddea64366157a250aadb067ca0">&#9670;&#160;</a></span>if_statements</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int if_statements = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6b201e9d9dcf7ebc65bdb01b67798da0" name="a6b201e9d9dcf7ebc65bdb01b67798da0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b201e9d9dcf7ebc65bdb01b67798da0">&#9670;&#160;</a></span>string_literals</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int string_literals = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af6b9bd29d10afef3f445b62a1f5efe12" name="af6b9bd29d10afef3f445b62a1f5efe12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6b9bd29d10afef3f445b62a1f5efe12">&#9670;&#160;</a></span>while_loops</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int while_loops = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

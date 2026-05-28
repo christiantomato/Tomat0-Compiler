@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['index_0',['index',['../struct_lexer.html#aa7d95630ef9e53f6bdc5a9386420b343',1,'Lexer::index'],['../struct_parser.html#a08e2e9fe4c1ee3f0bc116b2da1c0bfae',1,'Parser::index']]]
+  ['general_0',['general',['../struct_register_manager.html#af8f4be75f0d633cbb7fec1bc7f19876b',1,'RegisterManager']]]
 ];

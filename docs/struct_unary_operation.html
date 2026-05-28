@@ -127,11 +127,14 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('struct_unary_o
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:afd5ddc9b1832e0247dc4b1084400a62d" id="r_afd5ddc9b1832e0247dc4b1084400a62d"><td class="memItemLeft">struct <a class="el" href="structast__node__struct.html">ast_node_struct</a> *&#160;</td><td class="memItemRight"><a class="el" href="#afd5ddc9b1832e0247dc4b1084400a62d">operand</a></td></tr>
+<tr class="memitem:a477ffb9a465c0452e665ce2872d01855" id="r_a477ffb9a465c0452e665ce2872d01855"><td class="memItemLeft"><a class="el" href="types_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</a>&#160;</td><td class="memItemRight"><a class="el" href="#a477ffb9a465c0452e665ce2872d01855">type</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a unary operation. </p>
+<p>Nodes passed into returns or prints must be factor nodes so we can ensure proper data type.</p>
 <p>Current operations include:</p><ul>
-<li>Negation: -(node)</li>
+<li>Arithmetic Negation: -(numerical expression)</li>
+<li>Logical Negation: not (boolean expression)</li>
 <li>Return Statements: return(node)</li>
 <li>Print Statenments: print(node) </li>
 </ul>
@@ -148,6 +151,21 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>The node operand. </p>
+
+</div>
+</div>
+<a id="a477ffb9a465c0452e665ce2872d01855" name="a477ffb9a465c0452e665ce2872d01855"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a477ffb9a465c0452e665ce2872d01855">&#9670;&#160;</a></span>type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="types_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</a> UnaryOperation::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The operand type (necessary for prints and returns, and for specifying arithemtic or logical negation) </p>
 
 </div>
 </div>

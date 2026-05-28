@@ -119,36 +119,54 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('md__r_e_a_d_m_
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a></p>
-<p>Compiler for my own language, Tomat0. Tomat0 focuses on increasing readibility and removing unecessary syntax. At its current state, it can compile print statements for integers and arithmetic expressions (see example in main.tmt).</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
-Road Map</h2>
-<p>Lexical Analysis</p><ul class="check">
-<li class="checked">tokenize punctuation characaters</li>
+<p>Compiler for my own language, Tomat0. Tomat0 is a small but efficient language. It saves compilation time by combining parsing and semantics in one pass and walking the AST for code gen in one pass also. It uses clear, readable, syntax aswell as less characters than the average language to increase readability and typing speed. Tomat0's strengths would be computational based.</p>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
+Compiling Tomat0 Source Code:</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
+Dependencies</h2>
+<ul>
+<li>macOS with Apple Silicon (ARM64 based chip)</li>
+<li>Clang to assemble and link generated ARM64 assembly</li>
 </ul>
-<ul class="check">
-<li class="checked">tokenize integers</li>
-</ul>
-<ul class="check">
-<li class="checked">tokenize identifiers</li>
-</ul>
-<ul class="check">
-<li class="checked">tokenize strings</li>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
+Instructions</h2>
+<ol type="1">
+<li>Clone repo</li>
+<li>Write Tomat0 source code in main.tmt (see <a href="https://github.com/christiantomato/Tomat0-Compiler/wiki">wiki</a> for documentation on syntax).</li>
+<li>Compile the compiler using make:</li>
+</ol>
+<div class="fragment"><div class="line">make</div>
+</div><!-- fragment --><ol type="1">
+<li>Compile and run the source code using the executable</li>
+</ol>
+<div class="fragment"><div class="line">./tomat0.out</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
+Road Map</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
+Lexical Analysis</h2>
+<ul>
+<li>[x] <a class="el" href="struct_lexer.html" title="The lexer structure which tokenizes a string.">Lexer</a></li>
 </ul>
 <p>Syntactic Analysis</p><ul class="check">
 <li class="checked">abstract syntax tree representation</li>
 </ul>
 <ul class="check">
-<li class="checked">store symbols in symbol table</li>
-</ul>
-<ul class="check">
-<li class="checked">parse variable declarations</li>
+<li class="checked">parse variable declarations and assignments</li>
 </ul>
 <ul class="check">
 <li class="checked">parse print statements</li>
 </ul>
 <ul class="check">
 <li class="checked">parse expressions, terms, and factors</li>
-<li class="unchecked">parse functions</li>
+</ul>
+<ul class="check">
+<li class="checked">parse function declarations and calls</li>
+</ul>
+<ul class="check">
+<li class="checked">parse boolean expressions, terms, comparisions</li>
+</ul>
+<ul class="check">
+<li class="checked">parse conditional statements (if, while)</li>
 </ul>
 <p>ARM64 Assembly Generation</p><ul class="check">
 <li class="checked">print integer values to terminal</li>
@@ -157,26 +175,25 @@ Road Map</h2>
 <li class="checked">compute binary and unary operations</li>
 </ul>
 <ul class="check">
+<li class="checked">generate entry point stack frame</li>
+</ul>
+<ul class="check">
 <li class="checked">store, load, and use integer variables</li>
-<li class="unchecked">print string literals to terminal</li>
 </ul>
 <ul class="check">
-<li class="unchecked">store, load, and use string variables</li>
+<li class="checked">strings</li>
 </ul>
 <ul class="check">
-<li class="unchecked">implement while loop</li>
+<li class="checked">subroutines</li>
 </ul>
 <ul class="check">
-<li class="unchecked">implement if statement</li>
+<li class="checked">loops and conditionals</li>
 </ul>
-<ul class="check">
-<li class="unchecked">functions</li>
-</ul>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md6"></a>
 TODO</h2>
-<ul>
-<li>debugging free functions</li>
-<li>work with strings </li>
+<ul class="check">
+<li class="checked">optimize register allocation to allow for deeper nesting levels</li>
+<li class="unchecked">deploy vscode extension for syntax highlighting </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

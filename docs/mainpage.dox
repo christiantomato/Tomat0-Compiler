@@ -1,0 +1,16 @@
+/**
+ * @mainpage My Compiler
+ *
+ * @section intro Introduction
+ * Welcome to the documentation for the Tomat0 compiler: 
+ * A compiler for my custom programming language written in C.
+ * 
+ * You can find documentation on every file on this Doxygen site. 
+ *
+ * @section architecture Architecture Overview
+ * The compiler is organized into the following stages:
+ *
+ * -# **Lexing** – Tokenizes raw source text into a stream of tokens.
+ * -# **Parsing** + **Semantic Analysis** – Consumes the token stream and builds an Abstract Syntax Tree (AST) and performs type checking, scope resolution, and validation.
+ * -# **Code Generation** – Emits ARM64 assembly.
+ */

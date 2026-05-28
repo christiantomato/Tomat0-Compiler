@@ -15,13 +15,14 @@ var searchData=
   ['free_5fscope_12',['free_scope',['../scope_8h.html#a1398dde38a7f21312e2780def18a36c8',1,'free_scope(Scope *scope):&#160;scope.c'],['../scope_8c.html#a1398dde38a7f21312e2780def18a36c8',1,'free_scope(Scope *scope):&#160;scope.c']]],
   ['free_5fscope_5fwrapper_13',['free_scope_wrapper',['../scope_8h.html#a4ecf97dba4a3383c6ee81bf5e7010f5a',1,'free_scope_wrapper(void *scope):&#160;scope.c'],['../scope_8c.html#a4ecf97dba4a3383c6ee81bf5e7010f5a',1,'free_scope_wrapper(void *scope):&#160;scope.c']]],
   ['free_5fsymbol_14',['free_symbol',['../symbol_8h.html#a51ce30240261dda827dbb0275fbf4c58',1,'free_symbol(Symbol *symbol):&#160;symbol.c'],['../symbol_8c.html#a51ce30240261dda827dbb0275fbf4c58',1,'free_symbol(Symbol *symbol):&#160;symbol.c']]],
-  ['free_5ftoken_15',['free_token',['../token_8h.html#af2c0c132479d97aae25fcce9d6a749eb',1,'free_token(Token *token):&#160;token.c'],['../token_8c.html#af2c0c132479d97aae25fcce9d6a749eb',1,'free_token(Token *token):&#160;token.c']]],
-  ['free_5ftoken_5fwrapper_16',['free_token_wrapper',['../token_8h.html#a34eb56b080aa69465d14b44055248b9c',1,'free_token_wrapper(void *token):&#160;token.c'],['../token_8c.html#a34eb56b080aa69465d14b44055248b9c',1,'free_token_wrapper(void *token):&#160;token.c']]],
-  ['func_5fcall_17',['func_call',['../union_a_s_t_specialization.html#ab1adbc71532c75f9e42dfb40735d6a72',1,'ASTSpecialization']]],
-  ['func_5fdec_18',['func_dec',['../union_a_s_t_specialization.html#a385010739c2ecbd5eb4be152eb4d02b0',1,'ASTSpecialization']]],
-  ['func_5fsym_19',['func_sym',['../union_symbol_data.html#a407591458406f4abde9a30e85e16a742',1,'SymbolData']]],
-  ['function_5fname_20',['function_name',['../struct_function_declaration.html#a7c6116d8a41aaf7d15f634d6d61adbd4',1,'FunctionDeclaration::function_name'],['../struct_function_call.html#a4c1b569357782fc8b1556211ebdb10b3',1,'FunctionCall::function_name']]],
-  ['functioncall_21',['FunctionCall',['../struct_function_call.html',1,'']]],
-  ['functiondeclaration_22',['FunctionDeclaration',['../struct_function_declaration.html',1,'']]],
-  ['functionsymbol_23',['FunctionSymbol',['../struct_function_symbol.html',1,'']]]
+  ['free_5fsymbol_5fwrapper_15',['free_symbol_wrapper',['../symbol_8h.html#a0e02d15e4ff0d3020e6d2f9e7e8e3e62',1,'free_symbol_wrapper(void *symbol):&#160;symbol.c'],['../symbol_8c.html#a0e02d15e4ff0d3020e6d2f9e7e8e3e62',1,'free_symbol_wrapper(void *symbol):&#160;symbol.c']]],
+  ['free_5ftoken_16',['free_token',['../token_8h.html#af2c0c132479d97aae25fcce9d6a749eb',1,'free_token(Token *token):&#160;token.c'],['../token_8c.html#af2c0c132479d97aae25fcce9d6a749eb',1,'free_token(Token *token):&#160;token.c']]],
+  ['free_5ftoken_5fwrapper_17',['free_token_wrapper',['../token_8h.html#a34eb56b080aa69465d14b44055248b9c',1,'free_token_wrapper(void *token):&#160;token.c'],['../token_8c.html#a34eb56b080aa69465d14b44055248b9c',1,'free_token_wrapper(void *token):&#160;token.c']]],
+  ['func_5fcall_18',['func_call',['../union_a_s_t_specialization.html#ab1adbc71532c75f9e42dfb40735d6a72',1,'ASTSpecialization']]],
+  ['func_5fdata_19',['func_data',['../union_symbol_data.html#a753fdf1ec6bca99fac366d51619788c9',1,'SymbolData']]],
+  ['func_5fdec_20',['func_dec',['../union_a_s_t_specialization.html#a385010739c2ecbd5eb4be152eb4d02b0',1,'ASTSpecialization']]],
+  ['function_5fname_21',['function_name',['../struct_function_declaration.html#a7c6116d8a41aaf7d15f634d6d61adbd4',1,'FunctionDeclaration::function_name'],['../struct_function_call.html#a4c1b569357782fc8b1556211ebdb10b3',1,'FunctionCall::function_name']]],
+  ['functioncall_22',['FunctionCall',['../struct_function_call.html',1,'']]],
+  ['functiondeclaration_23',['FunctionDeclaration',['../struct_function_declaration.html',1,'']]],
+  ['functionsymbol_24',['FunctionSymbol',['../struct_function_symbol.html',1,'']]]
 ];

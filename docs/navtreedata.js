@@ -25,7 +25,17 @@
 var NAVTREE =
 [
   [ "Tomat0 Compiler", "index.html", [
-    [ "Tomat0 Compiler README", "md__r_e_a_d_m_e.html", null ],
+    [ "My Compiler", "index.html", "index" ],
+    [ "Tomat0 Compiler README", "md__r_e_a_d_m_e.html", [
+      [ "Compiling Tomat0 Source Code:", "md__r_e_a_d_m_e.html#autotoc_md1", [
+        [ "Dependencies", "md__r_e_a_d_m_e.html#autotoc_md2", null ],
+        [ "Instructions", "md__r_e_a_d_m_e.html#autotoc_md3", null ]
+      ] ],
+      [ "Road Map", "md__r_e_a_d_m_e.html#autotoc_md4", [
+        [ "Lexical Analysis", "md__r_e_a_d_m_e.html#autotoc_md5", null ],
+        [ "TODO", "md__r_e_a_d_m_e.html#autotoc_md6", null ]
+      ] ]
+    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -39,6 +49,7 @@ var NAVTREE =
       [ "File Members", "globals.html", [
         [ "All", "globals.html", "globals_dup" ],
         [ "Functions", "globals_func.html", null ],
+        [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
         [ "Enumerator", "globals_eval.html", null ],
@@ -51,7 +62,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"struct_list.html#a838de289b3f5841f4f89f012f8eb7fdb"
+"struct_block.html#a4a132ad3961d52d41caf9e90b0795ade"
 ];
 
 const SYNCONMSG = 'click to disable panel synchronization';

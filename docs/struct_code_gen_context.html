@@ -128,27 +128,12 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('struct_code_ge
 Public Attributes</h2></td></tr>
 <tr class="memitem:ab5433e208a2f51ad138154370ae482de" id="r_ab5433e208a2f51ad138154370ae482de"><td class="memItemLeft">FILE *&#160;</td><td class="memItemRight"><a class="el" href="#ab5433e208a2f51ad138154370ae482de">output</a></td></tr>
 <tr class="memitem:a5550ee16314690fd34921bbc7afea633" id="r_a5550ee16314690fd34921bbc7afea633"><td class="memItemLeft"><a class="el" href="struct_register_manager.html">RegisterManager</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a5550ee16314690fd34921bbc7afea633">register_manager</a></td></tr>
-<tr class="memitem:a885564314aeb13a7eeb46bfc864dc375" id="r_a885564314aeb13a7eeb46bfc864dc375"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a885564314aeb13a7eeb46bfc864dc375">generate_text</a></td></tr>
 <tr class="memitem:a0ea24e45baa102a01da7bd2f37cd4454" id="r_a0ea24e45baa102a01da7bd2f37cd4454"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a0ea24e45baa102a01da7bd2f37cd4454">result_reg</a></td></tr>
+<tr class="memitem:a5b3a509312d63946388f72a077a29313" id="r_a5b3a509312d63946388f72a077a29313"><td class="memItemLeft"><a class="el" href="struct_list.html">List</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a5b3a509312d63946388f72a077a29313">string_literals</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Encapsulates all data that will be needed to be pass through code gen recursive traversal. </p>
 </div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
-<a id="a885564314aeb13a7eeb46bfc864dc375" name="a885564314aeb13a7eeb46bfc864dc375"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a885564314aeb13a7eeb46bfc864dc375">&#9670;&#160;</a></span>generate_text</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool CodeGenContext::generate_text</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Flag to determine when to move from .data to .text. </p>
-
-</div>
-</div>
 <a id="ab5433e208a2f51ad138154370ae482de" name="ab5433e208a2f51ad138154370ae482de"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab5433e208a2f51ad138154370ae482de">&#9670;&#160;</a></span>output</h2>
 
@@ -191,6 +176,21 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Stores the register number of the most recently computed value. </p>
+
+</div>
+</div>
+<a id="a5b3a509312d63946388f72a077a29313" name="a5b3a509312d63946388f72a077a29313"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b3a509312d63946388f72a077a29313">&#9670;&#160;</a></span>string_literals</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_list.html">List</a>* CodeGenContext::string_literals</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pointer to the string literals in the program. </p>
 
 </div>
 </div>

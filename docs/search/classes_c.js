@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['variable_0',['Variable',['../struct_variable.html',1,'']]],
-  ['variableassignment_1',['VariableAssignment',['../struct_variable_assignment.html',1,'']]],
-  ['variabledeclaration_2',['VariableDeclaration',['../struct_variable_declaration.html',1,'']]],
-  ['variablesymbol_3',['VariableSymbol',['../struct_variable_symbol.html',1,'']]]
+  ['unaryoperation_0',['UnaryOperation',['../struct_unary_operation.html',1,'']]]
 ];
