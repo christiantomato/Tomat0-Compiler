@@ -1,5 +1,5 @@
 # Tomat0 Compiler README
-Compiler for my own language, Tomat0. Tomat0 is a small but efficient language. It saves compilation time by combining parsing and semantics in one pass and walking the AST for code gen in one pass also. It uses clear, readable, syntax aswell as less characters than the average language to increase readability and typing speed. Tomat0's strengths would be computational based. 
+Compiler for my own language, Tomat0. Tomat0 is a small but efficient language. It saves compilation time by combining parsing and semantics into a single pass, and generating code in one pass also. It uses clear, readable, syntax as well as fewer characters than the average language to increase readability and typing speed. Tomat0's strengths and capabilities are mainly computational based. 
 
 ## Compiling Tomat0 Source Code:
 
