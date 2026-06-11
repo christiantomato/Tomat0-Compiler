@@ -47,4 +47,4 @@ ARM64 Assembly Generation
 
 ### TODO
 - [x] optimize register allocation to allow for deeper nesting levels 
-- [ ] deploy vscode extension for syntax highlighting
+- [x] deploy vscode extension for syntax highlighting
